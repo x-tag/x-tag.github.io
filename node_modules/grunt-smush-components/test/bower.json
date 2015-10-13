@@ -1,0 +1,17 @@
+{
+  "name": "test-smush-components",
+  "description": "Test task",
+  "version": "0.0.1",
+  "keywords": [
+    "components",
+    "grunt",
+    "test"
+  ],
+  "dependencies": {
+    "x-tag-core": "*",
+    "x-tag-growbox": "*",
+    "test-package2": "./test-package2/",
+    "test-package": "./test-package/"
+  },
+  "ignore": []
+}

@@ -1,0 +1,16 @@
+{
+  "name": "test-package2",
+  "description": "Test task",
+  "version": "0.0.1",
+  "keywords": [
+    "components",
+    "grunt",
+    "test"
+  ],
+  "main": ["test-package.js"],
+  "dependencies": {
+    "x-tag-core": "*",
+    "x-tag-growbox": "*",
+    "test-package": "*"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "x-tag-deck",
+  "description": "",
+  "version": "0.2.11",
+  "keywords": [
+    "element",
+    "web-components",
+    "x-tag"
+  ],
+  "main": [
+    "src/deck.js",
+    "src/deck.css",
+    "src/deck.styl"
+  ],
+  "dependencies": {
+    "x-tag-core": "*",
+    "x-tag-transitions": "*"
+  }
+}

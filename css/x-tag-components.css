@@ -1,0 +1,454 @@
+x-appbar {
+  padding:0;
+  width:100%;
+  display:-webkit-box;
+  display:-moz-box;
+  display:-ms-flexbox;
+  display:-webkit-flex;
+  display:flex;
+}
+
+x-appbar, x-appbar * {
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  box-sizing:border-box;
+}
+
+x-appbar > * {
+  border:none;
+  vertical-align:middle;
+  text-align:center;
+  -webkit-flex-align:center;
+  -ms-flex-align:center;
+  -webkit-align-items:center;
+  -webkit-align-items:center;
+  -moz-align-items:center;
+  -ms-align-items:center;
+  align-items:center;
+  text-align:center;
+}
+
+x-appbar > h1,x-appbar h2,x-appbar h3,x-appbar h4,x-appbar h5,x-appbar h6 {
+  min-width:auto;
+  min-height:auto;
+  -webkit-box-flex:1;
+  -moz-box-flex:1;
+  -webkit-flex:1;
+  -ms-flex:1;
+  box-flex:1;
+  flex:1;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  margin:0;
+}
+
+x-appbar > h1:after,x-appbar h2:after,x-appbar h3:after,x-appbar h4:after,x-appbar h5:after,x-appbar h6:after {
+  content:attr(subheading);
+}
+
+
+x-deck {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}
+
+x-deck > x-card {
+  display: none;
+  position: absolute !important;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+  opacity: 1;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-transform: translate(0%, 0%), scale(1);
+  -moz-transform: translate(0%, 0%), scale(1);
+  -ms-transform: translate(0%, 0%), scale(1);
+  transform: translate(0%, 0%), scale(1);
+}
+
+x-deck > x-card[selected], x-deck > x-card[transition] {
+  display: block;
+}
+
+/*** Fade 'n' Scale ***/
+
+x-deck[transition-type="fade-scale"] > x-card,
+x-deck > x-card[transition-type="fade-scale"] {
+  opacity: 0;
+  -webkit-transform: scale(0.85);
+  -moz-transform: scale(0.85);
+  -ms-transform: scale(0.85);
+  -o-transform: scale(0.85);
+  transform: scale(0.85);
+  -webkit-transition: opacity 0.4s ease, -webkit-transform 0.4s ease;
+  -moz-transition: opacity 0.4s ease, -moz-transform 0.4s ease;
+  -ms-transition: opacity 0.4s ease, -ms-transform 0.4s ease;
+  -o-transition: opacity 0.4s ease, -o-transform 0.4s ease;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+x-deck > x-card[show][transition] {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transform: scale(1);
+}
+
+
+/*** General Slide Setup ***/
+
+x-deck[transition-type^="slide"] > x-card,
+x-deck > x-card[transition-type^="slide"] {
+  z-index: 1;
+}
+
+x-deck > x-card[transition-type^="slide"] {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transform: scale(1);
+}
+
+x-deck[transition-type^="slide"] > x-card[transition-direction="reverse"],
+x-deck > x-card[transition-type^="slide"][transition-direction="reverse"] {
+  z-index: 2;
+}
+
+x-deck[transition-type^="slide"] > x-card[show],
+x-deck > x-card[show][transition-type^="slide"],
+x-deck[transition-type^="slide"] > x-card[hide],
+x-deck > x-card[hide][transition-type^="slide"] {
+  -webkit-transition: -webkit-transform 0.4s ease;
+  -moz-transition: -moz-transform 0.4s ease;
+  -ms-transition: -ms-transform 0.4s ease;
+  -o-transition: -o-transform 0.4s ease;
+  transition: transform 0.4s ease;
+}
+
+/*** Right/Left Slide Styles ***/
+
+x-deck[transition-type="slide-right"] > x-card[show][transition-direction="forward"],
+x-deck[transition-type="slide-right"] > x-card[hide][transition-direction="reverse"],
+x-deck[transition-type="slide-left"] > x-card[show][transition-direction="reverse"],
+x-deck[transition-type="slide-left"] > x-card[hide][transition-direction="forward"] {
+  -webkit-transform: translate(-100%, 0);
+  -moz-transform: translate(-100%, 0);
+  -ms-transform: translate(-100%, 0);
+  -o-transform: translate(-100%, 0);
+  transform: translate(-100%, 0);
+}
+
+x-deck > x-card[show][transition-direction="forward"][transition-type="slide-right"],
+x-deck > x-card[hide][transition-direction="reverse"][transition-type="slide-right"],
+x-deck > x-card[show][transition-direction="reverse"][transition-type="slide-left"],
+x-deck > x-card[hide][transition-direction="forward"][transition-type="slide-left"] {
+  -webkit-transform: translate(-100%, 0) !important;
+  -moz-transform: translate(-100%, 0) !important;
+  -ms-transform: translate(-100%, 0) !important;
+  -o-transform: translate(-100%, 0) !important;
+  transform: translate(-100%, 0) !important;
+}
+
+x-deck[transition-type="slide-right"] > x-card[show][transition-direction="reverse"],
+x-deck[transition-type="slide-right"] > x-card[hide][transition-direction="forward"],
+x-deck[transition-type="slide-left"] > x-card[show][transition-direction="forward"],
+x-deck[transition-type="slide-left"] > x-card[hide][transition-direction="reverse"] {
+  -webkit-transform: translate(100%, 0);
+  -moz-transform: translate(100%, 0);
+  -ms-transform: translate(100%, 0);
+  -o-transform: translate(100%, 0);
+  transform: translate(100%, 0);
+}
+
+x-deck > x-card[show][transition-direction="reverse"][transition-type="slide-right"],
+x-deck > x-card[hide][transition-direction="forward"][transition-type="slide-right"],
+x-deck > x-card[show][transition-direction="forward"][transition-type="slide-left"],
+x-deck > x-card[hide][transition-direction="reverse"][transition-type="slide-left"] {
+  -webkit-transform: translate(100%, 0) !important;
+  -moz-transform: translate(100%, 0) !important;
+  -ms-transform: translate(100%, 0) !important;
+  -o-transform: translate(100%, 0) !important;
+  transform: translate(100%, 0) !important;
+}
+
+
+/*** Up/Down Slide Styles ***/
+
+x-deck[transition-type="slide-up"] > x-card[show][transition-direction="reverse"],
+x-deck[transition-type="slide-up"] > x-card[hide][transition-direction="forward"],
+x-deck[transition-type="slide-down"] > x-card[show][transition-direction="forward"],
+x-deck[transition-type="slide-down"] > x-card[hide][transition-direction="reverse"] {
+  -webkit-transform: translate(0, -100%);
+  -moz-transform: translate(0, -100%);
+  -ms-transform: translate(0, -100%);
+  -o-transform: translate(0, -100%);
+  transform: translate(0, -100%);
+}
+
+x-deck > x-card[show][transition-direction="reverse"][transition-type="slide-up"],
+x-deck > x-card[hide][transition-direction="forward"][transition-type="slide-up"],
+x-deck > x-card[show][transition-direction="forward"][transition-type="slide-down"],
+x-deck > x-card[hide][transition-direction="reverse"][transition-type="slide-down"] {
+  -webkit-transform: translate(0, -100%) !important;
+  -moz-transform: translate(0, -100%) !important;
+  -ms-transform: translate(0, -100%) !important;
+  -o-transform: translate(0, -100%) !important;
+  transform: translate(0, -100%) !important;
+}
+
+x-deck[transition-type="slide-up"] > x-card[show][transition-direction="forward"],
+x-deck[transition-type="slide-up"] > x-card[hide][transition-direction="reverse"],
+x-deck[transition-type="slide-down"] > x-card[show][transition-direction="reverse"],
+x-deck[transition-type="slide-down"] > x-card[hide][transition-direction="forward"] {
+  -webkit-transform: translate(0, 100%);
+  -moz-transform: translate(0, 100%);
+  -ms-transform: translate(0, 100%);
+  -o-transform: translate(0, 100%);
+  transform: translate(0, 100%);
+}
+
+x-deck > x-card[show][transition-direction="forward"][transition-type="slide-up"],
+x-deck > x-card[hide][transition-direction="reverse"][transition-type="slide-up"],
+x-deck > x-card[show][transition-direction="reverse"][transition-type="slide-down"],
+x-deck > x-card[hide][transition-direction="forward"][transition-type="slide-down"] {
+  -webkit-transform: translate(0, 100%) !important;
+  -moz-transform: translate(0, 100%) !important;
+  -ms-transform: translate(0, 100%) !important;
+  -o-transform: translate(0, 100%) !important;
+  transform: translate(0, 100%) !important;
+}
+
+/*** General Slide Show State ***/
+
+x-deck[transition-type^="slide"] > x-card[show][transition] {
+  -webkit-transform: translate(0%, 0%);
+  -moz-transform: translate(0%, 0%);
+  -ms-transform: translate(0%, 0%);
+  -o-transform: translate(0%, 0%);
+  transform: translate(0%, 0%);
+}
+
+x-deck > x-card[show][transition][transition-type^="slide"] {
+  -webkit-transform: translate(0%, 0%) !important;
+  -moz-transform: translate(0%, 0%) !important;
+  -ms-transform: translate(0%, 0%) !important;
+  -o-transform: translate(0%, 0%) !important;
+  transform: translate(0%, 0%) !important;
+}
+
+x-layout {
+  /* relative positioning is important because x-layout should really be
+  * placed in a parent container for it to fill;
+  * also, setting position:absolute causes older flexbox implementations,
+  * such as Firefox 18 (which is the version in FirefoxOS) to render
+  * flex items in a way such that it won't override a height:0 declaration,
+  * which is important for allowing the flex item to shrink past its
+  * content size */
+  position: relative !important;
+
+  display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;      /* TWEENER - IE 10 */
+  display: -webkit-flex;     /* NEW - Chrome */
+  display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -ms-box-orient: vertical;
+  box-orient: vertical;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+x-layout > header, x-layout > footer {
+  margin: 0 !important;
+  overflow: hidden;
+  z-index: 1;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+x-layout > header, x-layout > footer {
+  -ms-flex-shrink: 0;
+  flex-shrink: 0;
+  -webkit-transition: -webkit-transform 0.2s ease-in-out;
+  -moz-transition: -moz-transform 0.2s ease-in-out;
+  -ms-transition: -ms-transform 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out;
+}
+
+x-layout > section {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+  -ms-flex: auto;
+  -webkit-transition: margin 0.2s ease-in-out
+  -moz-transition: margin 0.2s ease-in-out;
+  -ms-transition: margin 0.2s ease-in-out;
+  transition: margin 0.2s ease-in-out;
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  overflow: auto;
+  position: relative;
+}
+
+x-layout:not([content-maximizing]):not([maxcontent]) > section{
+  margin: 0 !important;
+}
+
+x-layout > section > *:only-child{
+  /* fix for issue where 100% height children of flex items render as zero
+  * height in Webkit
+  * see: http://stackoverflow.com/a/15389545
+  */
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+x-layout[hide-trigger] > header,
+x-layout[hide-trigger] > footer,
+x-layout[content-maximizing] > header, x-layout[content-maximized] > header, x-layout[maxcontent] > header,
+x-layout[content-maximizing] > footer, x-layout[content-maximized] > footer, x-layout[maxcontent] > footer {
+    position: absolute;
+    width: 100%;
+}
+
+x-layout[hide-trigger] > footer,
+x-layout[content-maximizing] > footer, x-layout[content-maximized] > footer, x-layout[maxcontent] > footer {
+    bottom: 0;
+}
+
+x-layout[content-maximizing] > header, x-layout[content-maximized] > header, x-layout[maxcontent] > header{
+  -webkit-transform: translateY(-100%);
+  -moz-transform: translateY(-100%);
+  -ms-transform: translateY(-100%);
+  transform: translateY(-100%);
+}
+
+x-layout[content-maximizing] > footer, x-layout[content-maximized] > footer, x-layout[maxcontent] > footer  {
+  -webkit-transform: translateY(100%);
+  -moz-transform: translateY(100%);
+  -ms-transform: translateY(100%);
+  transform: translateY(100%);
+}
+
+x-modal {
+  display: block;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: auto;
+  z-index: 1;
+  opacity: 1;
+  background: #fff;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+x-modal-overlay {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  opacity: 0;
+}
+
+x-modal-overlay:before {
+  content: "✖";
+  display: block;
+  position: absolute;
+  top: 0.25em;
+  right: 0.25em;
+  width: 1em;
+  padding: 0.05em;
+  color: #f00;
+  font-size: 200%;
+  line-height: 100%;
+  text-align: center;
+  background: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+x-modal[hidden], x-modal[hidden] + x-modal-overlay, x-modal:not([overlay]) + x-modal-overlay {
+  display: none;
+}
+
+x-modal[transition] {
+  -webkit-transform: translate(-50%, -50%) scale(0.9);
+  -moz-transform: translate(-50%, -50%) scale(0.9);
+  -o-transform: translate(-50%, -50%) scale(0.9);
+  transform: translate(-50%, -50%) scale(0.9);
+}
+
+x-modal[transition], x-modal[transition] + x-modal-overlay {
+  opacity: 0;
+  -webkit-transition: opacity 0.3s ease, -webkit-transform ease 0.35s;
+  -moz-transition: opacity 0.3s ease, -moz-transform ease 0.35s;
+  -o-transition: opacity 0.3s ease, -o-transform ease 0.35s;
+  transition: opacity 0.3s ease, transform ease 0.35s;
+}
+
+x-modal[transition="show"] {
+  opacity: 1;
+  -webkit-transform: translate(-50%, -50%) scale(1);
+  -moz-transform: translate(-50%, -50%) scale(1);
+  -o-transform: translate(-50%, -50%) scale(1);
+  transform: translate(-50%, -50%) scale(1);
+}
+
+x-modal[transition="show"]:not([hidden]) + x-modal-overlay {
+  opacity: 1;
+}
+
+x-modal[overlay]:not([hidden]):not([transition]) + x-modal-overlay {
+  opacity: 1;
+}

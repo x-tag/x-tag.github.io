@@ -1,0 +1,33 @@
+{% extends "component-demo-base.html" %}
+
+{% set TAG_NAME="x-appbar" %}
+{% set COMPONENT_NAME="appbar" %}
+
+{% block demoContent %}
+    <p>An <code class="prettyprint">&lt;x-appbar&gt;</code> is a simple component using flexbox to emulate the standard layout of a header seen at the top of a mobile application.</p>
+    <section class="demo-wrap">
+        <header><h2>Basic usage</h2></header>
+        <p>You can use any elements in place of the <code class="prettyprint">&lt;button&gt;</code> tags in the example below.  A heading <code class="prettyprint">&lt;h1&gt;</code> to <code class="prettyprint">&lt;h6&gt;</code> element is required and will be created automatically if not provided.</p>
+        <div class="two-up">
+            <figure class="demo">
+                 <x-appbar>
+                    <button>=</button>
+                    <h1>Title</h1>
+                    <button>+</button>
+                    <button>?</button>
+                  </x-appbar>
+            </figure>
+        </div>
+        <div class="markup-wrap two-up">
+            <h3>Markup</h3>
+            <pre class="prettyprint html">
+&lt;x-appbar&gt;
+    &lt;button&gt;=&lt;/button&gt;
+    &lt;h1&gt;Title&lt;/h1&gt;
+    &lt;button&gt;+&lt;/button&gt;
+    &lt;button&gt;?&lt;/button&gt;
+&lt;/x-appbar&gt;</pre>
+        </div>
+        <a href="#" class="top">Top</a>
+    </section>
+{% endblock %}
