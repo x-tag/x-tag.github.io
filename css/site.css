@@ -1,1 +1,66 @@
 
+
+/* MODIFY/REMOVE THESE TEMPORARY STYLES WHEN BASE TEMPLATE CSS IS UPDATED */
+
+  #global_menu menu > * {
+    position: relative;
+    background: inherit;
+    border-top: 1px solid rgba(255,255,255, 0.125);
+    border-bottom: 1px solid rgba(0,0,0, 0.2);
+    text-shadow: 0 -1px 1px rgba(0,0,0,0.2);
+  }
+
+  #global_menu menu > *:first-child {
+    border-top: 1px solid rgba(255,255,255, 0.125);
+  }
+
+  #global_menu menu > *:hover {
+    background: rgba(255,255,255, 0.05);
+  }
+
+  #global_menu menu > [selected] {
+    background: none;
+  }
+
+  #global_menu menu > [selected]:after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0.25em;
+    height: 100%;
+    background: rgba(255,255,255, 0.5);
+  }
+
+  @media all and (min-width: 571px) and (max-width: 830px) {
+
+    #global_menu {
+      width: 72px; /* CHANGE THIS */
+    }
+
+    #views {
+      margin-left: 72px;
+    }
+  }
+
+/* END OF TEMPORARY STYLES */
+
+body {
+  background: #20252B;
+}
+
+#global_menu {
+  color: rgba(255,255,255, 0.5);
+  background: #222931;
+  box-shadow: 1px 0 2px 0px rgba(0,0,0,0.5);
+}
+
+#global_menu x-action svg {
+  fill: rgba(255,255,255, 0.85);
+}
+
+#views x-card {
+  color: #fff;
+  background: #2D3742;
+}
