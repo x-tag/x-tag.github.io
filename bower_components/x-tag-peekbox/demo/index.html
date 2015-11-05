@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8" />
+  <title>Peekbox Demo - X-Tag</title>
+
+  <link rel="stylesheet" type="text/css" href="x-tag-components.css"/>
+  <link rel="stylesheet" type="text/css" href="../src/main.css"/>
+
+  <script type="text/javascript" src="x-tag-components.js"></script>
+  <script type="text/javascript" src="../src/main.js"></script>
+
+  <style>
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: #eee;
+    }
+
+    #toggle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -webkit-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+
+    #edge_select {
+      display: block;
+      margin: 0 auto;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+	<x-peekbox id="peekbox" cover>
+    Peek-a-boo! I see you!
+  </x-peekbox>
+
+  <button id="toggle">Toggle</button>
+
+  <select id="edge_select">
+    <option value="top">top</option>
+    <option value="left" selected>left</option>
+    <option value="right">right</option>
+    <option value="bottom">bottom</option>
+  </select>
+
+</body>
+
+<script>
+
+  var box = document.getElementById('peekbox');
+
+  xtag.addEvents(document, {
+    'change:delegate(#edge_select)': function(){
+      box.edge = this.value;
+    },
+    'tap:delegate(#toggle)': function(){
+      box.toggle();
+    }
+  });
+
+</script>
+
+</html>

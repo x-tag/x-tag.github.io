@@ -1,0 +1,88 @@
+
+x-spinner {
+  -webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+x-spinner {
+  display: table;
+  text-align: center;
+  color: #000;
+  stroke: #000;
+}
+
+x-spinner[fade] {
+  opacity: 0;
+  -webkit-transition: opacity 0.6s;
+	-moz-transition: opacity 0.6s;
+	-ms-transition: opacity 0.6s;
+	transition: opacity 0.6s;
+}
+
+x-spinner[transition="fade-in"] {
+  opacity: 1;
+  display: table;
+}
+
+x-spinner[transition="fade-out"] {
+  opacity: 0;
+  display: none;
+}
+
+x-spinner[transitioning] {
+  display: table;
+}
+
+x-spinner .x-spinner-center {
+  display: table-cell;
+  vertical-align: middle;
+
+}
+
+x-spinner .x-spinner-center[label]:after {
+  display: block;
+  content: attr(label);
+}
+
+x-spinner svg {
+  display: block;
+  width: 1em;
+  height: 1em;
+  margin: 0 auto;
+}
+
+x-spinner[spinning] svg, x-spinner[transitioning] svg {
+  -webkit-animation: x-spinner-rotate 1s infinite linear;
+  -ms-animation: x-spinner-rotate 1s infinite linear;
+  animation: x-spinner-rotate 1s infinite linear;
+}
+
+x-spinner[reverse] svg {
+  -webkit-animation-direction: reverse;
+  -ms-animation-direction: reverse;
+  animation-direction: reverse;
+}
+
+@-webkit-keyframes x-spinner-rotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes x-spinner-rotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}

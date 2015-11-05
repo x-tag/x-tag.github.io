@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Stub Demo - X-Tag</title>
+    <link rel="stylesheet" type="text/css" href="x-tag-components.css"/>
+	<link rel="stylesheet" type="text/css" href="../src/main.css"/>
+
+    <script type="text/javascript" src="x-tag-components.js"></script> 
+    <script type="text/javascript" src="../src/main.js"></script>      
+	<style>
+
+	</style>
+</head>
+
+<body>
+
+  <button id="toggle">Toggle Spinner</button>
+
+	<x-spinner id="spinner" label="Loading..." fade></x-spinner>
+
+
+</body>
+
+<script>
+  var spinner = document.getElementById('spinner');
+  xtag.addEvents(document, {
+    'tap:delegate(#toggle)': function(){
+      spinner.toggle();
+
+    }
+  });
+</script>
+
+</html>

@@ -1,0 +1,138 @@
+x-deck {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  z-index: 0;
+}
+
+x-deck > x-card {
+  display: none;
+  position: absolute !important;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+  opacity: 1;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-transform: translate(0%, 0%), scale(1);
+  -moz-transform: translate(0%, 0%), scale(1);
+  -ms-transform: translate(0%, 0%), scale(1);
+  -o-transform: translate(0%, 0%), scale(1);
+  transform: translate(0%, 0%), scale(1);
+  -webkit-transition: opacity 0.4s ease, -webkit-transform 0.4s ease;
+  -moz-transition: opacity 0.4s ease, -moz-transform 0.4s ease;
+  -ms-transition: opacity 0.4s ease, -ms-transform 0.4s ease;
+  -o-transition: opacity 0.4s ease, -o-transform 0.4s ease;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+x-deck > x-card[selected], x-deck > x-card[show], x-deck > x-card[transition] {
+  display: block;
+}
+
+x-deck[transition-enter="fade-scale"] > x-card[show]:not([transition-enter]):not([transition-direction="reverse"]),
+x-deck[transition-exit="fade-scale"] > x-card[hide]:not([transition-exit]),
+x-deck[transition-exit="fade-scale"] > x-card[show][transition-direction="reverse"]:not([transition-exit]),
+x-deck[transition-enter="fade-scale"] > x-card[hide][transition-direction="reverse"]:not([transition-enter]),
+x-deck > x-card[transition-enter="fade-scale"][show],
+x-deck > x-card[transition-exit="fade-scale"][hide] {
+  opacity: 0;
+  -webkit-transform: scale(0.85);
+  -moz-transform: scale(0.85);
+  -ms-transform: scale(0.85);
+  -o-transform: scale(0.85);
+  transform: scale(0.85);
+}
+
+x-deck[transition-enter="slide-right"] > x-card[show]:not([transition-enter]):not([transition-direction="reverse"]),
+x-deck[transition-exit="slide-left"] > x-card[hide]:not([transition-exit]),
+x-deck[transition-exit="slide-left"] > x-card[show][transition-direction="reverse"]:not([transition-exit]),
+x-deck[transition-enter="slide-right"] > x-card[hide][transition-direction="reverse"]:not([transition-enter]),
+x-deck > x-card[transition-enter="slide-right"][show],
+x-deck > x-card[transition-exit="slide-left"][hide],
+x-deck > x-card[transition-exit="slide-left"][show][transition-direction="reverse"],
+x-deck > x-card[transition-enter="slide-right"][hide][transition-direction="reverse"] {
+  opacity: 1;
+  z-index: 1;
+  -webkit-transform: translate(-100%, 0%);
+  -moz-transform: translate(-100%, 0%);
+  -ms-transform: translate(-100%, 0%);
+  -o-transform: translate(-100%, 0%);
+  transform: translate(-100%, 0%);
+}
+
+x-deck[transition-enter="slide-left"] > x-card[show]:not([transition-enter]):not([transition-direction="reverse"]),
+x-deck[transition-exit="slide-right"] > x-card[hide]:not([transition-exit]),
+x-deck[transition-exit="slide-right"] > x-card[show][transition-direction="reverse"]:not([transition-exit]),
+x-deck[transition-enter="slide-left"] > x-card[hide][transition-direction="reverse"]:not([transition-enter]),
+x-deck > x-card[transition-enter="slide-left"][show],
+x-deck > x-card[transition-exit="slide-right"][hide],
+x-deck > x-card[transition-exit="slide-right"][show][transition-direction="reverse"],
+x-deck > x-card[transition-enter="slide-left"][hide][transition-direction="reverse"] {
+  opacity: 1;
+  z-index: 1;
+  -webkit-transform: translate(100%, 0%);
+  -moz-transform: translate(100%, 0%);
+  -ms-transform: translate(100%, 0%);
+  -o-transform: translate(100%, 0%);
+  transform: translate(100%, 0%);
+}
+
+x-deck[transition-enter="slide-up"] > x-card[show]:not([transition-enter]):not([transition-direction="reverse"]),
+x-deck[transition-exit="slide-down"] > x-card[hide]:not([transition-exit]),
+x-deck[transition-exit="slide-down"] > x-card[show][transition-direction="reverse"]:not([transition-exit]),
+x-deck[transition-enter="slide-up"] > x-card[hide][transition-direction="reverse"]:not([transition-enter]),
+x-deck > x-card[transition-enter="slide-up"][show],
+x-deck > x-card[transition-exit="slide-down"][hide],
+x-deck > x-card[transition-exit="slide-down"][show][transition-direction="reverse"],
+x-deck > x-card[transition-enter="slide-up"][hide][transition-direction="reverse"] {
+  opacity: 1;
+  z-index: 1;
+  -webkit-transform: translate(0%, 100%);
+  -moz-transform: translate(0%, 100%);
+  -ms-transform: translate(0%, 100%);
+  -o-transform: translate(0%, 100%);
+  transform: translate(0%, 100%);
+}
+
+x-deck[transition-enter="slide-down"] > x-card[show]:not([transition-enter]):not([transition-direction="reverse"]),
+x-deck[transition-exit="slide-up"] > x-card[hide]:not([transition-exit]),
+x-deck[transition-exit="slide-up"] > x-card[show][transition-direction="reverse"]:not([transition-exit]),
+x-deck[transition-enter="slide-down"] > x-card[hide][transition-direction="reverse"]:not([transition-enter]),
+x-deck > x-card[transition-enter="slide-down"][show],
+x-deck > x-card[transition-exit="slide-up"][hide],
+x-deck > x-card[transition-exit="slide-up"][show][transition-direction="reverse"],
+x-deck > x-card[transition-enter="slide-down"][hide][transition-direction="reverse"] {
+  opacity: 1;
+  z-index: 1;
+  -webkit-transform: translate(0%, -100%);
+  -moz-transform: translate(0%, -100%);
+  -ms-transform: translate(0%, -100%);
+  -o-transform: translate(0%, -100%);
+  transform: translate(0%, -100%);
+}
+
+x-deck > x-card[transition-exit^="slide"][show][transition-direction="reverse"],
+x-deck[transition-enter^="slide"] > x-card[hide][transition-direction="reverse"]:not([transition-enter^="fade"]),
+x-deck > x-card[transition-enter^="slide"][show]:not([transition-direction="reverse"]),
+x-deck[transition-enter^="slide"] > x-card[show]:not([transition-direction="reverse"]):not([transition-enter^="fade"]) {
+  z-index: 2;
+}
+
+x-deck > x-card[transition="show"] {
+  opacity: 1 !important;
+  -webkit-transform: scale(1) translate(0%, 0%) !important;
+  -moz-transform: scale(1) translate(0%, 0%) !important;
+  -ms-transform: scale(1) translate(0%, 0%) !important;
+  -o-transform: scale(1) translate(0%, 0%) !important;
+  transform: scale(1) translate(0%, 0%) !important;
+}

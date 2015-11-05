@@ -12,7 +12,7 @@ module.exports = function(grunt) {
       }
     },
     jshint:{
-      all: ['Gruntfile.js', 'src/**/*.js', 'test/**/*.js']
+      all: ['Gruntfile.js', 'js/site.js', 'test/**/*.js']
     },
     'smush-components': {
       options: {

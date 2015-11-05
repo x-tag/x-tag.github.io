@@ -1,0 +1,43 @@
+x-appbar {
+  padding:0;
+  display:-webkit-box;
+  display:-moz-box;
+  display:-ms-flexbox;
+  display:-webkit-flex;
+  display:flex;
+}
+
+x-appbar, x-appbar * {
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  box-sizing:border-box;
+}
+
+x-appbar > * {
+  margin: 0;
+  padding: 0 0.65em;
+  border: none;
+  background: none;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+x-appbar > h1,x-appbar h2,x-appbar h3,x-appbar h4,x-appbar h5,x-appbar h6 {
+  min-width: 0;
+  min-height: 0;
+  -webkit-box-flex:1;
+  -moz-box-flex:1;
+  -webkit-flex:1;
+  -ms-flex:1;
+  box-flex:1;
+  flex:1;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  margin:0;
+  padding: 0 0.1em;
+}
+
+x-appbar > h1:after,x-appbar h2:after,x-appbar h3:after,x-appbar h4:after,x-appbar h5:after,x-appbar h6:after {
+  content:attr(subheading);
+  padding: 0 0.1em;
+}

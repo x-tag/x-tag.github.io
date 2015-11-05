@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8" />
+
+		<title>X-Layout Demo</title>
+
+		<link rel="stylesheet" type="text/css" href="x-tag-components.css"/>
+		<link rel="stylesheet" type="text/css" href="../src/main.css"/>
+
+		<script type="text/javascript" src="x-tag-components.js"></script>
+		<script type="text/javascript" src="../src/main.js"></script>
+		<style type="text/css">
+
+			html, body {
+				height: 100%;
+				margin: 0;
+				padding: 0;
+				min-height: 100%;
+			}
+
+			body {
+				background: #eee;
+			}
+
+			h1, h3 {
+				color: #fff;
+				margin: 0 auto;
+				background: -webkit-linear-gradient(top, #CD6623, #BD4A2D);
+				background: -moz-linear-gradient(top, #CD6623, #BD4A2D);
+				background: -ms-linear-gradient(top, #CD6623, #BD4A2D);
+				background: linear-gradient(top, #CD6623, #BD4A2D);
+			}
+
+			h1 {
+				border-bottom: 1px solid #992F21;
+			}
+
+			h3 {
+				border-top: 1px solid #992F21;
+			}
+
+			select {
+				display: inline-block;
+				margin-left: 15px;
+				vertical-align: middle;
+			}
+
+		</style>
+	</head>
+
+<body style="height: 300px">
+
+	<x-layout id="layout-1">
+		<header>
+			<h1>I'm the Title! <select id="trigger_type"><option value="tap">Tap</option><option value="hover">Hover</option></select></h1>
+		</header>
+		<section>
+			<ul>
+				<li>One</li>
+				<li>Two</li>
+				<li>Three</li>
+				<li>Four</li>
+				<li>Five</li>
+				<li>Six</li>
+				<li>Seven</li>
+				<li>One</li>
+				<li>Two</li>
+				<li>Three</li>
+				<li>Four</li>
+				<li>Five</li>
+				<li>Six</li>
+				<li>One</li>
+				<li>Two</li>
+				<li>Three</li>
+				<li>Four</li>
+				<li>Five</li>
+				<li>Six</li>
+				<li>One</li>
+				<li>Two</li>
+				<li>Three</li>
+				<li>Four</li>
+				<li>Five</li>
+				<li>Six</li>
+				<li>One</li>
+				<li>Two</li>
+				<li>Three</li>
+				<li>Four</li>
+				<li>Five</li>
+				<li>Six</li>
+				<li>One</li>
+				<li>Two</li>
+				<li>Three</li>
+				<li>Four</li>
+				<li>Five</li>
+				<li>Six</li>
+				<li>One</li>
+				<li>Two</li>
+				<li>Three</li>
+				<li>Four</li>
+				<li>Five</li>
+				<li>Six</li>
+				<li>One</li>
+				<li>Two</li>
+				<li>Three</li>
+				<li>Four</li>
+				<li>Five</li>
+				<li>Six</li>
+				<li>One</li>
+				<li>Two</li>
+				<li>Three</li>
+				<li>Four</li>
+				<li>Five</li>
+				<li>Six</li>
+				<li>One</li>
+				<li>Two</li>
+				<li>Three</li>
+				<li>Four</li>
+				<li>Five</li>
+				<li>Six</li>
+				<li>One</li>
+				<li>Two</li>
+				<li>Three</li>
+				<li>Four</li>
+				<li>Five</li>
+				<li>Six</li>
+				<li>One</li>
+				<li>Two</li>
+				<li>Three</li>
+				<li>Four</li>
+				<li>Five</li>
+				<li>Six</li>
+				<li>One</li>
+				<li>Two</li>
+				<li>Three</li>
+				<li>Four</li>
+				<li>Five</li>
+				<li>Six</li>
+				<li>One</li>
+				<li>Two</li>
+				<li>Three</li>
+				<li>Four</li>
+				<li>Five</li>
+				<li>Six</li>
+				<li>One</li>
+				<li>Two</li>
+				<li>Three</li>
+				<li>Four</li>
+				<li>Five</li>
+				<li>Six</li>
+			</ul>
+		</section>
+		<footer>
+			<h3>I'm the Footer!</h3>
+		</footer>
+	</x-layout>
+
+</body>
+
+<script type="text/javascript">
+	var layout = document.getElementById('layout-1');
+	var select = document.getElementById('trigger_type');
+
+	layout.hideTrigger = select.value;
+
+	xtag.addEvents(document, {
+		'tap:delegate(button)': function(){
+			layout.maxcontent = !layout.maxcontent;
+		}
+	});
+
+	xtag.addEvent(select, 'change', function(e){
+		layout.hideTrigger = select.value;
+	});
+
+</script>
+
+</html>

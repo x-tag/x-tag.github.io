@@ -6,15 +6,7 @@
     "web-components",
     "x-tag"
   ],
-  "main": [
-    "src/main.js",
-    "src/main.css"
-  ],
   "dependencies": {
-    "x-tag-core": "*",
-    "x-tag-deck": "*",
-    "x-tag-layout": "*",
-    "x-tag-appbar": "*",
-    "x-tag-modal": "*"
+    "x-tag-basic-app-template": "*"
   }
 }

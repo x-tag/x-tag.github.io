@@ -1,0 +1,164 @@
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  font-size: calc(1em + 0.5vmin);
+  cursor: default;
+}
+
+svg {
+  display: inline-block;
+  height: 1em;
+  width: 1em;
+  margin: 0px auto;
+  vertical-align: middle;
+}
+
+button svg, x-action svg {
+  padding: 0 0 0.15em;
+}
+
+[unselectable] {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#svg_source {
+  display: none;
+}
+
+#menu_logo {
+  display: block;
+  margin: 0.25em auto;
+  font-size: 2em;
+}
+
+#views x-appbar, #global_menu_toggle {
+  height: 2.5em;
+  line-height: 2.5em;
+}
+
+#global_menu {
+  width: 200px;
+}
+
+  #global_menu menu {
+    margin: 0;
+    padding: 0;
+  }
+
+  #global_menu menu > * {
+    display: block;
+    padding: 0.5em 0.5em 0.4em;
+    border-bottom: 1px solid #000;
+    background: #fff;
+    cursor: pointer;
+  }
+
+  #global_menu menu > *:first-child {
+    border-top: 1px solid #000;
+  }
+
+  #global_menu menu > *:hover {
+    background: #eee;
+  }
+
+  #global_menu menu > [selected] {
+    background: #ddd;
+  }
+
+#global_menu_toggle {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2em;
+  text-align: center;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+  #global_menu_toggle svg {
+    display: block;
+    height: 1em;
+    width: 1em;
+    margin: 0.3em auto;
+    padding: 0.4em;
+    background: #ddd;
+    border-radius: 10em;
+  }
+
+  #global_menu:not([showing]) + #global_menu_toggle svg:last-child, #global_menu[showing] + #global_menu_toggle svg:first-child {
+    display: none;
+  }
+
+@media all and (max-width: 570px) {
+
+  #global_menu_toggle {
+    display: block;
+  }
+
+  #views x-appbar {
+    padding-left: 2em;
+  }
+
+}
+
+@media all and (min-width: 571px) and (max-width: 830px) {
+
+  #global_menu {
+    width: 64px;
+    text-align: center;
+    -webkit-transform: none;
+    -moz-transform: none;
+    -ms-transform: none;
+    transform: none;
+    -webkit-transition: none;
+    -moz-transition: none;
+    -ms-transition: none;
+    transition: none;
+  }
+
+  #global_menu x-action svg {
+    display: block;
+    font-size: 1.5em;
+  }
+
+  #global_menu x-action span {
+    display: block;
+    font-size: 0.5em;
+  }
+
+  #views {
+    margin-left: 64px;
+  }
+
+}
+
+@media all and (min-width: 831px) {
+
+  #global_menu {
+    -webkit-transform: none;
+    -moz-transform: none;
+    -ms-transform: none;
+    transform: none;
+    -webkit-transition: none;
+    -moz-transition: none;
+    -ms-transition: none;
+    transition: none;
+  }
+
+  #views {
+    margin-left: 200px;
+  }
+
+}
