@@ -7,20 +7,36 @@ html, body {
 
 body {
   font-family: Arial, sans-serif;
-  font-size: calc(1em + 0.5vmin);
+  font-size: calc(0.85em + 0.4vmin);
   cursor: default;
+}
+
+h1 {
+  font-size: 140%;
+}
+
+h2 {
+  font-size: 125%;
+}
+
+h3 {
+  font-size: 110%;
+}
+
+h4 {
+  font-size: 100%;
 }
 
 svg {
   display: inline-block;
-  height: 1em;
+  height: 1.1em;
   width: 1em;
   margin: 0px auto;
   vertical-align: middle;
 }
 
-button svg, x-action svg {
-  padding: 0 0 0.15em;
+x-appbar > button svg {
+  font-size: 2em;
 }
 
 [unselectable] {
@@ -32,48 +48,100 @@ button svg, x-action svg {
   user-select: none;
 }
 
+/* GENERAL CLASSES */
+
+.shadow-low {
+  box-shadow: 0 1px 1px 0 rgba(0,0,0,0.3);
+}
+
+.shadow-mid {
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.3);
+}
+
+.shadow-high {
+  box-shadow: 0 1px 5px 0 rgba(0,0,0,0.5);
+}
+
+.content-block {
+  display: inline-block;
+  padding: 0.25em 0.3em 0.3em;
+  border-radius: 0.2em;
+  background: #fff;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* Layout Elements */
+
 #svg_source {
   display: none;
 }
 
-#menu_logo {
-  display: block;
-  margin: 0.25em auto;
-  font-size: 2em;
+#views x-appbar, #global_menu_toggle, #menu_logo  {
+  height: 3.25em;
+  line-height: 3.25em;
 }
 
-#views x-appbar, #global_menu_toggle {
-  height: 2.5em;
-  line-height: 2.5em;
+#menu_logo {
+  text-align: center;
+}
+
+#menu_logo > * {
+  display: inline-block;
+  font-size: 1.5em;
+  margin: 0 auto;
+  vertical-align: middle;
 }
 
 #global_menu {
-  width: 200px;
+  width: 175px;
 }
 
   #global_menu menu {
     margin: 0;
     padding: 0;
+    border-top: 1px solid rgba(0,0,0, 0.2);
+    border-bottom: 1px solid rgba(255,255,255, 0.1);
   }
 
   #global_menu menu > * {
     display: block;
-    padding: 0.5em 0.5em 0.4em;
-    border-bottom: 1px solid #000;
-    background: #fff;
+    position: relative;
+    background: inherit;
+    padding: 0.7em 0.5em 0.6em;
+    border-bottom: 1px solid rgba(0,0,0, 0.2);
     cursor: pointer;
   }
 
-  #global_menu menu > *:first-child {
-    border-top: 1px solid #000;
+  #global_menu menu > *:hover {
+    background: rgba(0,0,0, 0.05);
   }
 
-  #global_menu menu > *:hover {
-    background: #eee;
+  #global_menu menu > *:after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0.25em;
+    height: 100%;
+    background: currentColor;
+    opacity: 0;
+  }
+
+  #global_menu menu > *:hover:after {
+    opacity: 0.3;
   }
 
   #global_menu menu > [selected] {
-    background: #ddd;
+    background: rgba(0,0,0,0.1);
+    cursor: default;
+  }
+
+  #global_menu menu > [selected]:after {
+    opacity: 1;
   }
 
 #global_menu_toggle {
@@ -81,25 +149,32 @@ button svg, x-action svg {
   position: absolute;
   top: 0;
   left: 0;
-  width: 2em;
+  width: 2.5em;
   text-align: center;
   cursor: pointer;
   pointer-events: auto;
 }
 
   #global_menu_toggle svg {
-    display: block;
-    height: 1em;
-    width: 1em;
-    margin: 0.3em auto;
-    padding: 0.4em;
-    background: #ddd;
-    border-radius: 10em;
+    display: inline-block;
+    font-size: 1.6em;
   }
 
   #global_menu:not([showing]) + #global_menu_toggle svg:last-child, #global_menu[showing] + #global_menu_toggle svg:first-child {
     display: none;
   }
+
+/* VIEW LAYOUT */
+
+x-card > x-layout > header {
+  background: #fff;
+}
+
+x-card > x-layout > header > x-appbar h2 {
+  padding-left: 0.5em;
+}
+
+/* MEDIA QUERIES */
 
 @media all and (max-width: 570px) {
 
@@ -107,16 +182,24 @@ button svg, x-action svg {
     display: block;
   }
 
+  #global_menu menu > * {
+    padding: 1em 0.6em 0.9em;
+  }
+
   #views x-appbar {
-    padding-left: 2em;
+    padding-left: 2.5em;
+  }
+
+  x-card > x-layout > header > x-appbar h2 {
+    padding-left: 0.25em;
   }
 
 }
 
-@media all and (min-width: 571px) and (max-width: 830px) {
+@media all and (min-width: 571px) and (max-width: 850px) {
 
   #global_menu {
-    width: 64px;
+    width: 72px;
     text-align: center;
     -webkit-transform: none;
     -moz-transform: none;
@@ -135,16 +218,16 @@ button svg, x-action svg {
 
   #global_menu x-action span {
     display: block;
-    font-size: 0.5em;
+    font-size: 0.6em;
   }
 
   #views {
-    margin-left: 64px;
+    margin-left: 72px;
   }
 
 }
 
-@media all and (min-width: 831px) {
+@media all and (min-width: 851px) {
 
   #global_menu {
     -webkit-transform: none;
@@ -158,7 +241,7 @@ button svg, x-action svg {
   }
 
   #views {
-    margin-left: 200px;
+    margin-left: 175px;
   }
 
 }

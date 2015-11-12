@@ -1,7 +1,7 @@
 {
   "name": "x-tag-core",
   "description": "X-Tag core library for creating custom elements as defined by the w3c Web Components spec.",
-  "version": "1.1.16",
+  "version": "1.1.23",
   "keywords": [
     "web-components",
     "core",
@@ -12,11 +12,11 @@
     "dist/x-tag-core.js"
   ],
   "homepage": "https://github.com/x-tag/core",
-  "_release": "1.1.16",
+  "_release": "1.1.23",
   "_resolution": {
     "type": "version",
-    "tag": "1.1.16",
-    "commit": "80a289840d3bdc69e070d473913436cab3a6cf2e"
+    "tag": "1.1.23",
+    "commit": "71fea84c5cb63988ef6e099f8a279aa6ee804397"
   },
   "_source": "git://github.com/x-tag/core.git",
   "_target": "*",

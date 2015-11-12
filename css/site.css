@@ -1,66 +1,213 @@
 
 
-/* MODIFY/REMOVE THESE TEMPORARY STYLES WHEN BASE TEMPLATE CSS IS UPDATED */
+/* TEMPLATE STYLES */
 
-  #global_menu menu > * {
-    position: relative;
-    background: inherit;
-    border-top: 1px solid rgba(255,255,255, 0.125);
-    border-bottom: 1px solid rgba(0,0,0, 0.2);
-    text-shadow: 0 -1px 1px rgba(0,0,0,0.2);
+  #global_menu_toggle svg {
+    fill: #fff;
   }
 
-  #global_menu menu > *:first-child {
-    border-top: 1px solid rgba(255,255,255, 0.125);
-  }
+/* END OF TEMPLATE STYLES */
 
-  #global_menu menu > *:hover {
-    background: rgba(255,255,255, 0.05);
-  }
-
-  #global_menu menu > [selected] {
-    background: none;
-  }
-
-  #global_menu menu > [selected]:after {
-    content: " ";
-    display: block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 0.25em;
-    height: 100%;
-    background: rgba(255,255,255, 0.5);
-  }
-
-  @media all and (min-width: 571px) and (max-width: 830px) {
-
-    #global_menu {
-      width: 72px; /* CHANGE THIS */
-    }
-
-    #views {
-      margin-left: 72px;
-    }
-  }
-
-/* END OF TEMPORARY STYLES */
 
 body {
   background: #20252B;
+  font-family: 'Telex', sans-serif;
+}
+
+a {
+  color: #0085FE;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+hr {
+  margin: 2.5em auto 2em;
+  border-color: #000 transparent #555;
+  border-radius: 100%;
+  opacity: 0.2;
+}
+
+x-code-prism {
+  font-size: 0.85em;
+}
+
+/* CLASSES & ATTRIBUTES */
+
+[text-shadow], h1, h2, h3  {
+  text-shadow: 0 3px 0.1em rgba(0,0,0,0.4);
+}
+
+/* TARGETED ELEMENTS */
+
+#ht {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 1em 0;
+  text-align: center;
+}
+
+#ht:after {
+  content: '®';
+  display: inline-block;
+  margin: 0.2em 0 0 -0.2em;
+  font-size: 0.5em;
+  vertical-align: top;
+}
+
+#ht svg {
+  display: block;
+  font-size: 2em;
+  margin-bottom: 0.3em;
 }
 
 #global_menu {
-  color: rgba(255,255,255, 0.5);
+  color: rgba(255,255,255, 0.75);
   background: #222931;
-  box-shadow: 1px 0 2px 0px rgba(0,0,0,0.5);
+  box-shadow: 2px 0 5px 0px rgba(0,0,0,0.5);
 }
 
-#global_menu x-action svg {
-  fill: rgba(255,255,255, 0.85);
+#global_menu menu > * {
+  text-shadow: 0 -1px 0px rgba(0,0,0,0.7);
+  border-top: 1px solid rgba(255,255,255, 0.1);
+}
+
+#global_menu menu > *:hover {
+  background: rgba(255,255,255, 0.03);
+}
+
+#global_menu menu > [selected] {
+  color: #0085FE;
+  background: none;
+  border-color: transparent;
+}
+
+#global_menu menu > [selected] svg {
+  fill: currentColor;
 }
 
 #views x-card {
   color: #fff;
   background: #2D3742;
+}
+
+#global_menu x-action svg {
+  padding: 0 0.15em 0.15em;
+  fill: rgba(255,255,255, 0.85);
+}
+
+#views > x-card > x-layout > header {
+  color: #fff;
+  background: none;
+  box-shadow: none;
+}
+
+#views > x-card > x-layout > header button {
+  color: #fff;
+}
+
+#views > x-card > x-layout > section {
+  padding: 0 1.5em 1em;
+}
+
+x-appbar > button {
+  cursor: pointer;
+}
+
+x-appbar > button svg {
+  fill: #fff;
+}
+
+/* VIEW CARDS */
+
+#overview_card section > * {
+  max-width: 700px;
+}
+
+#overview_intro {
+  margin: 0 auto;
+  text-align: center;
+}
+
+#overview_intro  h1 {
+  margin: 0.25em auto;
+  font-size: 3em;
+}
+
+#overview_highlights {
+  margin: 2em auto;
+  text-align: center;
+}
+
+#overview_highlights li {
+  display: inline-block;
+  width: 33.3%;
+  margin: 0 auto;
+  padding: 0.1em 0.2em;
+  border-radius: 100%;
+  vertical-align: top;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+#overview_highlights li div {
+  color: #ccc;
+  font-size: 0.8em;
+}
+
+#overview_highlights svg {
+  display: block;
+  max-width: 100%;
+  padding: 0.05em;
+  font-size: 7em;
+  stroke: #fff;
+  stroke-width: 0.2em;
+  fill: red;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+#overview_highlights li:nth-child(1) svg {
+  stroke-width: 0.095em;
+}
+
+
+#overview_highlights li:nth-child(2) svg {
+  fill: rgb(94, 117, 164);
+}
+
+#overview_highlights li:nth-child(3) svg {
+  fill: rgb(74, 147, 111);
+}
+
+#overview_content {
+  margin: 0 auto;
+}
+
+#overview_content p {
+  font-size: 0.9em;
+  color: #ccc;
+  line-height: 1.5em;
+}
+
+/* MEDIA QUERIES */
+
+@media all and (max-width: 570px) {
+  #overview_highlights {
+    margin: 1em auto;
+  }
+}
+
+@media all and (min-width: 571px) and (max-width: 830px) {
+  #ht {
+    font-size: 47%;
+  }
 }

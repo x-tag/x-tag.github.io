@@ -82,11 +82,9 @@
     The toArray() method allows for conversion of any object to a true array. For types that
     cannot be converted to an array, the method returns a 1 item array containing the passed-in object.
   */
-  var unsliceable = ['undefined', 'null', 'number', 'boolean', 'string', 'function'];
+  var unsliceable = { 'undefined': 1, 'null': 1, 'number': 1, 'boolean': 1, 'string': 1, 'function': 1 };
   function toArray(obj){
-    return unsliceable.indexOf(typeOf(obj)) == -1 ?
-    Array.prototype.slice.call(obj, 0) :
-    [obj];
+    return unsliceable[typeOf(obj)] ? [obj] : Array.prototype.slice.call(obj, 0);
   }
 
 // DOM
@@ -285,7 +283,7 @@
 
   var unwrapComment = /\/\*!?(?:\@preserve)?[ \t]*(?:\r\n|\n)([\s\S]*?)(?:\r\n|\n)\s*\*\//;
   function parseMultiline(fn){
-    return unwrapComment.exec(fn.toString())[1];
+    return typeof fn == 'function' ? unwrapComment.exec(fn.toString())[1] : fn;
   }
 
 /*** X-Tag Object Definition ***/
@@ -324,17 +322,17 @@
       for (z in tag.methods) tag.prototype[z.split(':')[0]] = { value: xtag.applyPseudos(z, tag.methods[z], tag.pseudos, tag.methods[z]), enumerable: true };
       for (z in tag.accessors) parseAccessor(tag, z);
 
-      tag.shadow = tag.shadow ? xtag.createFragment(tag.shadow) : null;
-      tag.content = tag.content ? xtag.createFragment(tag.content) : null;
-      var ready = tag.lifecycle.created || tag.lifecycle.ready;
+      if (tag.shadow) tag.shadow = tag.shadow.nodeName ? tag.shadow : xtag.createFragment(tag.shadow);
+      if (tag.content) tag.content = tag.content.nodeName ? tag.content.innerHTML : parseMultiline(tag.content);
+      var created = tag.lifecycle.created;
       tag.prototype.createdCallback = {
         enumerable: true,
         value: function(){
           var element = this;
           if (tag.shadow && hasShadow) this.createShadowRoot().appendChild(tag.shadow.cloneNode(true));
-          if (tag.content) this.appendChild(tag.content.cloneNode(true));
+          if (tag.content) this.appendChild(document.createElement('div')).outerHTML = tag.content;
           xtag.addEvents(this, tag.events);
-          var output = ready ? ready.apply(this, arguments) : null;
+          var output = created ? created.apply(this, arguments) : null;
           for (var name in tag.attributes) {
             var attr = tag.attributes[name],
                 hasAttr = this.hasAttribute(name),
@@ -346,6 +344,7 @@
           tag.pseudos.forEach(function(obj){
             obj.onAdd.call(element, obj);
           });
+          this.xtagComponentReady = true;
           return output;
         }
       };
@@ -660,21 +659,20 @@
       if (!parent) container.removeChild(element);
       return toArray(result);
     },
+
     /*
       Creates a document fragment with the content passed in - content can be
       a string of HTML, an element, or an array/collection of elements
     */
     createFragment: function(content) {
-      var frag = doc.createDocumentFragment();
+      var template = document.createElement('template');
       if (content) {
-        var div = frag.appendChild(doc.createElement('div')),
-          nodes = toArray(content.nodeName ? arguments : !(div.innerHTML = typeof content == 'function' ? parseMultiline(content) : content) || div.children),
-          length = nodes.length,
-          index = 0;
-        while (index < length) frag.insertBefore(nodes[index++], div);
-        frag.removeChild(div);
+        if (content.nodeName) toArray(arguments).forEach(function(e){
+          template.content.appendChild(e)
+        });
+        else template.innerHTML = parseMultiline(content);
       }
-      return frag;
+      return template.content;
     },
 
     /*
@@ -683,11 +681,9 @@
     */
     manipulate: function(element, fn){
       var next = element.nextSibling,
-        parent = element.parentNode,
-        frag = doc.createDocumentFragment(),
-        returned = fn.call(frag.appendChild(element), frag) || element;
-      if (next) parent.insertBefore(returned, next);
-      else parent.appendChild(returned);
+          parent = element.parentNode,
+          returned = fn.call(element) || element;
+      next ? parent.insertBefore(returned, next) : parent.appendChild(returned);
     },
 
     /* PSEUDOS */
@@ -763,15 +759,9 @@
           }, custom || {});
       event.attach = toArray(event.base || event.attach);
       event.chain = key + (event.pseudos.length ? ':' + event.pseudos : '') + (pseudos.length ? ':' + pseudos.join(':') : '');
-      var condition = event.condition;
-      event.condition = function(e){
-        var t = e.touches, tt = e.targetTouches;
-        return condition.apply(this, arguments);
-      };
       var stack = xtag.applyPseudos(event.chain, fn, event._pseudos, event);
       event.stack = function(e){
         e.currentTarget = e.currentTarget || this;
-        var t = e.touches, tt = e.targetTouches;
         var detail = e.detail || {};
         if (!detail.__stack__) return stack.apply(this, arguments);
         else if (detail.__stack__ == stack) {

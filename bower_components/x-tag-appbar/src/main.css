@@ -5,6 +5,9 @@ x-appbar {
   display:-ms-flexbox;
   display:-webkit-flex;
   display:flex;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 x-appbar, x-appbar * {
@@ -15,11 +18,31 @@ x-appbar, x-appbar * {
 
 x-appbar > * {
   margin: 0;
-  padding: 0 0.65em;
+  padding: 0;
   border: none;
   background: none;
-  vertical-align: middle;
   white-space: nowrap;
+  vertical-align: middle;
+}
+
+x-appbar > [x-appbar-flex] {
+  -webkit-box-flex: auto;
+  -moz-box-flex: auto;
+  -webkit-flex: auto;
+  -ms-flex: auto;
+  box-flex: auto;
+  flex: auto;
+}
+
+x-appbar > button, x-appbar > [x-appbar-padding] {
+  padding: 0 0.75em;
+}
+
+x-appbar > button,
+x-appbar > [x-appbar-stretch] {
+  -webkit-align-self: stretch;
+  -ms-flex-item-align: stretch;
+  align-self: stretch;
 }
 
 x-appbar > h1,x-appbar h2,x-appbar h3,x-appbar h4,x-appbar h5,x-appbar h6 {

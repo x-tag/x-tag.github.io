@@ -1,0 +1,29 @@
+{
+  "name": "x-tag-code-prism",
+  "description": "Code Syntax highlighting using PrismJS",
+  "version": "0.2.6",
+  "keywords": [
+    "web-components",
+    "syntax",
+    "highlighting",
+    "element",
+    "x-tag"
+  ],
+  "main": [
+    "src/main.js",
+    "src/main.css"
+  ],
+  "dependencies": {
+    "x-tag-core": "*"
+  },
+  "homepage": "https://github.com/x-tag/code-prism",
+  "_release": "0.2.6",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.2.6",
+    "commit": "d5bbb532488a0656c675d3e60d9b2a631c4af26c"
+  },
+  "_source": "git://github.com/x-tag/code-prism.git",
+  "_target": "*",
+  "_originalSource": "x-tag-code-prism"
+}

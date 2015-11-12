@@ -1,12 +1,13 @@
 {
   "name": "x-tag-site",
   "description": "",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "keywords": [
     "web-components",
     "x-tag"
   ],
   "dependencies": {
-    "x-tag-basic-app-template": "*"
+    "x-tag-basic-app-template": "*",
+    "x-tag-code-prism": "*"
   }
 }

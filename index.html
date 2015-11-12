@@ -4,7 +4,8 @@
 <head>
   <meta charset="utf-8" />
   <title>X-Tag ★ Web Components</title>
-
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+  <link href='https://fonts.googleapis.com/css?family=Telex' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css" href="css/x-tag-components.css"/>
   <link rel="stylesheet" type="text/css" href="css/template.css"/>
   <link rel="stylesheet" type="text/css" href="css/site.css"/>
@@ -41,19 +42,179 @@
     <symbol id="docs" width="100%" height="1em" viewBox="0 0 24 32">
       <path fill="inherit" d="M9 12l-5 5 5 5 2-2-3-3 3-3-2-2zM13 14l3 3-3 3 2 2 5-5-5-5-2 2zM18 2h-18v28h24v-22l-6-6zM22 28h-20v-24h14l6 6v18z"></path>
     </symbol>
+    <symbol id="fork" width="100%" height="1em" viewBox="-80 -60 950 1250">
+      <path fill="inherit" d="M768 128c0-71-57-128-128-128s-128 57-128 128c0 47 26 89 64 111v106l-192 212-192-212v-106c38-22 64-63 64-111 0-71-57-128-128-128s-128 57-128 128c0 47 26 89 64 111v156l256 282v109c-38 22-64 63-64 111 0 71 57 128 128 128s128-57 128-128c0-47-26-89-64-111v-109l256-282v-156c38-22 64-63 64-111zM128 65c34 0 62 28 62 62s-28 62-62 62-62-28-62-62 28-62 62-62zM384 956c-34 0-62-28-62-62s28-62 62-62 62 28 62 62-28 62-62 62zM640 65c34 0 62 28 62 62s-28 62-62 62-62-28-62-62 28-62 62-62z"></path>
+    </symbol>
   </defs>
 </svg>
 
-<x-deck id="views" transition-enter="fade-scale" transition-exit="fade-scale">
+<x-deck id="views" transition-enter="slide-right" transition-exit="fade-scale">
 
-  <x-card selected>
+  <x-card id="overview_card" selected>
     <x-layout>
-      <header>
+      <header class="shadow-mid">
         <x-appbar>
-          <h2>Overview</h2>
+          <h2></h2>
+          <button><svg><use xlink:href="#fork"></use></svg></button>
+          <button><svg><use xlink:href="#package"></use></svg></button>
         </x-appbar>
       </header>
       <section>
+
+        <div id="overview_intro">
+          <h1 text-shadow>X-Tag</h1>
+          <p>Fuel for component development</p>
+        </div>
+
+        <hr/>
+
+        <ul id="overview_highlights">
+          <li>
+            <svg viewBox="25 15 465 465">
+              <rect fill="#fff" x="27.5%" y="21%" width="55%" height="65%"></rect>
+              <path d="M71.197,46l33.604,377.479L255.474,466l151.725-42.521L440.803,46H71.197z M367.82,169.11H190.905l3.929,47.519h169.058  l-13.137,142.792l-94.236,25.99v0.268h-1.045l-95.029-26.258l-5.775-72.975h45.939l3.41,36.754l51.455,13.914l51.707-13.914  l5.782-59.846H152.312l-12.335-140.176h232.047L367.82,169.11z"></path>
+            </svg>
+            <h3 text-shadow>Standard</h3>
+            <div>Built on Web Components APIs</div>
+          </li><li>
+            <svg viewBox="0 0 1024 1024">
+              <path d="M217.805 1001.83c15.718-50.278 39.424-121.037 71.219-223.334 138.598-21.965 195.942 17.459 283.955-139.725-71.424 21.862-157.542-40.55-152.934-67.635 4.659-27.034 200.346 19.507 328.499-162.458-161.536 35.635-213.197-42.803-192.358-54.63 48.077-27.341 190.771-11.366 266.854-85.453 39.219-38.144 57.6-130.867 41.626-163.942-19.149-39.987-135.987-99.635-200.397-94.003-64.41 5.581-165.427 245.248-195.43 243.405-29.901-1.894-35.994-107.418 16.333-205.466-55.142 24.422-156.211 100.301-187.904 165.171-59.034 120.678 5.53 397.619-15.155 407.45-20.736 9.882-90.419-127.027-111.206-189.133-28.416 95.181-29.082 190.515 53.914 317.133-31.283 83.098-48.384 178.739-50.995 227.379-1.229 38.861 37.069 47.206 43.981 25.242z"></path>
+            </svg>
+            <h3 text-shadow>Efficient</h3>
+            <div>Powerful features, just <i style="color: #eee;">5k</i> gzipped</div>
+          </li><li>
+            <svg viewBox="0 0 1024 1024">
+              <path d="M657.322 15.318l-187.968 187.734-81.302-81.066c-20.458-20.48-53.546-20.48-74.026 0s-20.48 53.546 0 74.026l11.52 11.52-90.88 91.094c-117.334 117.334-141.44 290.368-56.746 427.542l-153.174 153.174c-33.088 33.046-33.088 86.826 0 119.872 33.066 33.088 86.826 33.088 119.658 0l153.194-153.366c137.6 85.334 310.208 60.992 427.734-56.534l90.88-91.094 11.754 11.754c20.458 20.458 53.504 20.458 74.006 0 20.502-20.502 20.502-53.59 0-74.048l-91.968-91.968 198.634-198.614c20.502-20.48 20.502-53.546 0-74.026s-53.546-20.48-74.006 0l-198.634 198.4-192.662-192.426 187.968-187.946c20.502-20.48 20.502-53.546 0-74.026s-53.522-20.482-73.982-0.002z"></path>
+            </svg>
+            <h3 text-shadow>Pluggable</h3>
+            <div>Plays nice with other libraries</div>
+          </li>
+        </ul>
+
+        <hr/>
+
+        <div id="overview_content">
+          <h2>What is X-Tag?</h2>
+
+            <p>X-Tag is a tiny library that wraps the Web Components family of APIs to provide a compact, feature-rich interface for rapid component development.
+              While X-Tag offers optional feature hooks for all of the Web Component specs (Shadow DOM and HTML Imports), it only requires Custom Element support to operate.
+              In the absence of native Custom Element support, we use the same <a target="_blank" href="https://github.com/webcomponents/webcomponentsjs">polyfills</a> Google's Polymer team relies on. You can review our three build options on the 'Builds' page</p>
+
+          <h2>It All Starts with Registration</h2>
+
+            <p>The most important method in the X-Tag library is `xtag.register()`. The register function on the X-Tag object is what you'll use to declare the lifecycle callbacks, accessors, and events for your custom element. Here's what defining a custom element looks like with X-Tag:</p>
+
+<x-code-prism>
+xtag.register('x-frankenstein', {
+  lifecycle:{
+    created: function(){
+      alert("Look! It's moving. It's alive!");
+    }
+  }
+});
+</x-code-prism>
+
+          <h2>Meet the Lifecycle Callbacks</h2>
+
+            <p>There are 4 lifecycle callbacks you'll leverage often when developing components, here's an example of what all 4 look like when specified in an element definition:</p>
+
+<x-code-prism>
+xtag.register('x-foo', {
+  lifecycle:{
+    created: function(){
+      alert('I fire when an <&#8203;x-foo&#8203;> is CREATED');
+    },
+    inserted: function(){
+     	alert('I fire when an <&#8203;x-foo&#8203;> is INSERTED to the DOM');
+    },
+    removed: function(){
+     	alert('I fire when an <&#8203;x-foo&#8203;> is REMOVED from the DOM');
+    },
+    attributeChanged: function(attrName, oldValue, newValue){
+     	alert('I fire when an ATTRIBUTE is CHANGED on an <&#8203;x-foo&#8203;>');
+    }
+  }
+});
+</x-code-prism>
+
+          <h2>Adding Methods to the Mix</h2>
+
+            <p>Your custom elements are probably going to need some of their own, unique methods to provide the functionality you desire. X-Tag makes method attachment a snap, you just add a 'methods' object to your top level `xtag.register()` definition object and include your methods within it - here's what it looks like:</p>
+
+<x-code-prism>
+xtag.register('x-shouter', {
+  lifecycle:{
+    created: function(){
+      this.shout('WHY AM I YELLING?');
+    }
+  },
+  methods: {
+    shout: function(message){
+    	alert(message);
+    }
+  }
+});
+</x-code-prism>
+
+
+          <h2>Say Hello to Accessors</h2>
+
+            <p>X-Tag features an easy system for dealing with attributes, setters, getters, and linking them all together. To use these features, add an `accessors` object to the top level of your `xtag.register()` definition object. Within this object, you can add keys that will be made available as getters/setters, as seen below. By adding the key `attribute`, it tells X-Tag to link the `bar` setter/getter with the `bar` attribute.</p>
+
+<x-code-prism>
+xtag.register('x-foo', {
+  lifecycle:{
+    created: function(){
+      alert('x-foo in da house!');
+    }
+  },
+  accessors: {
+    bar: {
+      // this links the attribute 'bar' to the getter/setter node.bar
+      attribute: {},
+      get: function(){
+    		// do something when the getter is accessed
+    	},
+      set: function(value){
+    		// act on the value being passed to the setter
+    	}
+    }
+  }
+});
+</x-code-prism>
+
+<h2>The DL on Events</h2>
+<p>X-Tag provides an insanely powerful event system that you'll use often in developing your components. We'll cover the basics here, and leave the more advanced features for a special tutorial dedicated to the topic.</p>
+<p>The first thing you'll need to do to add events to your component, is add an events object to the top level of your `xtag.register()` definition object. The keys of this object will be the event types you wish to bind to your custom element. In the example below you'll see a familiar, native event name, `click`, and a couple that are custom: `tap` and `move`. These are just two of the custom events X-Tag provides that unify, optimize, and simplify common event interactions. In the case of `tap` and `move`, X-Tag is unifying the mouse and touch equivalents of these events - have a look:</p>
+
+<x-code-prism>
+xtag.register('x-foo', {
+  events: {
+    tap: function(){
+      // perform an action when the user taps your custom
+      // element via a mouse click or touch input.
+    },
+    move: function(){
+      // perform an action when the user moves their
+      // mouse click or finger (touch) over your element
+    }
+  }
+});
+</x-code-prism>
+
+<p>The one advanced feature you should know about right off the bat is the `delegate` pseudo. X-Tag features a function modifier system called *pseudos* that allows you to create seamless wrap existing functions to extend their functionality. The `delegate` pseudo enables you to quickly add event delegation (event target filtering based on CSS expression) to any event function you bind to your component. Here's an example:</p>
+
+<x-code-prism>
+xtag.register('x-foo', {
+  content: '<&#8203;input&#8203;/>',
+  events: {
+    'tap:delegate(input)': function(){
+      // Perform an action *only* when tapping an <&#8203;input&#8203;/> within your
+      // custom element is tapped via mouse click or touch input.
+    }
+  }
+});
+</x-code-prism>
 
       </section>
     </x-layout>
@@ -61,9 +222,10 @@
 
   <x-card>
     <x-layout>
-      <header>
+      <header class="shadow-mid">
         <x-appbar>
           <h2>Docs</h2>
+          <button>Table of Contents</button>
         </x-appbar>
       </header>
       <section>
@@ -74,7 +236,7 @@
 
   <x-card>
     <x-layout>
-      <header>
+      <header class="shadow-mid">
         <x-appbar>
           <h2>Builds</h2>
         </x-appbar>
@@ -87,7 +249,7 @@
 
   <x-card>
     <x-layout>
-      <header>
+      <header class="shadow-mid">
         <x-appbar>
           <h2>Community</h2>
         </x-appbar>
@@ -100,8 +262,8 @@
 
 </x-deck>
 
-<x-peekbox id="global_menu" cover unselectable>
-  <svg id="menu_logo"><use xlink:href="#logo"></use></svg>
+<x-peekbox id="global_menu"  class="shadow-high" cover unselectable>
+  <div id="menu_logo"><svg><use xlink:href="#logo"></use></svg></div>
   <menu>
     <x-action selected target="#views" event="viewchange" method="showCard" args="0, 'forward'">
       <svg><use xlink:href="#circuits"></use></svg>
@@ -120,7 +282,13 @@
       <span>Community</span>
     </x-action>
   </menu>
+  <div id="ht">
+    <svg><use xlink:href="#logo"></use></svg>
+    <span>Supported by<br/>Microsoft</span>
+  </div>
 </x-peekbox>
+
+
 
 <x-action id="global_menu_toggle" target="#global_menu" method="toggle" unselectable>
   <svg><use xlink:href="#menu"></use></svg>
