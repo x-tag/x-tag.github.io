@@ -1,7 +1,7 @@
 {
   "name": "x-tag-code-prism",
   "description": "Code Syntax highlighting using PrismJS",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "keywords": [
     "web-components",
     "syntax",

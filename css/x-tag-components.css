@@ -38,11 +38,26 @@ x-appbar > [x-appbar-flex] {
   flex: auto;
 }
 
-x-appbar > button, x-appbar > [x-appbar-padding] {
+x-appbar > a,
+x-appbar > button,
+x-appbar > x-action,
+  x-appbar > [x-appbar-button] {
+  font-size: 1em;
+  cursor: pointer;
+}
+
+x-appbar > a,
+x-appbar > button,
+x-appbar > x-action,
+x-appbar > [x-appbar-button],
+x-appbar > [x-appbar-padding] {
   padding: 0 0.75em;
 }
 
+x-appbar > a,
 x-appbar > button,
+x-appbar > x-action,
+x-appbar > [x-appbar-button],
 x-appbar > [x-appbar-stretch] {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
@@ -564,11 +579,10 @@ x-spinner[reverse] svg {
   }
 }
 
-/**
- * atom-dark theme for `prism.js`
- * Based on Atom's `atom-dark` theme: https://github.com/atom/atom-dark-syntax
- * @author Joe Gibson (@gibsjose)
- */
+
+x-code-prism {
+	display: block;
+}
 
 code[class*="language-"],
 pre[class*="language-"] {

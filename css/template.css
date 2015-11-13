@@ -32,11 +32,28 @@ svg {
   height: 1.1em;
   width: 1em;
   margin: 0px auto;
+  fill: currentColor;
   vertical-align: middle;
 }
 
-x-appbar > button svg {
-  font-size: 2em;
+x-appbar > a,
+x-appbar > button,
+x-appbar > x-action {
+  color: inherit;
+  font-weight: bold;
+}
+
+x-appbar > a svg,
+x-appbar > button svg,
+x-appbar > x-action svg {
+  font-size: 1.5em;
+}
+
+x-appbar > a span,
+x-appbar > button span,
+x-appbar > x-action span {
+  font-size: 0.85em;
+  margin-left: 0.25em;
 }
 
 [unselectable] {
@@ -149,7 +166,7 @@ x-appbar > button svg {
   position: absolute;
   top: 0;
   left: 0;
-  width: 2.5em;
+  width: 2.75em;
   text-align: center;
   cursor: pointer;
   pointer-events: auto;
@@ -170,7 +187,7 @@ x-card > x-layout > header {
   background: #fff;
 }
 
-x-card > x-layout > header > x-appbar h2 {
+x-card > x-layout > header > x-appbar h2:first-child {
   padding-left: 0.5em;
 }
 
@@ -187,7 +204,13 @@ x-card > x-layout > header > x-appbar h2 {
   }
 
   #views x-appbar {
-    padding-left: 2.5em;
+    padding-left: 2.75em;
+  }
+
+  #views header > x-appbar > a span,
+  #views header > x-appbar > button span,
+  #views header > x-appbar > x-action span {
+    display: none;
   }
 
   x-card > x-layout > header > x-appbar h2 {

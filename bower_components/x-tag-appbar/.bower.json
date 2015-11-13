@@ -1,7 +1,7 @@
 {
   "name": "x-tag-appbar",
   "description": "",
-  "version": "0.2.21",
+  "version": "0.2.25",
   "keywords": [
     "web-components",
     "x-tag"
@@ -14,11 +14,11 @@
     "x-tag-core": "*"
   },
   "homepage": "https://github.com/x-tag/appbar",
-  "_release": "0.2.21",
+  "_release": "0.2.25",
   "_resolution": {
     "type": "version",
-    "tag": "0.2.21",
-    "commit": "215e7aff7f3704900efcf21ddbefd5aad926113c"
+    "tag": "0.2.25",
+    "commit": "e07d7832a6dcfd6698230d6d93ca6175495ae636"
   },
   "_source": "git://github.com/x-tag/appbar.git",
   "_target": "*",

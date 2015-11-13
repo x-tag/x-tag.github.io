@@ -45,13 +45,20 @@
 
 <x-deck id="views" transition-enter="slide-right" transition-exit="fade-scale">
 
-  <x-card style="background-color: lightblue;" selected>
+  <x-card style="background-color: lightblue;" selected data-view="overview">
     <x-layout>
       <header class="shadow-mid">
         <x-appbar>
           <h2>Overview</h2>
-          <button><svg><use xlink:href="#circuits"></use></svg></button>
-          <button><svg><use xlink:href="#package"></use></svg></button>
+          <a href="http://github.com/x-tag/core" target="_blank">
+            <svg><use xlink:href="#circuits"></use></svg><span>Link</span>
+          </a>
+          <button>
+            <svg><use xlink:href="#circuits"></use></svg><span>Button</span>
+          </button>
+          <x-action event="viewchange" data-view="builds">
+            <svg><use xlink:href="#package"></use></svg><span>X-ACTION</span>
+          </x-action>
         </x-appbar>
       </header>
       <section>
@@ -63,7 +70,7 @@
     </x-layout>
   </x-card>
 
-  <x-card style="background-color: lavender;">
+  <x-card style="background-color: lavender;" data-view="docs">
     <x-layout>
       <header class="shadow-mid">
         <x-appbar>
@@ -77,7 +84,7 @@
     </x-layout>
   </x-card>
 
-  <x-card style="background-color: darkseagreen;">
+  <x-card style="background-color: darkseagreen;" data-view="builds">
     <x-layout>
       <header class="shadow-mid">
         <x-appbar>
@@ -90,7 +97,7 @@
     </x-layout>
   </x-card>
 
-  <x-card style="background-color: tomato;">
+  <x-card style="background-color: tomato;" data-view="community">
     <x-layout>
       <header class="shadow-mid">
         <x-appbar>
@@ -108,19 +115,19 @@
 <x-peekbox id="global_menu"  class="shadow-high" cover unselectable>
   <div id="menu_logo"><svg><use xlink:href="#logo"></use></svg></div>
   <menu>
-    <x-action selected target="#views" event="viewchange" method="showCard" args="0, 'forward'">
+    <x-action selected event="viewchange" data-view="overview">
       <svg><use xlink:href="#circuits"></use></svg>
       <span>Overview</span>
     </x-action>
-    <x-action target="#views" event="viewchange" method="showCard" args="1, 'forward'">
+    <x-action event="viewchange" data-view="docs">
       <svg><use xlink:href="#docs"></use></svg>
       <span>Docs</span>
     </x-action>
-    <x-action target="#views" event="viewchange" method="showCard" args="2, 'forward'">
+    <x-action event="viewchange" data-view="builds">
       <svg><use xlink:href="#package"></use></svg>
       <span>Builds</span>
     </x-action>
-    <x-action target="#views" event="viewchange" method="showCard" args="3, 'forward'">
+    <x-action event="viewchange" data-view="community">
       <svg><use xlink:href="#people"></use></svg>
       <span>Community</span>
     </x-action>
