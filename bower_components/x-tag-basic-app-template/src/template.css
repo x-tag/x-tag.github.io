@@ -149,7 +149,7 @@ x-appbar > x-action span {
   }
 
   #global_menu menu > *:hover:after {
-    opacity: 0.3;
+    opacity: 0.4;
   }
 
   #global_menu menu > [selected] {
@@ -193,7 +193,7 @@ x-card > x-layout > header > x-appbar h2:first-child {
 
 /* MEDIA QUERIES */
 
-@media all and (max-width: 570px) {
+@media all and (max-width: 640px) {
 
   #global_menu_toggle {
     display: block;
@@ -219,11 +219,9 @@ x-card > x-layout > header > x-appbar h2:first-child {
 
 }
 
-@media all and (min-width: 571px) and (max-width: 850px) {
+@media all and (min-width: 641px) {
 
   #global_menu {
-    width: 72px;
-    text-align: center;
     -webkit-transform: none;
     -moz-transform: none;
     -ms-transform: none;
@@ -232,6 +230,15 @@ x-card > x-layout > header > x-appbar h2:first-child {
     -moz-transition: none;
     -ms-transition: none;
     transition: none;
+  }
+
+}
+
+@media all and (min-width: 641px) and (max-width: 900px) {
+
+  #global_menu {
+    width: 72px;
+    text-align: center;
   }
 
   #global_menu x-action svg {
@@ -250,18 +257,7 @@ x-card > x-layout > header > x-appbar h2:first-child {
 
 }
 
-@media all and (min-width: 851px) {
-
-  #global_menu {
-    -webkit-transform: none;
-    -moz-transform: none;
-    -ms-transform: none;
-    transform: none;
-    -webkit-transition: none;
-    -moz-transition: none;
-    -ms-transition: none;
-    transition: none;
-  }
+@media all and (min-width: 901px) {
 
   #views {
     margin-left: 175px;

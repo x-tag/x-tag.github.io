@@ -1,7 +1,7 @@
 {
   "name": "x-tag-app-template",
   "description": "",
-  "version": "0.1.21",
+  "version": "0.1.22",
   "keywords": [
     "web-components",
     "x-tag"
@@ -17,11 +17,11 @@
     "x-tag-modal": "*"
   },
   "homepage": "https://github.com/x-tag/basic-app-template",
-  "_release": "0.1.21",
+  "_release": "0.1.22",
   "_resolution": {
     "type": "version",
-    "tag": "0.1.21",
-    "commit": "3dca65fe62d192a0ea34ae8825ec7b077fbc011c"
+    "tag": "0.1.22",
+    "commit": "2152035878c65555dedb8330d77f0e4037955680"
   },
   "_source": "git://github.com/x-tag/basic-app-template.git",
   "_target": "*",
