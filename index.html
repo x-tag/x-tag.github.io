@@ -52,6 +52,9 @@
       <path d="M61.99 43.991v8.792l2.678.216 1.707-2.033 1.607.253v-10.222z" fill="#F1D999"/>
       <path d="M31.967 29.015l30.51 15.279 5.502-3.26-30-15.023z" fill="#F7E3AF"/>
     </symbol>
+    <symbol id="tools" width="100%" height="1em" viewBox="0 0 1024 1024">
+      <path fill="inherit" class="path1" d="M160.512 352.768c47.77-37.12 87.398-11.52 140.288 49.715 5.939 6.912 13.926-1.178 18.483-5.12 4.506-3.994 74.291-66.816 77.722-69.683 3.379-3.021 7.475-8.653 2.099-14.95-5.478-6.298-25.293-32-38.042-48.691-92.57-121.088 253.235-203.213 200.141-204.493-27.034-0.717-135.475-1.997-151.706-0.205-65.69 6.912-148.173 68.301-189.696 96.922-54.323 37.171-74.598 58.982-77.926 62.003-15.36 13.414-2.458 44.39-30.31 68.813-29.44 25.754-47.821 6.246-64.87 21.197-8.448 7.475-32.102 25.19-38.861 31.078-6.81 5.99-8.038 16.077-1.075 24.115 0 0 64.717 71.475 70.144 77.824 5.376 6.246 20.019 11.674 29.030 3.635 9.062-7.987 32.358-28.314 36.25-31.898 3.994-3.379-2.56-44.083 18.33-60.262zM452.762 379.238c-6.144-7.117-13.773-7.322-20.326-1.485l-73.421 64.102c-5.786 5.12-6.605 14.49-1.382 20.48l424.653 483.277c9.933 11.418 27.136 12.595 38.451 2.714l49.664-41.626c11.366-9.984 12.544-27.29 2.662-38.81l-420.301-488.653zM1018.982 173.568c-3.789-25.293-16.896-20.019-23.706-9.318-6.81 10.803-36.915 56.422-49.306 77.107-12.288 20.48-42.598 60.979-99.021 20.992-58.778-41.523-38.349-70.502-28.109-90.010 10.291-19.61 41.882-74.598 46.438-81.408 4.557-6.912-0.768-26.982-18.995-18.586-18.278 8.397-129.178 52.48-144.538 115.712-15.718 64.307 13.158 121.805-43.52 178.893l-68.762 71.68 69.069 80.179 84.685-80.384c20.173-20.275 63.283-39.987 102.298-31.078 83.61 18.893 129.229-12.493 156.723-64.41 24.678-46.387 20.582-144.077 16.742-169.37zM140.237 873.114c-10.65 10.701-10.65 28.109 0 38.81l48.691 47.616c10.65 10.701 27.546 6.195 38.195-4.506l251.238-246.989-76.954-87.757-261.171 252.826z"></path>
+    </symbol>
   </defs>
 </svg>
 
@@ -59,7 +62,7 @@
 
   <x-card id="overview_card" data-view="overview" selected>
     <x-layout>
-      <header class="shadow-mid">
+      <header class="shadow-mid" unselectable>
         <x-appbar>
           <h2></h2>
           <a href="http://github.com/x-tag/core" target="_blank">
@@ -118,45 +121,64 @@
 
         <hr/>
 
-        <div id="overview_demo">
+<div id="overview_demo">
 
-          <h2>Time for a demo</h2>
+  <h2>Time for a demo</h2>
 
-<x-clock text-shadow></x-clock>
+  <p>
+    Here's a nifty <code>˂x-clock></code> custom element to help you get a sense of what it's like to create Web Components
+    with X-Tag. As you can see, there's a tap event attached to the element that lets you start and stop time - but be careful,
+    stopping time is serious business, you don't want to cause a chain reaction that unravels the very fabric of the space-time continuum.
+  </p>
+
+  <x-clock text-shadow></x-clock>
 
 <x-code-prism>
 xtag.register('x-clock', {
   lifecycle: {
     created: function(){
-      this.update();
-      setInterval(this.update.bind(this), 1000);
+      this.start();
     }
   },
   methods: {
+    start: function(){
+      this.update();
+      this.xtag.interval = setInterval(this.update.bind(this), 1000);
+    },
+    stop: function(){
+      this.xtag.interval = clearInterval(this.xtag.interval);
+    },
     update: function(){
       this.textContent = new Date().toLocaleTimeString();
+    }
+  },
+  events: {
+    tap: function(){
+      if (this.xtag.interval) this.stop();
+      else this.start();
     }
   }
 });
 </x-code-prism>
-        </div>
+
+</div>
 
       </section>
     </x-layout>
   </x-card>
 
-  <x-card data-view="docs">
+  <x-card id="docs" data-view="docs">
     <x-layout>
-      <header class="shadow-mid">
+      <header class="shadow-mid" unselectable>
         <x-appbar>
           <svg><use xlink:href="#docs"></use></svg>
           <h2>Docs</h2>
-          <button>Table of Contents</button>
+          <x-action target="#docs_toc" method="toggle">Table of Contents</x-action>
         </x-appbar>
       </header>
       <section>
 
-        <h2>It All Starts with Registration</h2>
+        <h2 id="getting_started">It All Starts with Registration</h2>
 
           <p>
             The most important method in the X-Tag library is <code>xtag.register()</code>. The register function on the X-Tag object is what you'll use
@@ -350,13 +372,157 @@ xtag.register('x-foo', {
 });
 </x-code-prism>
 
+<h3>Create your own Pseudo:</h3>
+
+<p>
+  Once you create a pseudo and add it to the main xtag.pseudos object, as show below,
+  you can then use it on any key of your custom element defintion objects that has a
+  function as its value.
+</p>
+
+<x-code-prism>
+xtag.pseudos.example = {
+  onAdd: function(){
+    /*
+      This function is fired once when the base function is added to
+      the target object. For instance:
+
+      If you added an event with xtag.addEvent(someNode, 'tap:example', fn),
+      the onAdd function of the 'example' pseudo would be fired once when
+      the event is first attached to the element 'someNode'.
+    */
+
+  },
+  onRemove: function(){
+    /*
+      This is basically the opposite of the onAdd function above.
+      With onRemove, you can clean up whatever you may have done
+      in your onAdd or action function invocations.
+    */
+  },
+  action: function(pseudo, event) {
+    /*
+      This function is fired each time the pseudo chain is fired.
+      Pseudo actions are fired in the order they are chained, meaning
+      the in the pseudo 'toggle:log:example', the action function
+      for the 'log' pseudo would fire first, then the 'example' action
+      and finally the base function 'toggle' they are chained to.
+    */
+  }
+};
+</x-code-prism>
+
+<hr/>
+
+<h2>API Reference</h2>
+
+<h4>xtag.register(NAME, DEFINITION)</h4>
+
+<p>
+  Define and register a new custom element. The example below shows test values for each of
+  the top-level definition objects.
+</p>
+
+<table>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>NAME</td>
+    <td>String</td>
+    <td>The custom element's tag name <i>(must contain a dash)</i></td>
+  </tr>
+  <tr>
+    <td>DEFINITION</td>
+    <td>Object</td>
+    <td>An object containing the various features your custom element will utilize</td>
+  </tr>
+</table>
+
+<x-code-prism>
+xtag.register('x-foo', {
+  content: '˂input/>',
+  lifecycle:{
+    created: function(){},
+    inserted: function(){},
+    removed: function(){},
+    attributeChanged: function(){}
+  },
+  methods: {
+    someMethod: function(){}
+  },
+  accessors: {
+    someAccessor: {
+      // links to the 'some-accessor' attribute
+      attribute: {},
+      set: function(){},
+      get: function(){}
+    }
+  },
+  events: {
+    tap: function(){},
+    focus: function(){}
+  }
+});
+</x-code-prism>
+
+<hr/>
+
+<h4>xtag.query(NAME, DEFINITION)</h4>
+
+<p>
+  Wrapper for querySelectorAll that always returns a true JavaScript Array. This is handly
+  for ensuring selections are easily iterable with standard JS Array functions, like
+  <code>forEach</code> and <code>map</code>.
+</p>
+
+<table>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>ARRAY_LIKE_OBJECT</td>
+    <td>Special array-like objects</td>
+    <td>
+      Objects like: <code>NodeList</code>, <code>HTMLCollection</code>, <code>DOMTokeList</code>, etc.
+    </td>
+  </tr>
+</table>
+
+<x-code-prism>
+var itemArray = xtag.query(document.body, 'ul li.special');
+</x-code-prism>
+
       </section>
+
+      <x-peekbox id="docs_toc" class="shadow-high" edge="top" unselectable>
+        <menu>
+          <x-action target="#docs_toc" method="hide">
+            <a href="#getting_started">Getting Started</a>
+          </x-action>
+          <div>API Reference</div>
+          <x-action target="#docs_toc" method="hide">
+            <a href="#getting_started">register</a>
+          </x-action>
+          <x-action target="#docs_toc" method="hide">
+            <a href="#getting_started">register</a>
+          </x-action>
+          <x-action target="#docs_toc" method="hide">
+            <a href="#getting_started">register</a>
+          </x-action>
+        </menu>
+      </x-peekbox>
+
     </x-layout>
   </x-card>
 
   <x-card data-view="builds">
     <x-layout>
-      <header class="shadow-mid">
+      <header class="shadow-mid" unselectable>
         <x-appbar>
           <svg><use xlink:href="#package">
           </use></svg><h2>Builds</h2>
@@ -365,27 +531,35 @@ xtag.register('x-foo', {
       <section>
 
         <div class="section-intro">
-          <h2>Choose the build that works best for you:</h2>
+
+          <h2>Install from NPM:</h2>
+          <p><code>npm install x-tag</code></p>
+
+          <hr/>
+
+          <h2>Install from Bower:</h2>
+          <p><code>bower install x-tag-core</code></p>
+
+        </div>
+
+        <hr />
+
+        <div class="section-intro">
+          <h2>Download the build that works best for you:</h2>
         </div>
 
         <ul id="build_features" class="feature-row">
           <li>
-            <a href="https://rawgit.com/x-tag/core/master/dist/x-tag-core.min.js" download="x-tag-core.min.js">
+            <a href="https://rawgit.com/x-tag/core/master/dist/x-tag-no-polyfills.min.js" download="x-tag-raw.min.js">
               <svg><use xlink:href="#open_box"></use></svg>
-              <h2 text-shadow>X-Tag<br/>-------<br/>BYO Polyfills</h2>
-              <div>Raw X-Tag, bring your own polyfills. Weighs in at just <i style="color: #eee;">5k</i></div>
+              <h2 text-shadow>Raw<br/>•<br/>No Polyfills</h2>
+              <div>Bring your own polyfills. Weighs in at less than <i style="color: #eee;">5k</i> when gzipped</div>
             </a>
           </li><li>
             <a href="https://rawgit.com/x-tag/core/master/dist/x-tag-core.min.js" download="x-tag-core.min.js">
               <svg><use xlink:href="#open_box"></use></svg>
-              <h2 text-shadow>X-Tag<br/>+<br/>Lite Polyfills</h2>
-              <div>Everything to create Custom Elements, no Shadow DOM</div>
-            </a>
-          </li><li>
-            <a href="https://rawgit.com/x-tag/core/master/dist/x-tag-core.min.js" download="x-tag-core.min.js">
-              <svg><use xlink:href="#open_box"></use></svg>
-              <h2 text-shadow>X-Tag<br/>+<br/>All Polyfills</h2>
-              <div>X-Tag Core plus all 4 polyfills</div>
+              <h2 text-shadow>X-Tag<br/>+<br/>Polyfills<br/></h2>
+              <div>X-Tag + Custom Elements polyfill, no Shadow DOM, 20k when gzipped</div>
             </a>
           </li>
         </ul>
@@ -396,14 +570,15 @@ xtag.register('x-foo', {
 
   <x-card data-view="community">
     <x-layout>
-      <header class="shadow-mid">
+      <header class="shadow-mid" unselectable>
         <x-appbar>
           <svg><use xlink:href="#people"></use></svg>
           <h2>Community</h2>
         </x-appbar>
       </header>
-      <section>
-
+      <section id="community_content">
+        <svg><use xlink:href="#tools"></use></svg>
+        <h2>Coming Soon</h2>
       </section>
     </x-layout>
   </x-card>
