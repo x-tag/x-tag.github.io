@@ -416,7 +416,7 @@ xtag.pseudos.example = {
 
 <h2>API Reference</h2>
 
-<h4>xtag.register(NAME, DEFINITION)</h4>
+<h4 id="api_xtag_register">xtag.register(NAME, DEFINITION)</h4>
 
 <p>
   Define and register a new custom element. The example below shows test values for each of
@@ -470,7 +470,7 @@ xtag.register('x-foo', {
 
 <hr/>
 
-<h4>xtag.query(NAME, DEFINITION)</h4>
+<h4 id="api_xtag_query">xtag.query(NAME, DEFINITION)</h4>
 
 <p>
   Wrapper for querySelectorAll that always returns a true JavaScript Array. This is handly
@@ -506,13 +506,10 @@ var itemArray = xtag.query(document.body, 'ul li.special');
           </x-action>
           <div>API Reference</div>
           <x-action target="#docs_toc" method="hide">
-            <a href="#getting_started">register</a>
+            <a href="#api_xtag_register">register</a>
           </x-action>
           <x-action target="#docs_toc" method="hide">
-            <a href="#getting_started">register</a>
-          </x-action>
-          <x-action target="#docs_toc" method="hide">
-            <a href="#getting_started">register</a>
+            <a href="#api_xtag_query">query</a>
           </x-action>
         </menu>
       </x-peekbox>
