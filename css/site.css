@@ -23,12 +23,16 @@ a {
   color: #61A5E4;
 }
 
-h3 {
+h4 {
   color: #8CB2D6;
 }
 
 ul {
-  margin: 0;
+margin: 0;
+padding-left: 1.1em;
+}
+
+ul:not([bulleted]) {
   padding: 0;
   list-style: none;
 }
@@ -65,7 +69,8 @@ table tr:first-child th {
 }
 
 p code, table code {
-  padding: 0.08em 0.275em 0.1em;
+  font-size: 0.8em;
+  padding: 0.125em 0.35em 0.175em;
   color: #fff;
   border-radius: 0.2em;
   background: rgba(0,0,0,0.15);
@@ -257,12 +262,16 @@ x-appbar > button {
   fill: rgb(74, 147, 111);
 }
 
-#overview_demo x-clock {
-  display: block;
+#overview_demo > div {
   text-align: center;
-  margin: 1em auto;
+  margin: 2em auto;
+}
+
+#overview_demo x-clock {
+  display: inline-block;
   font-size: 2em;
   font-weight: bold;
+  cursor: pointer;
 }
 
 /* Docs View */
@@ -273,6 +282,7 @@ x-appbar > button {
 
 #docs x-peekbox {
   padding: 3.4em 0 0.5em;
+  overflow: auto;
   z-index: 1;
 }
 
@@ -286,6 +296,8 @@ x-appbar > button {
   background: #eee;
   margin: 0.2em 0 0.3em;
   padding: 0.3em 0.5em 0.3em;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
 }
 
 #docs x-peekbox x-action {
@@ -295,6 +307,11 @@ x-appbar > button {
 #docs x-peekbox a {
   display: block;
   padding: 0.6em 0.75em 0.6em;
+}
+
+#docs section h2 {
+  padding: 0.3em 0.4em 0.35em;
+  background: rgba(0,0,0,0.2);
 }
 
 #docs table {

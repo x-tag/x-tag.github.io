@@ -1,7 +1,7 @@
 {
   "name": "x-tag-peekbox",
   "description": "",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "keywords": [
     "web-components",
     "x-tag"
@@ -14,11 +14,11 @@
     "x-tag-core": "*"
   },
   "homepage": "https://github.com/x-tag/peekbox",
-  "_release": "0.1.2",
+  "_release": "0.1.3",
   "_resolution": {
     "type": "version",
-    "tag": "0.1.2",
-    "commit": "1e867693de5971d4deaf9a675e0b5ad2fa7b5069"
+    "tag": "0.1.3",
+    "commit": "57bc2bd4751c6b42d050c779aeed2d17a314dce6"
   },
   "_source": "git://github.com/x-tag/peekbox.git",
   "_target": "*",

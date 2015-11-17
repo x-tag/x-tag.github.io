@@ -431,6 +431,8 @@ x-peekbox {
   top: 0;
   left: 0;
   height: 100%;
+  max-width: 100%;
+  max-height: 100%;
   background: #fff;
   -webkit-transform: translate(-100%, 0);
   -moz-transform: translate(-100%, 0);

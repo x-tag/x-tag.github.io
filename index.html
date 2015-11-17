@@ -126,12 +126,14 @@
   <h2>Time for a demo</h2>
 
   <p>
-    Here's a nifty <code>˂x-clock></code> custom element to help you get a sense of what it's like to create Web Components
+    Here's a nifty <code>‹x-clock›</code> component to help you get a sense of what it's like to create Web Components
     with X-Tag. As you can see, there's a tap event attached to the element that lets you start and stop time - but be careful,
     stopping time is serious business, you don't want to cause a chain reaction that unravels the very fabric of the space-time continuum.
   </p>
 
-  <x-clock text-shadow></x-clock>
+  <div>
+    <x-clock text-shadow></x-clock>
+  </div>
 
 <x-code-prism>
 xtag.register('x-clock', {
@@ -178,7 +180,9 @@ xtag.register('x-clock', {
       </header>
       <section>
 
-        <h2 id="getting_started">It All Starts with Registration</h2>
+        <h2 id="getting_started">Getting Started</h2>
+
+        <h3>Registration - Where it All Begins</h3>
 
           <p>
             The most important method in the X-Tag library is <code>xtag.register()</code>. The register function on the X-Tag object is what you'll use
@@ -198,7 +202,7 @@ xtag.register('x-frankenstein', {
 
 <hr/>
 
-<h2>Content is King</h2>
+<h3>Content is King</h3>
 
   <p>
     For many of the components you create, you'll want to insert various elements into them for structure and presentation purposes. X-Tag provides some awesome features to help you with this.
@@ -207,29 +211,29 @@ xtag.register('x-frankenstein', {
     of what each variant looks like in practice.
   </p>
 
-<h3>Simple string:</h3>
+<h4>Simple string:</h4>
 
 <x-code-prism>
 xtag.register('x-frankenstein', {
-  content: '˂h2>My name is Frank˂/h2>' +
-           '˂span>I work for a mad scientist˂/span>'
+  content: '‹h2›My name is Frank‹/h2›' +
+           '‹span›I work for a mad scientist‹/span›'
 });
 </x-code-prism>
 
-<h3>Multi-line string:</h3>
+<h4>Multi-line string:</h4>
 
 <x-code-prism>
 xtag.register('x-frankenstein', {
   content: function(){/*
-    ˂h2>My name is Frank˂/h2>
-    ˂span>I work for a mad scientist˂/span>
+    ‹h2›My name is Frank‹/h2›
+    ‹span›I work for a mad scientist‹/span›
   */}
 });
 </x-code-prism>
 
 <hr/>
 
-        <h2>Meet the Lifecycle Callbacks</h2>
+        <h3>Meet the Lifecycle Callbacks</h3>
 
           <p>
             There are four lifecycle callbacks you will rely on to develop your components.
@@ -240,16 +244,16 @@ xtag.register('x-frankenstein', {
 xtag.register('x-foo', {
   lifecycle:{
     created: function(){
-      alert('I fire when an ˂x-foo> is CREATED');
+      alert('I fire when an ‹x-foo› is CREATED');
     },
     inserted: function(){
-      alert('I fire when an ˂x-foo> is INSERTED to the DOM');
+      alert('I fire when an ‹x-foo› is INSERTED to the DOM');
     },
     removed: function(){
-      alert('I fire when an ˂x-foo> is REMOVED from the DOM');
+      alert('I fire when an ‹x-foo› is REMOVED from the DOM');
     },
     attributeChanged: function(attrName, oldValue, newValue){
-      alert('I fire when an ATTRIBUTE is CHANGED on an ˂x-foo>');
+      alert('I fire when an ATTRIBUTE is CHANGED on an ‹x-foo›');
     }
   }
 });
@@ -257,7 +261,7 @@ xtag.register('x-foo', {
 
 <hr/>
 
-        <h2>Adding Methods to the Mix</h2>
+        <h3>Adding Methods to the Mix</h3>
 
           <p>
             Your custom elements will likely need some of their own, unique methods to provide the functionality you desire.
@@ -282,7 +286,7 @@ xtag.register('x-shouter', {
 
 <hr/>
 
-        <h2>Say Hello to Accessors</h2>
+        <h3>Say Hello to Accessors</h3>
 
           <p>
             X-Tag has built-in features to deal with attributes, setters, getters, and link them all together to provide a common interface.
@@ -316,7 +320,7 @@ xtag.register('x-foo', {
 
 <hr/>
 
-<h2>The DL on Events</h2>
+<h3>The DL on Events</h3>
 <p>
   X-Tag provides an insanely powerful event system  you'll use often in developing your components.
   We'll cover the basics here, and leave the more advanced features for a special tutorial dedicated to the topic.
@@ -351,7 +355,7 @@ xtag.register('x-foo', {
 
 <hr/>
 
-<h2>Gettin' Jedi with Pseudos</h2>
+<h3>Gettin' Jedi with Pseudos</h3>
 
 <p>
   One advanced feature of X-Tag you should be aware of right off the bat is the <code>delegate</code> pseudo.
@@ -362,17 +366,17 @@ xtag.register('x-foo', {
 
 <x-code-prism>
 xtag.register('x-foo', {
-  content: '˂input/>',
+  content: '‹input/›',
   events: {
     'tap:delegate(input)': function(){
       // Perform an action only when the user taps on an
-      // ˂input/> element within your component.
+      // ‹input/› element within your component.
     }
   }
 });
 </x-code-prism>
 
-<h3>Create your own Pseudo:</h3>
+<h4>Create your own Pseudo:</h4>
 
 <p>
   Once you create a pseudo and add it to the main xtag.pseudos object, as show below,
@@ -414,9 +418,9 @@ xtag.pseudos.example = {
 
 <hr/>
 
-<h2>API Reference</h2>
+<h1>API Reference</h1>
 
-<h4 id="api_xtag_register">xtag.register(NAME, DEFINITION)</h4>
+<h2 id="api_xtag_register">xtag.register(NAME, DEFINITION)</h2>
 
 <p>
   Define and register a new custom element. The example below shows test values for each of
@@ -443,7 +447,7 @@ xtag.pseudos.example = {
 
 <x-code-prism>
 xtag.register('x-foo', {
-  content: '˂input/>',
+  content: '‹input/›',
   lifecycle:{
     created: function(){},
     inserted: function(){},
@@ -470,7 +474,7 @@ xtag.register('x-foo', {
 
 <hr/>
 
-<h4 id="api_xtag_query">xtag.query(NAME, DEFINITION)</h4>
+<h2 id="api_xtag_query">xtag.query(ELEMENT, SELECTOR)</h2>
 
 <p>
   Wrapper for querySelectorAll that always returns a true JavaScript Array. This is handly
@@ -485,10 +489,17 @@ xtag.register('x-foo', {
     <th>Description</th>
   </tr>
   <tr>
-    <td>ARRAY_LIKE_OBJECT</td>
-    <td>Special array-like objects</td>
+    <td>ELEMENT</td>
+    <td>DOM element refrence</td>
     <td>
-      Objects like: <code>NodeList</code>, <code>HTMLCollection</code>, <code>DOMTokeList</code>, etc.
+      A reference to the DOM element you wish to query
+    </td>
+  </tr>
+  <tr>
+    <td>SELECTOR</td>
+    <td>String</td>
+    <td>
+      The CSS selector you would like to query the element with
     </td>
   </tr>
 </table>
@@ -497,10 +508,169 @@ xtag.register('x-foo', {
 var itemArray = xtag.query(document.body, 'ul li.special');
 </x-code-prism>
 
+<hr />
+
+<h2 id="api_xtag_querychildren">xtag.queryChildren(ELEMENT, SELECTOR)</h2>
+
+<p>
+  Query only the direct children of an element with a provided selector.
+</p>
+
+<table>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>ELEMENT</td>
+    <td>DOM element refrence</td>
+    <td>
+      A reference to the DOM element you wish to query.
+    </td>
+  </tr>
+  <tr>
+    <td>SELECTOR</td>
+    <td>String</td>
+    <td>
+      The CSS selector string you would like to test for matches against the element's direct children.
+    </td>
+  </tr>
+</table>
+
+<x-code-prism>
+var itemArray = xtag.query(document.body, 'ul li.special');
+</x-code-prism>
+
+<hr />
+
+<h2 id="api_xtag_createfragment">xtag.createFragment(CONTENT)</h2>
+
+<p>
+  Generates a document fragment from a string, list of nodes, or a multi-line comment string.
+</p>
+
+<table>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>CONTENT</td>
+    <td>
+      <ul bulleted>
+        <li>String</li>
+        <li>Multi-line function comment</li>
+      </ul>
+    </td>
+    <td>
+      Pass in a string or function with a multi-line comment string of HTML, and a Document Fragment will be created from the contents.
+    </td>
+  </tr>
+</table>
+
+<x-code-prism>
+var fragFromString = xtag.createFragment('‹div›Hello World!‹/div›');
+
+var fragFromFunction = xtag.createFragment(function(){/*
+  ‹header›Hello‹/header›
+  ‹section›I'm a multi-line HTML fragment‹/section›
+  ‹footer›Goodbye‹/footer›
+*/});
+</x-code-prism>
+
+<hr />
+
+<h2 id="api_xtag_addevent">xtag.addEvent(ELEMENT, TYPE, HANDLER)</h2>
+
+<p>
+  Add a native, custom, or X-Tag library event listener to an element. The TYPE field also
+  accepts pseudo chains for even more powerful event handling.
+</p>
+
+<table>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>ELEMENT</td>
+    <td>DOM element reference</td>
+    <td>
+      The element you would like to attach an event listener to.
+    </td>
+  </tr>
+  <tr>
+    <td>TYPE</td>
+    <td>String</td>
+    <td>
+      The event name, with any event pseudos you may want to chain.
+    </td>
+  </tr>
+  <tr>
+    <td>HANDLER</td>
+    <td>Function</td>
+    <td>
+      The event handler you want called when the event occurs.
+    </td>
+  </tr>
+</table>
+
+<x-code-prism>
+xtag.addEvent(myElement, 'tap:delegate(img)', function(event){
+  alert('An image element within myElement was just tapped');
+});
+</x-code-prism>
+
+<hr />
+
+<h2 id="api_xtag_addevents">xtag.addEvents(ELEMENT, OBJECT)</h2>
+
+<p>
+  Add multiple native, custom, or X-Tag library event listeners to an element using one function.
+  Pseudo chains are avaliable for use in your event object keys.
+</p>
+
+<table>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>ELEMENT</td>
+    <td>DOM element reference</td>
+    <td>
+      The element you would like to attach the event listeners to.
+    </td>
+  </tr>
+  <tr>
+    <td>OBJECT</td>
+    <td>Object</td>
+    <td>
+      An object composed of multiple events - keys are event names, and values are the event handlers.
+    </td>
+  </tr>
+</table>
+
+<x-code-prism>
+xtag.addEvents(myElement, {
+  'tap': function(event){
+    alert('myElement was just tapped');
+  },
+  'keypress:keypass(13)': function(event){
+    alert('The enter key was pressed, all other keys are blocked');
+  }
+});
+</x-code-prism>
+
       </section>
 
       <x-peekbox id="docs_toc" class="shadow-high" edge="top" unselectable>
         <menu>
+          <div>Guides</div>
           <x-action target="#docs_toc" method="hide">
             <a href="#getting_started">Getting Started</a>
           </x-action>
@@ -510,6 +680,15 @@ var itemArray = xtag.query(document.body, 'ul li.special');
           </x-action>
           <x-action target="#docs_toc" method="hide">
             <a href="#api_xtag_query">query</a>
+          </x-action>
+          <x-action target="#docs_toc" method="hide">
+            <a href="#api_xtag_querychildren">queryChildren</a>
+          </x-action>
+          <x-action target="#docs_toc" method="hide">
+            <a href="#api_xtag_addevent">addEvent</a>
+          </x-action>
+          <x-action target="#docs_toc" method="hide">
+            <a href="#api_xtag_addevents">addEvents</a>
           </x-action>
         </menu>
       </x-peekbox>
