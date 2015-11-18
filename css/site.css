@@ -262,6 +262,18 @@ x-appbar > button {
   fill: rgb(74, 147, 111);
 }
 
+#browser_support, #browser_support tr, #browser_support td {
+  color: #ccc;
+  text-align: left;
+  border: none;
+  background: none;
+}
+
+#browser_support svg {
+  min-width: 1em;
+  font-size: 2em;
+}
+
 #overview_demo > div {
   text-align: center;
   margin: 2em auto;
