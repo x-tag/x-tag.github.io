@@ -22,13 +22,16 @@ module.exports = function(grunt) {
         }
       }
     },
-    bumpup: ['bower.json', 'package.json', 'xtag.json'],
+    bumpup: ['bower.json', 'package.json'],
     tagrelease: {
       file: 'package.json',
       prefix: '',
       commit: true
     },
     exec: {
+      'update_gh_pages':{
+        cmd: 'git stash && git checkout gh-pages && git rebase master && git push origin gh-pages && git checkout master && git stash pop'
+      },
       'update_master':{
         cmd: 'git push origin master --tags'
       }
@@ -43,10 +46,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-smush-components');
   grunt.loadNpmTasks('grunt-exec');
 
-  grunt.registerTask('build', ['smush-components','concat:dist']);
+  grunt.registerTask('build', ['jshint','smush-components']);
   grunt.registerTask('bump:patch', ['bumpup:patch', 'tagrelease']);
-  grunt.registerTask('bump:push', ['bumpup:patch', 'tagrelease','push']);
-
-  grunt.registerTask('push', ['exec:update_master']);
+  grunt.registerTask('push', ['exec:update_master','exec:update_gh_pages']);
+  grunt.registerTask('bump-push', ['bump:patch','push']);
 
 };
