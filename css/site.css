@@ -343,7 +343,7 @@ x-appbar > button {
 
 #build_features svg {
   stroke: #FFEFC6;
-  stroke-width: 0.0125em;
+  stroke-width: 1px;
 }
 
 #build_features a {
