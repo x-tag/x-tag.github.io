@@ -8,6 +8,7 @@
   ],
   "dependencies": {
     "x-tag-basic-app-template": "*",
-    "x-tag-code-prism": "*"
+    "x-tag-code-prism": "*",
+    "x-tag-tabbox": "*"
   }
 }

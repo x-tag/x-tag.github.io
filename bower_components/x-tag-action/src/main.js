@@ -17,14 +17,25 @@
   }
 
   var replacer = /'/g;
+  var whitesplit = /\s+/g;
   xtag.register('x-action', {
-    events: {
-      'tap': executeTarget
-    },
     accessors: {
-      event: { attribute: {}},
-      target: { attribute: {}},
-      method: { attribute: {}},
+      event: { attribute: {} },
+      target: { attribute: {} },
+      method: { attribute: {} },
+      triggers: {
+        attribute: {
+          def: 'tap'
+        },
+        set: function(val){
+          if (this.xtag.triggers) xtag.removeEvents(this, this.xtag.triggers);
+          var triggers = {};
+          (val || '').trim().split(whitesplit).forEach(function(key){
+            triggers[key] = executeTarget;
+          });
+          this.xtag.triggers = xtag.addEvents(this, triggers);
+        }
+      },
       args: {
         attribute: {},
         set: function(args){

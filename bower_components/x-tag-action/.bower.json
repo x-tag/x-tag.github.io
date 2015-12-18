@@ -1,7 +1,7 @@
 {
   "name": "x-tag-action",
   "description": "Declarative way to execute a methods or fire events on target elements",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "author": "Arron Schaar",
   "keywords": [
     "web-components",
@@ -15,11 +15,11 @@
     "x-tag-core": "*"
   },
   "homepage": "https://github.com/x-tag/action",
-  "_release": "0.0.10",
+  "_release": "0.0.11",
   "_resolution": {
     "type": "version",
-    "tag": "0.0.10",
-    "commit": "a02d9dab2b1179bfd467a062c8b98a833d1c8c46"
+    "tag": "0.0.11",
+    "commit": "5411f1889ac88d5ee10674d88d3b123f88058da7"
   },
   "_source": "git://github.com/x-tag/action.git",
   "_target": "*",

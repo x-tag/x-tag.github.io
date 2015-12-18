@@ -91,7 +91,7 @@ defineElementGetter(Element.prototype, 'classList', function () {
  * Code distributed by Google as part of the polymer project is also
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
-// @version 0.7.15
+// @version 0.7.20
 (function() {
   window.WebComponents = window.WebComponents || {
     flags: {}
@@ -996,6 +996,162 @@ if (typeof WeakMap === "undefined") {
   }
 })(self);
 
+if (typeof HTMLTemplateElement === "undefined") {
+  (function() {
+    var TEMPLATE_TAG = "template";
+    var contentDoc = document.implementation.createHTMLDocument("template");
+    var canDecorate = true;
+    HTMLTemplateElement = function() {};
+    HTMLTemplateElement.prototype = Object.create(HTMLElement.prototype);
+    HTMLTemplateElement.decorate = function(template) {
+      if (template.content) {
+        return;
+      }
+      template.content = contentDoc.createDocumentFragment();
+      var child;
+      while (child = template.firstChild) {
+        template.content.appendChild(child);
+      }
+      if (canDecorate) {
+        try {
+          Object.defineProperty(template, "innerHTML", {
+            get: function() {
+              var o = "";
+              for (var e = this.content.firstChild; e; e = e.nextSibling) {
+                o += e.outerHTML || escapeData(e.data);
+              }
+              return o;
+            },
+            set: function(text) {
+              contentDoc.body.innerHTML = text;
+              HTMLTemplateElement.bootstrap(contentDoc);
+              while (this.content.firstChild) {
+                this.content.removeChild(this.content.firstChild);
+              }
+              while (contentDoc.body.firstChild) {
+                this.content.appendChild(contentDoc.body.firstChild);
+              }
+            },
+            configurable: true
+          });
+        } catch (err) {
+          canDecorate = false;
+        }
+      }
+      HTMLTemplateElement.bootstrap(template.content);
+    };
+    HTMLTemplateElement.bootstrap = function(doc) {
+      var templates = doc.querySelectorAll(TEMPLATE_TAG);
+      for (var i = 0, l = templates.length, t; i < l && (t = templates[i]); i++) {
+        HTMLTemplateElement.decorate(t);
+      }
+    };
+    document.addEventListener("DOMContentLoaded", function() {
+      HTMLTemplateElement.bootstrap(document);
+    });
+    var createElement = document.createElement;
+    document.createElement = function() {
+      "use strict";
+      var el = createElement.apply(document, arguments);
+      if (el.localName == "template") {
+        HTMLTemplateElement.decorate(el);
+      }
+      return el;
+    };
+    var escapeDataRegExp = /[&\u00A0<>]/g;
+    function escapeReplace(c) {
+      switch (c) {
+       case "&":
+        return "&amp;";
+
+       case "<":
+        return "&lt;";
+
+       case ">":
+        return "&gt;";
+
+       case " ":
+        return "&nbsp;";
+      }
+    }
+    function escapeData(s) {
+      return s.replace(escapeDataRegExp, escapeReplace);
+    }
+  })();
+}
+
+(function(scope) {
+  "use strict";
+  if (!window.performance) {
+    var start = Date.now();
+    window.performance = {
+      now: function() {
+        return Date.now() - start;
+      }
+    };
+  }
+  if (!window.requestAnimationFrame) {
+    window.requestAnimationFrame = function() {
+      var nativeRaf = window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
+      return nativeRaf ? function(callback) {
+        return nativeRaf(function() {
+          callback(performance.now());
+        });
+      } : function(callback) {
+        return window.setTimeout(callback, 1e3 / 60);
+      };
+    }();
+  }
+  if (!window.cancelAnimationFrame) {
+    window.cancelAnimationFrame = function() {
+      return window.webkitCancelAnimationFrame || window.mozCancelAnimationFrame || function(id) {
+        clearTimeout(id);
+      };
+    }();
+  }
+  var workingDefaultPrevented = function() {
+    var e = document.createEvent("Event");
+    e.initEvent("foo", true, true);
+    e.preventDefault();
+    return e.defaultPrevented;
+  }();
+  if (!workingDefaultPrevented) {
+    var origPreventDefault = Event.prototype.preventDefault;
+    Event.prototype.preventDefault = function() {
+      if (!this.cancelable) {
+        return;
+      }
+      origPreventDefault.call(this);
+      Object.defineProperty(this, "defaultPrevented", {
+        get: function() {
+          return true;
+        },
+        configurable: true
+      });
+    };
+  }
+  var isIE = /Trident/.test(navigator.userAgent);
+  if (!window.CustomEvent || isIE && typeof window.CustomEvent !== "function") {
+    window.CustomEvent = function(inType, params) {
+      params = params || {};
+      var e = document.createEvent("CustomEvent");
+      e.initCustomEvent(inType, Boolean(params.bubbles), Boolean(params.cancelable), params.detail);
+      return e;
+    };
+    window.CustomEvent.prototype = window.Event.prototype;
+  }
+  if (!window.Event || isIE && typeof window.Event !== "function") {
+    var origEvent = window.Event;
+    window.Event = function(inType, params) {
+      params = params || {};
+      var e = document.createEvent("Event");
+      e.initEvent(inType, Boolean(params.bubbles), Boolean(params.cancelable));
+      return e;
+    };
+    window.Event.prototype = origEvent.prototype;
+  }
+})(window.WebComponents);
+
 window.HTMLImports = window.HTMLImports || {
   flags: {}
 };
@@ -1071,6 +1227,7 @@ window.HTMLImports = window.HTMLImports || {
     if (importCount) {
       for (var i = 0, imp; i < importCount && (imp = imports[i]); i++) {
         if (isImportLoaded(imp)) {
+          newImports.push(this);
           parsedCount++;
           checkDone();
         } else {
@@ -1197,10 +1354,14 @@ window.HTMLImports.addModule(function(scope) {
       request.open("GET", url, xhr.async);
       request.addEventListener("readystatechange", function(e) {
         if (request.readyState === 4) {
-          var locationHeader = request.getResponseHeader("Location");
           var redirectedUrl = null;
-          if (locationHeader) {
-            var redirectedUrl = locationHeader.substr(0, 1) === "/" ? location.origin + locationHeader : locationHeader;
+          try {
+            var locationHeader = request.getResponseHeader("Location");
+            if (locationHeader) {
+              redirectedUrl = locationHeader.substr(0, 1) === "/" ? location.origin + locationHeader : locationHeader;
+            }
+          } catch (e) {
+            console.error(e.message);
           }
           next.call(nextContext, !xhr.ok(request) && request, request.response || request.responseText, redirectedUrl);
         }
@@ -1714,22 +1875,6 @@ window.HTMLImports.addModule(function(scope) {
   if (scope.useNative) {
     return;
   }
-  if (!window.CustomEvent || isIE && typeof window.CustomEvent !== "function") {
-    window.CustomEvent = function(inType, params) {
-      params = params || {};
-      var e = document.createEvent("CustomEvent");
-      e.initCustomEvent(inType, Boolean(params.bubbles), Boolean(params.cancelable), params.detail);
-      e.preventDefault = function() {
-        Object.defineProperty(this, "defaultPrevented", {
-          get: function() {
-            return true;
-          }
-        });
-      };
-      return e;
-    };
-    window.CustomEvent.prototype = window.Event.prototype;
-  }
   initializeModules();
   var rootDocument = scope.rootDocument;
   function bootstrap() {
@@ -2012,6 +2157,11 @@ window.CustomElements.addModule(function(scope) {
 window.CustomElements.addModule(function(scope) {
   var flags = scope.flags;
   function upgrade(node, isAttached) {
+    if (node.localName === "template") {
+      if (window.HTMLTemplateElement && HTMLTemplateElement.decorate) {
+        HTMLTemplateElement.decorate(node);
+      }
+    }
     if (!node.__upgraded__ && node.nodeType === Node.ELEMENT_NODE) {
       var is = node.getAttribute("is");
       var definition = scope.getRegisteredDefinition(node.localName) || scope.getRegisteredDefinition(is);
@@ -2346,22 +2496,6 @@ window.CustomElements.addModule(function(scope) {
       });
     });
   }
-  if (!window.CustomEvent || isIE && typeof window.CustomEvent !== "function") {
-    window.CustomEvent = function(inType, params) {
-      params = params || {};
-      var e = document.createEvent("CustomEvent");
-      e.initCustomEvent(inType, Boolean(params.bubbles), Boolean(params.cancelable), params.detail);
-      e.preventDefault = function() {
-        Object.defineProperty(this, "defaultPrevented", {
-          get: function() {
-            return true;
-          }
-        });
-      };
-      return e;
-    };
-    window.CustomEvent.prototype = window.Event.prototype;
-  }
   if (document.readyState === "complete" || scope.flags.eager) {
     bootstrap();
   } else if (document.readyState === "interactive" && !window.attachEvent && (!window.HTMLImports || window.HTMLImports.ready)) {
@@ -2371,119 +2505,6 @@ window.CustomElements.addModule(function(scope) {
     window.addEventListener(loadEvent, bootstrap);
   }
 })(window.CustomElements);
-
-if (typeof HTMLTemplateElement === "undefined") {
-  (function() {
-    var TEMPLATE_TAG = "template";
-    var contentDoc = document.implementation.createHTMLDocument("template");
-    var canDecorate = true;
-    HTMLTemplateElement = function() {};
-    HTMLTemplateElement.prototype = Object.create(HTMLElement.prototype);
-    HTMLTemplateElement.decorate = function(template) {
-      if (!template.content) {
-        template.content = contentDoc.createDocumentFragment();
-      }
-      var child;
-      while (child = template.firstChild) {
-        template.content.appendChild(child);
-      }
-      if (canDecorate) {
-        try {
-          Object.defineProperty(template, "innerHTML", {
-            get: function() {
-              var o = "";
-              for (var e = this.content.firstChild; e; e = e.nextSibling) {
-                o += e.outerHTML || escapeData(e.data);
-              }
-              return o;
-            },
-            set: function(text) {
-              contentDoc.body.innerHTML = text;
-              HTMLTemplateElement.bootstrap(contentDoc);
-              while (this.content.firstChild) {
-                this.content.removeChild(this.content.firstChild);
-              }
-              while (contentDoc.body.firstChild) {
-                this.content.appendChild(contentDoc.body.firstChild);
-              }
-            },
-            configurable: true
-          });
-        } catch (err) {
-          canDecorate = false;
-        }
-      }
-    };
-    HTMLTemplateElement.bootstrap = function(doc) {
-      var templates = doc.querySelectorAll(TEMPLATE_TAG);
-      for (var i = 0, l = templates.length, t; i < l && (t = templates[i]); i++) {
-        HTMLTemplateElement.decorate(t);
-      }
-    };
-    window.addEventListener("DOMContentLoaded", function() {
-      HTMLTemplateElement.bootstrap(document);
-    });
-    var createElement = document.createElement;
-    document.createElement = function() {
-      "use strict";
-      var el = createElement.apply(document, arguments);
-      if (el.localName == "template") {
-        HTMLTemplateElement.decorate(el);
-      }
-      return el;
-    };
-    var escapeDataRegExp = /[&\u00A0<>]/g;
-    function escapeReplace(c) {
-      switch (c) {
-       case "&":
-        return "&amp;";
-
-       case "<":
-        return "&lt;";
-
-       case ">":
-        return "&gt;";
-
-       case " ":
-        return "&nbsp;";
-      }
-    }
-    function escapeData(s) {
-      return s.replace(escapeDataRegExp, escapeReplace);
-    }
-  })();
-}
-
-(function(scope) {
-  "use strict";
-  if (!window.performance) {
-    var start = Date.now();
-    window.performance = {
-      now: function() {
-        return Date.now() - start;
-      }
-    };
-  }
-  if (!window.requestAnimationFrame) {
-    window.requestAnimationFrame = function() {
-      var nativeRaf = window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
-      return nativeRaf ? function(callback) {
-        return nativeRaf(function() {
-          callback(performance.now());
-        });
-      } : function(callback) {
-        return window.setTimeout(callback, 1e3 / 60);
-      };
-    }();
-  }
-  if (!window.cancelAnimationFrame) {
-    window.cancelAnimationFrame = function() {
-      return window.webkitCancelAnimationFrame || window.mozCancelAnimationFrame || function(id) {
-        clearTimeout(id);
-      };
-    }();
-  }
-})(window.WebComponents);
 
 (function(scope) {
   var style = document.createElement("style");
@@ -4233,14 +4254,15 @@ if (typeof HTMLTemplateElement === "undefined") {
       if (tag.shadow) tag.shadow = tag.shadow.nodeName ? tag.shadow : xtag.createFragment(tag.shadow);
       if (tag.content) tag.content = tag.content.nodeName ? tag.content.innerHTML : parseMultiline(tag.content);
       var created = tag.lifecycle.created;
+      var finalized = tag.lifecycle.finalized;
       tag.prototype.createdCallback = {
         enumerable: true,
         value: function(){
           var element = this;
           if (tag.shadow && hasShadow) this.createShadowRoot().appendChild(tag.shadow.cloneNode(true));
           if (tag.content) this.appendChild(document.createElement('div')).outerHTML = tag.content;
-          xtag.addEvents(this, tag.events);
           var output = created ? created.apply(this, arguments) : null;
+          xtag.addEvents(this, tag.events);
           for (var name in tag.attributes) {
             var attr = tag.attributes[name],
                 hasAttr = this.hasAttribute(name),
@@ -4253,6 +4275,7 @@ if (typeof HTMLTemplateElement === "undefined") {
             obj.onAdd.call(element, obj);
           });
           this.xtagComponentReady = true;
+          if (finalized) finalized.apply(this, arguments);
           return output;
         }
       };
@@ -4750,8 +4773,9 @@ if (typeof HTMLTemplateElement === "undefined") {
 
   };
 
-  win.xtag = xtag;
-  if (typeof define == 'function' && define.amd) define(xtag);
+  if (typeof define === 'function' && define.amd) define(xtag);
+  else if (typeof module !== 'undefined' && module.exports) module.exports = xtag;
+  else win.xtag = xtag;
 
   doc.addEventListener('WebComponentsReady', function(){
     xtag.fireEvent(doc.body, 'DOMComponentsLoaded');
@@ -4778,14 +4802,25 @@ if (typeof HTMLTemplateElement === "undefined") {
   }
 
   var replacer = /'/g;
+  var whitesplit = /\s+/g;
   xtag.register('x-action', {
-    events: {
-      'tap': executeTarget
-    },
     accessors: {
-      event: { attribute: {}},
-      target: { attribute: {}},
-      method: { attribute: {}},
+      event: { attribute: {} },
+      target: { attribute: {} },
+      method: { attribute: {} },
+      triggers: {
+        attribute: {
+          def: 'tap'
+        },
+        set: function(val){
+          if (this.xtag.triggers) xtag.removeEvents(this, this.xtag.triggers);
+          var triggers = {};
+          (val || '').trim().split(whitesplit).forEach(function(key){
+            triggers[key] = executeTarget;
+          });
+          this.xtag.triggers = xtag.addEvents(this, triggers);
+        }
+      },
       args: {
         attribute: {},
         set: function(args){
@@ -5177,7 +5212,7 @@ if (typeof HTMLTemplateElement === "undefined") {
   }
 
   window.addEventListener('keyup', function(event){
-    if (event.keyCode == 27) xtag.query(document, 'x-modal[escape-hide]:not([hidden])').forEach(function(modal){
+    if (event.keyCode == 27) xtag.query(document, 'x-modal[hide-triggers~="esc"]:not([hidden])').forEach(function(modal){
       modal.hide();
     });
   });
@@ -5188,17 +5223,18 @@ if (typeof HTMLTemplateElement === "undefined") {
     });
   }
 
-  xtag.addEvent(document, 'tapstart:delegate(x-modal-overlay)', function(e){
-    this.__overlayTapstart__ = true;
-  });
-
-  xtag.addEvent(document, 'tapend:delegate(x-modal-overlay)', function(e){
-    var modal = this.__modal__;
-    if (this.__overlayTapstart__ && modal && modal.hasAttribute('overlay-tap-hide')){
-      modal.hide();
-      this.__overlayTapstart__ = false;
+  xtag.addEvents(document, {
+    'tapstart:delegate(x-modal-overlay)': function(e){
+      this.__overlayTapstart__ = true;
+    },
+    'tapend:delegate(x-modal-overlay)': function(e){
+      var modal = this.__modal__;
+      if (this.__overlayTapstart__ && modal && (modal.hideTriggers || '').indexOf('tap') > -1){
+        this.__overlayTapstart__ = false;
+        modal.hide();
+      }
     }
-  });
+});
 
   xtag.register('x-modal', {
     lifecycle: {
@@ -5209,29 +5245,18 @@ if (typeof HTMLTemplateElement === "undefined") {
       },
       inserted: function() {
         if (oldiOS || oldDroid) setTop(this);
-        this.xtag.lastParent = this.parentNode;
         insertOverlay(this);
       },
-      removed: function(){
-        if (this.xtag.lastParent) this.xtag.lastParent.removeChild(this.xtag.overlayElement);
-        this.xtag.lastParent = null;
+      removed: function(parent){
+        if (parent) parent.removeChild(this.xtag.overlayElement);
       }
     },
     accessors: {
       overlay: {
-        attribute: {boolean: true},        
+        attribute: {boolean: true}
       },
-      escapeHide: {
-        attribute: {
-          boolean: true,
-          name: 'escape-hide'
-        }
-      },
-      overlayTapHide: {
-        attribute: {
-          boolean: true,
-          name: 'overlay-tap-hide'
-        }
+      hideTriggers: {
+        attribute: {}
       }
     },
     methods: {
@@ -5460,6 +5485,84 @@ if (typeof HTMLTemplateElement === "undefined") {
           update(this)
         }
       }
+    }
+  });
+
+})();
+
+(function(){
+
+  var rules = {};
+  var sheet = document.head.appendChild(document.createElement('style')).sheet;
+
+  function selectTab(tabbox, tab){
+    var previous = [], fireSelected = tab && !tab.hasAttribute('selected');
+    xtag.queryChildren(tabbox, 'menu > [selected], ul > [selected]').forEach(function(node){
+      previous.push(node);
+      node.removeAttribute('selected');
+    });
+    tab.setAttribute('selected', '');
+    var index = xtag.toArray(tab.parentNode.children).indexOf(tab);
+    if (index != tabbox.selectedIndex) tabbox.selectedIndex = index;
+    if (!rules[index]) {
+      rules[index] = 1;
+      var transform = 'transform: translateX(' + (index * -100) + '%);';
+      sheet.insertRule('x-tabbox[selected-index="' + index + '"] > ul > li:nth-of-type(' + (index + 1) + '){ opacity: 1; z-index: 1; ' + xtag.prefix.css + transform + transform + '}', sheet.cssRules.length);
+    }
+    var panel = xtag.queryChildren(tabbox, 'ul > li')[index];
+    if (panel) panel.setAttribute('selected', '');
+    if (fireSelected) xtag.fireEvent(tabbox, 'tabselected', {
+      detail: {
+        currentTab: tab,
+        currentPanel: panel,
+        previousTab: previous[0],
+        previousPanel: previous[1]
+      }
+    })
+  };
+
+  function selectEvent(e){
+    if (this.parentNode && this.parentNode.parentNode == e.currentTarget) selectTab(e.currentTarget, this);
+  };
+
+  function createAccessor(selector){
+    return {
+      get: function(){
+        return xtag.queryChildren(this, selector)[0];
+      }
+    }
+  };
+
+  xtag.register('x-tabbox', {
+    events: {
+      'tap:delegate(x-tabbox > menu > *)': selectEvent,
+      'keydown:delegate(x-tabbox > menu > *):keypass(13, 32)': selectEvent
+    },
+    accessors: {
+      tabElements: {
+        get: function(){
+          return xtag.queryChildren(this, 'menu > *');
+        }
+      },
+      panelElements: {
+        get: function(){
+          return xtag.queryChildren(this, 'ul');
+        }
+      },
+      selectedIndex: {
+        attribute: {
+          validate: function(val){
+            var index = Number(val);
+            var tab = xtag.queryChildren(this, 'menu > *')[index];
+            return tab ? index : -1;
+          }
+        },
+        set: function(val, old){
+          selectTab(this, xtag.queryChildren(this, 'menu > *')[val])
+        }
+      },
+      selectedTab: createAccessor('menu > [selected]'),
+      selectedPanel: createAccessor('ul > [selected]')
     }
   });
 

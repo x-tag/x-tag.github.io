@@ -1,0 +1,16 @@
+{
+  "name": "x-tag-tabbox",
+  "description": "",
+  "version": "0.1.9",
+  "keywords": [
+    "web-components",
+    "x-tag"
+  ],
+  "main": [
+    "src/main.js",
+    "src/main.css"
+  ],
+  "dependencies": {
+    "x-tag-core": "*"
+  }
+}

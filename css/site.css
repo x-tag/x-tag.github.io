@@ -44,6 +44,27 @@ hr {
   opacity: 0.2;
 }
 
+x-tabbox > menu {
+  position: relative;
+  box-shadow: 0 1px 3px -1px rgba(0,0,0,0.85);
+  z-index: 2;
+}
+
+x-tabbox > menu > * {
+  padding: 1em;
+  color: #fff;
+  background: #505C69;
+}
+
+x-tabbox > menu > [selected] {
+  background: #4385C0;
+}
+
+x-tabbox > ul {
+  background: none;
+  z-index: 1;
+}
+
 table {
   color: #20252B;
   text-align: left;
@@ -123,6 +144,25 @@ x-card > x-layout x-appbar > svg:first-child {
 
 [text-shadow], h1, h2, h3  {
   text-shadow: 0 3px 0.1em rgba(0,0,0,0.4);
+}
+
+
+.coming-soon {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.coming-soon > svg  {
+  display: block;
+  font-size: 5em;
+  margin-top: 1em;
+}
+
+.coming-soon > h2  {
+  font-size: 2.5em;
+  text-align: center;
+  margin-top: 0.5em;
 }
 
 /* TARGETED ELEMENTS */
@@ -359,17 +399,162 @@ x-appbar > button {
 
 /* Community View */
 
-#community_content > svg  {
-  display: block;
-  font-size: 5em;
-  margin-top: 1em;
+#community_content {
+  padding: 0;
 }
 
-#community_content > h2  {
-  font-size: 2.5em;
-  text-align: center;
-  margin-top: 0.5em;
+#community_content > * {
+  max-width: none;
 }
+
+#community_content > *:last-child {
+  margin: 0;
+}
+
+#community_content x-tabbox > ul {
+  position: relative;
+}
+
+/* CHAT - SLACK/SMOOCH INTEGRATION */
+
+#community_chat {
+
+}
+
+#sk-container {
+  display: none;
+  position: absolute !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: 100% !important;
+  height: 100% !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-sizing: border-box !important;
+  -webkit-transform: none !important;
+  -ms-transform: none !important;
+  transform: none !important;
+}
+
+  #community_content #sk-container {
+    display: block !important;
+  }
+
+#sk-wrapper {
+  display: -webkit-box !important;      /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box !important;         /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox !important;      /* TWEENER - IE 10 */
+  display: -webkit-flex !important;     /* NEW - Chrome */
+  display: flex !important;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
+  width: auto !important;
+  height: 100% !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: none !important;
+  box-sizing: border-box !important;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -ms-box-orient: vertical;
+  box-orient: vertical;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+#sk-wrapper [data-region-main] {
+  position: relative !important;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+  -ms-flex: auto;
+}
+
+#sk-conversation {
+  position: absolute !important;
+  width: 100% !important;
+  height: 100% !important;
+  box-sizing: border-box !important;
+}
+
+#sk-header {
+  display: none !important;
+}
+
+.sk-show-handle, .sk-close-handle {
+  display: none !important;
+}
+
+#sk-container .sk-notifications {
+  border-top: none !important;
+}
+
+#sk-container #sk-wrapper [data-ui-avatar] {
+  border-radius: 100% !important;
+  border: 2px solid #52718C !important;
+  box-shadow: 0 1px 3px -1px rgba(0,0,0,0.85) !important;
+}
+
+#sk-container #sk-wrapper .sk-from {
+  color: #bbb !important;
+}
+
+#sk-container #sk-wrapper .sk-msg {
+  color: #fff !important;
+  background-color: #4385C0 !important;
+}
+
+#sk-container #sk-wrapper .sk-left-row .sk-msg::after {
+  border-right-color: #4385C0 !important;
+}
+
+#sk-container #sk-wrapper .sk-right-row .sk-msg::after {
+  border-left-color: #4385C0 !important;
+}
+
+#sk-footer {
+  background: #505C69 !important;
+}
+
+#sk-container #sk-footer form {
+  display: table !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+#sk-container #sk-footer form > * {
+  display: table-cell !important;
+  position: relative !important;
+  box-sizing: border-box !important;
+}
+
+#sk-container #sk-footer form > a {
+  width: 80px !important;
+  text-align: center !important;
+}
+
+#sk-container #sk-footer form > input {
+  width: 100% !important;
+  margin: 6px 0 0 6px !important;
+  padding: 0 6px !important;
+  border: 1px solid #222931 !important;
+}
+
+#sk-container #sk-footer .message-input {
+  color: #222931 !important;
+}
+
+#sk-container #sk-footer a.send {
+  color: #ddd;
+}
+
+#sk-container #sk-footer .send:hover {
+  color: #fff !important
+}
+
 
 /* MEDIA QUERIES */
 

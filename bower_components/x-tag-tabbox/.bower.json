@@ -1,0 +1,26 @@
+{
+  "name": "x-tag-tabbox",
+  "description": "",
+  "version": "0.1.9",
+  "keywords": [
+    "web-components",
+    "x-tag"
+  ],
+  "main": [
+    "src/main.js",
+    "src/main.css"
+  ],
+  "dependencies": {
+    "x-tag-core": "*"
+  },
+  "homepage": "https://github.com/x-tag/tabbox",
+  "_release": "0.1.9",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.1.9",
+    "commit": "eefd26fa08fd0c5b5b8ab58cd27b5bfb89f38699"
+  },
+  "_source": "git://github.com/x-tag/tabbox.git",
+  "_target": "*",
+  "_originalSource": "x-tag-tabbox"
+}

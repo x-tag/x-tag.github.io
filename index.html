@@ -9,7 +9,7 @@
   <link rel="stylesheet" type="text/css" href="css/x-tag-components.css"/>
   <link rel="stylesheet" type="text/css" href="css/template.css"/>
   <link rel="stylesheet" type="text/css" href="css/site.css"/>
-  <script type="text/javascript" src="js/x-tag-components.js"></script>
+  <script src="js/x-tag-components.js"></script>
 </head>
 
 <body>
@@ -809,8 +809,21 @@ xtag.addEvents(myElement, {
         </x-appbar>
       </header>
       <section id="community_content">
-        <svg><use xlink:href="#tools"></use></svg>
-        <h2>Coming Soon</h2>
+        <x-tabbox transition selected-index="0">
+          <menu>
+            <button>X-Tag #Slack Chat</button>
+            <button>???</button>
+          </menu>
+          <ul>
+            <li id="community_chat"></li>
+            <li>
+              <div class="coming-soon">
+                <svg><use xlink:href="#tools"></use></svg>
+                <h2>Coming Soon</h2>
+              </div>
+            </li>
+          </ul>
+        </x-tabbox>
       </section>
     </x-layout>
   </x-card>
@@ -853,8 +866,9 @@ xtag.addEvents(myElement, {
   <svg><use xlink:href="#close"></use></svg>
 </x-action>
 
-<script type="text/javascript" src="js/template.js"></script>
-<script type="text/javascript" src="js/site.js"></script>
+<script src="js/template.js"></script>
+<script src="https://cdn.smooch.io/smooch.min.js"></script>
+<script src="js/site.js"></script>
 
 </body>
 
