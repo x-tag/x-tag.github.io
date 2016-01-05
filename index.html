@@ -811,11 +811,13 @@ xtag.addEvents(myElement, {
       <section id="community_content">
         <x-tabbox transition selected-index="0">
           <menu>
-            <button>X-Tag #Slack Chat</button>
+            <button>Support Chat</button>
             <button>???</button>
           </menu>
           <ul>
-            <li id="community_chat"></li>
+            <li id="community_chat">
+              <iframe id="tlkio" src="http://embed.tlk.io/x-tag?custom_css_path=x-tag.github.io/css/chat.css&theme=theme--night"></iframe>
+            </li>
             <li>
               <div class="coming-soon">
                 <svg><use xlink:href="#tools"></use></svg>
@@ -867,7 +869,6 @@ xtag.addEvents(myElement, {
 </x-action>
 
 <script src="js/template.js"></script>
-<script src="https://cdn.smooch.io/smooch.min.js"></script>
 <script src="js/site.js"></script>
 
 </body>
