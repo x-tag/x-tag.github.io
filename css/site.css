@@ -418,10 +418,17 @@ x-appbar > button {
 /* CHAT INTEGRATION */
 
 #tlkio {
+  position: absolute;
   height: 100%;
   width: 100%;
-  position: absolute;
+  left: 50%;
   border: none;
+  max-width: 750px;
+  margin: 0 auto;
+  display: block;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
 }
 
 
