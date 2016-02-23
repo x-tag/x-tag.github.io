@@ -352,18 +352,52 @@ xtag.register('x-shouter', {
             a getter/setter, their gets, sets, and state will remain in sync without having to write any additional code.
           </p>
 
+          <p>
+            The `attribute` property of an accessor has a few options you can use to change behavior and perform advanced syncing to other parts of your component.
+            Some of these advanced options include `boolean`, `property`, and `validate`, which are detailed in the examples below.
+          </p>
+
 <x-code-prism>
 xtag.register('x-foo', {
+  content: '‹input /›',
   lifecycle:{
     created: function(){
-      alert('x-foo in da house!');
+      this.xtag.input = this.querySelector('input');
     }
   },
   accessors: {
-    bar: {
-      // the `attribute` property links node.bar gets/sets to the bar="" attribute
-      attribute: {},
+    disabled: {
+      // The `attribute` property links node.bar gets/sets to the bar="" attribute
+      attribute: {
+        // Including the boolean property turns this into a boolean attribute/setter
+        boolean: true,
+        // The property field allows you reflect changes down to a cached node.
+        // Notice the input element is cached to the `input` property in `created`
+        property: 'input'
+      },
       get: function(){
+        // do something when the getter is accessed
+      },
+      set: function(value){
+        // act on the value being passed to the setter
+      }
+    }
+  }
+});
+
+xtag.register('x-bar', {
+  accessors: {
+    // X-Tag utomatically maps camelcased accessor setter names to their
+    // dashed attribute equivalents. In this example, `limitedCount` maps
+    // to the `limited-count` attribute.
+    limitedCount: {
+      attribute: {
+        // Allows you to validate values passed to your accessor
+        validate: function(val){
+          return val < 10 ? val : 10;
+        }
+      },
+      get: function(val){
         // do something when the getter is accessed
       },
       set: function(value){
