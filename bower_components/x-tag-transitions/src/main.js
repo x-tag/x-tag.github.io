@@ -1,21 +1,25 @@
 (function(){
-  var matchNum = /[1-9]/,
-      replaceSpaces = / /g,
+  var replaceSpaces = / /g,
       captureTimes = /(\d|\d+?[.]?\d+?)(s|ms)(?!\w)/gi,
       transPre = 'transition' in getComputedStyle(document.documentElement) ? 't' : xtag.prefix.js + 'T',
+      transDel = transPre + 'ransitionDelay',
       transDur = transPre + 'ransitionDuration',
-      transProp = transPre + 'ransitionProperty',
-      ready = document.readyState == 'complete' ?
-        xtag.skipFrame(function(){ ready = false }) :
+      loading = document.readyState == 'complete' ?
+        xtag.skipFrame(function(){ loading = false }) :
         xtag.addEvent(document, 'readystatechange', function(){
           if (document.readyState == 'complete') {
-            xtag.skipFrame(function(){ ready = false });
-            xtag.removeEvent(document, 'readystatechange', ready);
+            xtag.skipFrame(function(){ loading = false });
+            xtag.removeEvent(document, 'readystatechange', loading);
           }
         });
 
-  function getTransitions(node){
-    return node.__transitions__ = node.__transitions__ || {};
+  function parseTimes(style){
+    var value = 0;
+    style.replace(captureTimes, function(match, time, unit){
+      time = parseFloat(time) * (unit === 's' ? 1000 : 1);
+      if (time >= value) value = time;
+    });
+    return value;
   }
 
   function startTransition(node, name, transitions){
@@ -24,38 +28,34 @@
 
     node.setAttribute('transition', name);
 
-    var max = 0,
-        style = getComputedStyle(node),
-        transition = transitions[name],
-        after = transition.after,
-        transProps = style[transProp].replace(replaceSpaces, '').split(',');
+    var transition = transitions[name],
+        max = transition.max;
 
-    style[transDur].replace(captureTimes, function(match, time, unit){
-      time = parseFloat(time) * (unit === 's' ? 1000 : 1);
-      if (time >= max) max = time;
-    });
+    if (isNaN(max)) {
+      var styles = getComputedStyle(node);
+      max = transition.max = parseTimes(styles[transDel]) + parseTimes(styles[transDur]);
+    }
 
     transition.timer = setTimeout(function(){
       node.removeAttribute('transitioning');
       if (transition.after) transition.after.call(node);
-    }, max);
-
-    if (after && !style[transDur].match(matchNum)) after.call(node);
+      xtag.fireEvent(node, name + '-transition');
+    }, loading ? 0 : max);
   }
 
   xtag.transition = function(node, name, obj){
     if (node.getAttribute('transition') != name){
 
-      var transitions = getTransitions(node),
+      var transitions = node.__transitions__ || (node.__transitions__ = {}),
           options = transitions[name] = obj || {};
 
-      node.setAttribute('transitioning', name);
+      if (!loading) node.setAttribute('transitioning', name);
 
       if (options.immediate) options.immediate.call(node);
 
       if (options.before) {
         options.before.call(node);
-        if (ready) xtag.skipTransition(node, function(){
+        if (loading) xtag.skipTransition(node, function(){
           startTransition(node, name, transitions);
         });
         else xtag.skipFrame(function(){

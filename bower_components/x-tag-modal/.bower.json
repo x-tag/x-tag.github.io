@@ -1,7 +1,7 @@
 {
   "name": "Modal",
   "description": "The modal element can be used to show notices or secondary content above the z-level of the page.",
-  "version": "0.2.18",
+  "version": "0.2.20",
   "keywords": [
     "element",
     "web-components",
@@ -16,13 +16,13 @@
     "x-tag-transitions": "*"
   },
   "homepage": "https://github.com/x-tag/modal",
-  "_release": "0.2.18",
+  "_release": "0.2.20",
   "_resolution": {
     "type": "version",
-    "tag": "0.2.18",
-    "commit": "25b924ddd34226c4ca0014ca0f499de31b05012c"
+    "tag": "0.2.20",
+    "commit": "304c3a6076d8948694c08ac723495a758804d3fd"
   },
-  "_source": "git://github.com/x-tag/modal.git",
+  "_source": "https://github.com/x-tag/modal.git",
   "_target": "*",
   "_originalSource": "x-tag-modal"
 }

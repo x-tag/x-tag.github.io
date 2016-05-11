@@ -1,7 +1,7 @@
 {
   "name": "x-tag-spinner",
   "description": "",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "keywords": [
     "web-components",
     "x-tag"
@@ -15,13 +15,13 @@
     "x-tag-transitions": "*"
   },
   "homepage": "https://github.com/x-tag/spinner",
-  "_release": "0.2.9",
+  "_release": "0.2.10",
   "_resolution": {
     "type": "version",
-    "tag": "0.2.9",
-    "commit": "b327e0b5c462ae7ac9d034aa76024ff84cedccc3"
+    "tag": "0.2.10",
+    "commit": "e9489c11f592a36281a19145b62ff253a3817b48"
   },
-  "_source": "git://github.com/x-tag/spinner.git",
+  "_source": "https://github.com/x-tag/spinner.git",
   "_target": "*",
   "_originalSource": "x-tag-spinner"
 }

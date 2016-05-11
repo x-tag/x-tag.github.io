@@ -4333,20 +4333,17 @@ window.CustomElements.addModule(function(scope) {
         }
       };
 
-      var elementProto = basePrototype ?
-            basePrototype :
-            tag['extends'] ?
-            Object.create(doc.createElement(tag['extends']).constructor).prototype :
-            win.HTMLElement.prototype;
-
-      var definition = {
-        'prototype': Object.create(elementProto, tag.prototype)
-      };
-      if (tag['extends']) {
-        definition['extends'] = tag['extends'];
+      var extended = tag['extends'];
+      if (basePrototype) {
+        for (var z in basePrototype) tag.prototype[z] = basePrototype[z];
       }
-      var reg = doc.registerElement(_name, definition);
-      return reg;
+      return doc.registerElement(_name, {
+        'extends': extended,
+        'prototype': Object.create(
+          extended ? Object.create(doc.createElement(extended).constructor).prototype : win.HTMLElement.prototype,
+          tag.prototype
+        )
+      });
     },
 
     /* Exposed Variables */
@@ -4605,7 +4602,7 @@ window.CustomElements.addModule(function(scope) {
         });
         else template.innerHTML = parseMultiline(content);
       }
-      return template.content;
+      return document.importNode(template.content, true);
     },
 
     /*

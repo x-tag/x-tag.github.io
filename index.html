@@ -756,6 +756,56 @@ xtag.addEvents(myElement, {
 });
 </x-code-prism>
 
+<h2 id="api_xtag_fireevent">xtag.fireEvent(ELEMENT, NAME, OPTIONS)</h2>
+
+<p>
+  Add a native, custom, or X-Tag library event listener to an element. The TYPE field also
+  accepts pseudo chains for even more powerful event handling.
+</p>
+
+<table>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>ELEMENT</td>
+    <td>DOM element reference</td>
+    <td>
+      The element you would like to attach an event listener to.
+    </td>
+  </tr>
+  <tr>
+    <td>NAME</td>
+    <td>String</td>
+    <td>
+      The event name you wish to fire on the target element.
+    </td>
+  </tr>
+  <tr>
+    <td>OPTIONS</td>
+    <td>Object</td>
+    <td>
+      The event options you want to use in firing your event. These include:
+      <ul bulleted>
+        <li><code>detail</code>: allows passage of custome data via the detail property of the event</li>
+        <li><code>bubbles</code>: specify wheter the event bubbles - defaults to true</li>
+        <li><code>cancelable</code>: specify wheter the event is cancelable - defaults to true</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+<x-code-prism>
+xtag.fireEvent(myElement, 'show', {
+  detail: {
+    x: 123,
+    y: 456
+  }
+});
+</x-code-prism>
+
       </section>
 
       <x-peekbox id="docs_toc" class="shadow-high" edge="top" unselectable>
@@ -779,6 +829,9 @@ xtag.addEvents(myElement, {
           </x-action>
           <x-action target="#docs_toc" method="hide">
             <a href="#api_xtag_addevents">addEvents</a>
+          </x-action>
+          <x-action target="#docs_toc" method="hide">
+            <a href="#api_xtag_fireevent">fireEvent</a>
           </x-action>
         </menu>
       </x-peekbox>

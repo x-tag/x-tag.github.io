@@ -119,6 +119,7 @@ x-deck > x-card {
   -ms-transition: opacity 0.4s ease, -ms-transform 0.4s ease;
   -o-transition: opacity 0.4s ease, -o-transform 0.4s ease;
   transition: opacity 0.4s ease, transform 0.4s ease;
+  will-change: display, opacity, -webkit-transform, transform, -webkit-transition, transition;
 }
 
 x-deck > x-card[selected], x-deck > x-card[show], x-deck > x-card[transition] {
@@ -360,17 +361,19 @@ x-modal {
   -moz-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+  will-change: opacity, -webkit-transform, transform;
 }
 
 x-modal-overlay {
   display: block;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0,0,0,0.6);
   opacity: 0;
+  will-change: opacity, -webkit-transform, transform;
 }
 
 x-modal-overlay:before {
@@ -447,6 +450,7 @@ x-peekbox {
   -moz-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
+  will-change: -webkit-transform, transform;
 }
 
 x-peekbox[edge="top"] {
@@ -493,19 +497,25 @@ x-peekbox[showing] {
   pointer-events: none;
 }
 
-
 x-spinner {
-  -webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-ms-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-x-spinner {
-  display: table;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
   text-align: center;
   color: #000;
   stroke: #000;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
 x-spinner[fade] {
@@ -518,22 +528,11 @@ x-spinner[fade] {
 
 x-spinner[transition="fade-in"] {
   opacity: 1;
-  display: table;
 }
 
-x-spinner[transition="fade-out"] {
+x-spinner[transition="fade-out"]:not([transitioning]) {
   opacity: 0;
   display: none;
-}
-
-x-spinner[transitioning] {
-  display: table;
-}
-
-x-spinner .x-spinner-center {
-  display: table-cell;
-  vertical-align: middle;
-
 }
 
 x-spinner .x-spinner-center[label]:after {
