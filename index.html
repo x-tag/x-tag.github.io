@@ -10,8 +10,10 @@
   <link rel="stylesheet" type="text/css" href="css/template.css"/>
   <link rel="stylesheet" type="text/css" href="css/site.css"/>
   <script>
-    var page = location.href.match(/page=(.*)/);
-    if (page) history.replaceState(null, document.title, page[1]);
+    (function(){
+      var path = location.href.match(/path=(.*)/);
+      if (path) history.replaceState(null, document.title, path[1]);
+    })();
   </script>
   <script src="js/x-tag-components.js"></script>
 </head>
