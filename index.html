@@ -10,12 +10,9 @@
   <link rel="stylesheet" type="text/css" href="css/template.css"/>
   <link rel="stylesheet" type="text/css" href="css/site.css"/>
   <script>
-    (function(){
-      
-      console.log(document.referrer);
-      var path = location.href.match(/path=(.*)/);
-      if (path) history.replaceState(null, document.title, path[1]);
-    })();
+    if (!document.referrer.search(new RegExp('^(http|https)://' + location.hostname))) {
+      history.replaceState(null, document.title, document.referrer);
+    }
   </script>
   <script src="js/x-tag-components.js"></script>
 </head>
