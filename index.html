@@ -13,6 +13,7 @@
     (function(){
       console.log(sessionStorage.redirect);
       var redirect = sessionStorage.redirect;
+      sessionStorage.redirect = null;
       if (redirect && redirect != location.href) {
         history.replaceState(null, null, redirect);
       }
