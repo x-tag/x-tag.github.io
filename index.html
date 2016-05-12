@@ -11,6 +11,8 @@
   <link rel="stylesheet" type="text/css" href="css/site.css"/>
   <script>
     (function(){
+      
+      console.log(document.referrer);
       var path = location.href.match(/path=(.*)/);
       if (path) history.replaceState(null, document.title, path[1]);
     })();
