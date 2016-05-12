@@ -10,6 +10,7 @@
   <link rel="stylesheet" type="text/css" href="css/template.css"/>
   <link rel="stylesheet" type="text/css" href="css/site.css"/>
   <script>
+  console.log(document.referrer);
     if (!document.referrer.search(new RegExp('^(http|https)://' + location.hostname))) {
       history.replaceState(null, document.title, document.referrer);
     }
