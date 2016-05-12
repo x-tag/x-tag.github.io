@@ -9,6 +9,10 @@
   <link rel="stylesheet" type="text/css" href="css/x-tag-components.css"/>
   <link rel="stylesheet" type="text/css" href="css/template.css"/>
   <link rel="stylesheet" type="text/css" href="css/site.css"/>
+  <script>
+    var page =  location.search.match(/page=([^&#=]*)/);
+    if (page) history.replaceState(null, document.title, page[1]);
+  </script>
   <script src="js/x-tag-components.js"></script>
 </head>
 
