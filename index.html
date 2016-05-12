@@ -11,8 +11,8 @@
   <link rel="stylesheet" type="text/css" href="css/site.css"/>
   <script>
     (function(){
-      var redirect = sessionStorate.redirect;
-      console.log(sessionStorate.redirect);
+      var redirect = sessionStorage.redirect;
+      console.log(sessionStorage.redirect);
       if (redirect && redirect != location.href) {
         history.replaceState(null, null, redirect);
       }
