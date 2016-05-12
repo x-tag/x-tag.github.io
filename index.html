@@ -10,6 +10,7 @@
   <link rel="stylesheet" type="text/css" href="css/template.css"/>
   <link rel="stylesheet" type="text/css" href="css/site.css"/>
   <script>
+    console.log(location.href);
     var page =  location.search.match(/page=(.*)/);
     if (page) history.replaceState(null, document.title, page[1]);
   </script>
