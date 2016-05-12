@@ -11,9 +11,8 @@
   <link rel="stylesheet" type="text/css" href="http://x-tag.github.io/css/site.css"/>
   <script>
     (function(){
-      console.log(sessionStorage.redirect);
       var redirect = sessionStorage.redirect;
-      sessionStorage.redirect = null;
+      delete sessionStorage.redirect;
       if (redirect && redirect != location.href) {
         history.replaceState(null, null, redirect);
       }
