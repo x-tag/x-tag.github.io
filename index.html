@@ -12,7 +12,7 @@
   <script>
     (function(){
       var redirect = history.state && history.state.redirect;
-      console.log(redirect, redirect != location.href);
+      console.log(history.state);
       if (redirect && redirect != location.href) {
         history.replaceState({ redirect: null }, null, redirect);
       }
