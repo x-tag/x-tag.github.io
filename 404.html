@@ -5,8 +5,7 @@
   <meta charset="utf-8" />
   <title>X-Tag ★ Web Components</title>
   <script>
-    sessionStorage.redirect = location.href;
-    alert(sessionStorage.redirect);
+    document.cookie = 'redirect=' + location.href;
   </script>
   <meta http-equiv="refresh" content="0;URL='http://x-tag.github.io/'"></meta>
 </head>
