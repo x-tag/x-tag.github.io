@@ -31,11 +31,12 @@ xtag.register('x-clock', {
 (function(){
 
   var lastState;
-  var getPathname = /(.*?:\/\/.+?\/)|([#].+)|([?].+)|(^\/)|(\/$)/g;
+  var stripDomain = /(.*?:\/\/.+?\/)|([#?].+)/g;
+  var stripSlashes = /(^\/)|(\/$)/g;
   localStorage.xtagHistoryIndex = localStorage.xtagHistoryIndex || 0;
 
   function splitPath(path){
-    path = path.replace(getPathname, '').split('/');
+    path = path.replace(stripDomain, '').replace(stripSlashes, '').split('/');
     return path.length ? path : ['/'];
   }
 
