@@ -31,11 +31,11 @@ xtag.register('x-clock', {
 (function(){
 
   var lastState;
-  var outsideSlashes = /(^\/)|(\/$)/g
+  var getPathname = /(.*?:\/\/.+?\/)|([#].+)|([?].+)|(^\/)|(\/$)/g;
   localStorage.xtagHistoryIndex = localStorage.xtagHistoryIndex || 0;
 
   function splitPath(path){
-    path = path.split('?')[0].replace(outsideSlashes, '').split('/');
+    path = path.replace(getPathname, '').split('/');
     return path.length ? path : ['/'];
   }
 
@@ -116,7 +116,7 @@ xtag.register('x-clock', {
       var state = history.state || {};
       var title = state.title;
       state.direction = state && state.index > (lastState && lastState.index) ? 1 : -1;
-      callPath(this.paths, location.pathname, function(entry, call){
+      callPath(this.paths, location.href, function(entry, call){
         if (!title) state.title = entry.title;
         if (call || entry.chain) entry.action.call(self, state, lastState || state);
       });
@@ -132,7 +132,7 @@ xtag.register('x-clock', {
   document.addEventListener('WebComponentsReady', function(){
     if (history.state) xtag.history.loadState();
     else xtag.history.replace({
-      path: location.pathname,
+      path: location.href,
       title: document.title
     }, true)
   });
