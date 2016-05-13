@@ -122,7 +122,7 @@ xtag.register('x-clock', {
       });
       setTitle(state.title);
       lastState = state;
-      if (ga) {
+      if (window.ga) {
         ga('set', 'page', location.pathname);
         ga('send', 'pageview');
       }
@@ -157,17 +157,25 @@ xtag.register('x-clock', {
   }
 
   xtag.history.addPaths({
-    '/overview': function(){
-      switchPage('overview');
+    '/overview': {
+      action: function(){
+        switchPage('overview');
+      }
     },
-    '/docs': function(){
-      switchPage('docs');
+    '/docs': {
+      action: function(){
+        switchPage('docs');
+      }
     },
-    '/builds': function(){
-      switchPage('builds');
+    '/builds': {
+      action: function(){
+        switchPage('builds');
+      }
     },
-    '/community': function(){
-      switchPage('community');
+    '/community':  {
+      action: function(){
+        switchPage('community');
+      }
     }
   });
 
