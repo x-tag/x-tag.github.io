@@ -462,12 +462,12 @@ x-appbar > button {
     left: 25%;
     width: 75%;
     box-sizing: border-box;
-    -webkit-transform: none;
-    transform: none;
   }
 
   #docs_toc {
     height: 100%;
     width: 25%;
+    -webkit-transform: none;
+    transform: none;
   }
 }
