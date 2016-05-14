@@ -455,3 +455,19 @@ x-appbar > button {
     font-size: 47%;
   }
 }
+
+@media all and (min-width: 901px) {
+
+  #docs x-layout > section {
+    left: 25%;
+    width: 75%;
+    box-sizing: border-box;
+    -webkit-transform: none;
+    transform: none;
+  }
+
+  #docs_toc {
+    height: 100%;
+    width: 25%;
+  }
+}
