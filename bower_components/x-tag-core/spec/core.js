@@ -1273,20 +1273,34 @@ describe("x-tag ", function () {
 
     });
 
-    // it('should allow a custom prototype to be used', function(){
-    //   var proto = Object.create(HTMLElement.prototype);
-    //   proto.fn = function(){};
-    //   xtag.register("x-foo-proto", {
-    //     prototype: proto
-    //   });
-    //
-    //   var foo = document.createElement('x-foo-proto');
-    //   testbox.appendChild(foo);
-    //
-    //   expect(foo.fn).toBeDefined();
-    //   expect(foo.click).toBeDefined();
-    //
-    // });
+    it('should allow a custom prototype to be used', function(){
+      var proto = Object.create(HTMLElement.prototype);
+      proto.fn = function(){};
+      xtag.register("x-foo-proto", {
+        prototype: proto
+      });
+
+      var foo = document.createElement('x-foo-proto');
+      testbox.appendChild(foo);
+
+      expect(foo.fn).toBeDefined();
+      expect(foo.click).toBeDefined();
+
+    });
+
+    it('should allow an inherited custom element prototype to be used', function(){
+        var CompA = xtag.register('comp-a', {
+        	methods: {
+        		sayHi: function () {
+        			console.log('hi');
+        		}
+        	}
+        });
+
+        var CompB = xtag.register('comp-b', {
+        	prototype: CompA.prototype
+        });
+    });
 
     it('should be able to extend existing elements', function(){
       xtag.register("x-foo-extend", {

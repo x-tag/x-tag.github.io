@@ -6,9 +6,9 @@
   <title>X-Tag ★ Web Components</title>
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
   <link href='https://fonts.googleapis.com/css?family=Telex' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" href=" /css/x-tag-components.css"/>
-  <link rel="stylesheet" type="text/css" href="/css/template.css"/>
-  <link rel="stylesheet" type="text/css" href="/css/site.css"/>
+  <link rel="stylesheet" type="text/css" href="./css/x-tag-components.css"/>
+  <link rel="stylesheet" type="text/css" href="./css/template.css"/>
+  <link rel="stylesheet" type="text/css" href="./css/site.css"/>
   <script>
     (function(){
       var redirect = sessionStorage.redirect;
@@ -18,7 +18,7 @@
       }
     })();
   </script>
-  <script src="/js/x-tag-components.js"></script>
+  <script src="./js/x-tag-components.js"></script>
 </head>
 
 <body>
@@ -911,8 +911,8 @@ xtag.fireEvent(myElement, 'show', {
             <button>???</button>
           </menu>
           <ul>
-            <li id="community_chat">
-              <iframe id="tlkio" src="http://embed.tlk.io/x-tag?custom_css_path=http://x-tag.github.io/css/chat.css&theme=theme--night"></iframe>
+            <li>
+              <iframe id="chat_frame" src="https://gitter.im/x-tag/core/~chat"></iframe>
             </li>
             <li>
               <div class="coming-soon">
@@ -964,7 +964,7 @@ xtag.fireEvent(myElement, 'show', {
   <svg><use xlink:href="#close"></use></svg>
 </x-action>
 
-<script src="/js/site.js"></script>
+<script src="./js/site.js"></script>
 
 </body>
 

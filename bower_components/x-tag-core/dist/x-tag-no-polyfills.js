@@ -404,17 +404,20 @@
         }
       };
 
-      var extended = tag['extends'];
-      if (basePrototype) {
+      var definition = {};
+      var instance = basePrototype instanceof win.HTMLElement;
+      var extended = tag['extends'] && (definition['extends'] = tag['extends']);
+
+      if (basePrototype && !instance) {
         for (var z in basePrototype) tag.prototype[z] = basePrototype[z];
       }
-      return doc.registerElement(_name, {
-        'extends': extended,
-        'prototype': Object.create(
-          extended ? Object.create(doc.createElement(extended).constructor).prototype : win.HTMLElement.prototype,
-          tag.prototype
-        )
-      });
+
+      definition['prototype'] = Object.create(
+        extended ? Object.create(doc.createElement(extended).constructor).prototype : instance ? basePrototype : win.HTMLElement.prototype,
+        tag.prototype
+      )
+
+      return doc.registerElement(_name, definition);
     },
 
     /* Exposed Variables */
