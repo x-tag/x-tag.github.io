@@ -517,6 +517,63 @@ xtag.pseudos.example = {
 
 <hr/>
 
+<h3>Inheritance</h3>
+
+<p>X-Tag uses the standard Custom Elements API for inheritance. 
+  Custom elements can inherit from standard DOM elements by using 
+  the <code>extends</code> property.
+ </p>
+
+<x-code-prism>
+xtag.register('x-checkbox', {
+  extends: 'input',
+  lifecycle: {
+    created : function(){
+      this.type = "checkbox";
+    }
+  }
+});
+</x-code-prism>
+
+<p>To use the extended standard DOM element the <code>is</code> syntax is need.</p>
+
+<x-code-prism>
+&lt;input is="x-checkbox"&gt; &lt;/input&gt; 
+</x-code-prism>
+
+<h4>Extending custom elements:</h4>
+
+<p>
+    To extend custom elements, you need to use the 
+    the <code>prototype</code> property. Keep in mind that when any of the properties of the custom element is 
+    overwritten, it gets added to an execution queue. When accessed, the base property will be executed first
+    and then the rest of the queue will be accessed. For this cases the <code>is</code> syntax is
+    not needed.
+</p>
+
+<x-code-prism>
+var xSpan = xtag.register('x-span', {
+  content: '<span></span>',
+  methods: {
+    render() {
+      // some render logic
+    },
+  },
+});
+
+xtag.register('x-money-span', {
+  prototype: xSpan.prototype,
+  methods: {
+    render: function() {
+        // xSpan render logic gets executed first
+        // x-money-span render logic is executed next
+    },
+  }
+});
+</x-code-prism>
+
+<hr/>
+
 <h1>API Reference</h1>
 
 <h2 id="api_xtag_register">xtag.register(NAME, DEFINITION)</h2>
