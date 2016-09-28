@@ -574,6 +574,80 @@ xtag.register('x-money-span', {
 
 <hr/>
 
+<h3>Mixin' it up</h3>
+
+<p>Mixins provide another way to share functionality between elements.  
+  First, declare your mixin before you create any elements that reference it. 
+</p>
+
+ <x-code-prism>
+   xtag.mixins.foo = {
+    lifecycle: {
+      created: function(){
+        alert('foo mixin fired');
+      }
+    }
+  };
+</x-code-prism>
+
+ <p>Then, add the new mixin name to the mixins property array in the register method. All the mixin
+   functionality will be available for the custom element.
+</p>
+
+ <x-code-prism>
+  xtag.register('x-bat', {
+    mixins: ['foo']
+  });
+</x-code-prism>
+
+<h4>Collisions:</h4>
+
+ <p>By default, if there is a collision, the destination code will
+overwrite the mixin. In the x-bat case below, only screech would
+be alerted.</p>
+
+ <x-code-prism>
+ xtag.register('x-bat', {
+    mixins: ['foo'],
+    lifecycle: {
+      created: function(){
+        alert('screech');
+      }
+    }
+ });
+</x-code-prism>
+
+  <p>If you want to have the mixin fire its colliding method in such cases,
+you need to resolve the collision with the following two options:</p>
+
+<x-code-prism>
+    xtag.register('x-cat', {
+    mixins: ['foo'],
+    lifecycle: {
+      'created:mixins(before)': function(){
+        // using 'mixins(before)' pseudo means the mixin's
+        // created fn will fire first, then the x-cat's
+        alert('meow');
+      }
+    }
+  });
+</x-code-prism>
+
+<x-code-prism>
+    xtag.register('x-dog', {
+    mixins: ['foo'],
+    lifecycle: {
+      'created:mixins(after)': function(){
+        // using 'mixins(after)' pseudo means the x-dog's
+        // created fn will fire first, then the mixin's
+        alert('bark');
+      }
+    }
+  });
+</x-code-prism>
+
+<hr/>
+
 <h1>API Reference</h1>
 
 <h2 id="api_xtag_register">xtag.register(NAME, DEFINITION)</h2>
