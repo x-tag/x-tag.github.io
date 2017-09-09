@@ -158,22 +158,22 @@ xtag.register('x-clock', {
   }
 
   xtag.history.addPaths({
-    '/overview': {
+    '/v1/overview': {
       action: function(){
         switchPage('overview');
       }
     },
-    '/docs': {
+    '/v1/docs': {
       action: function(){
         switchPage('docs');
       }
     },
-    '/builds': {
+    '/v1/builds': {
       action: function(){
         switchPage('builds');
       }
     },
-    '/community':  {
+    '/v1/community':  {
       action: function(){
         switchPage('community');
       }
@@ -185,7 +185,7 @@ xtag.register('x-clock', {
       globalMenu.hide();
       var view = event.target.getAttribute('data-view');
       xtag.history.push({
-        path: '/' + view
+        path: '/v1/' + view
       }, true);
     }
   });
