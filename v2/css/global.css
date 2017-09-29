@@ -97,18 +97,22 @@ table {
   border-left: 1px solid rgba(0,0,0,0.85);
 }
 
-table td, table th {
+td, th {
   padding: 0.45em 0.6em 0.4em;
   border-right: 1px solid rgba(0,0,0,0.85);
   border-bottom: 1px solid rgba(0,0,0,0.85);
 }
 
-table th {
+th {
   padding: 0.5em 0.5em 0.3em;
 }
 
-table tr:first-child {
+tr:first-child {
   background: #bbb;
+}
+
+td:first-child {
+  white-space: nowrap;
 }
 
 p code, table code {
@@ -149,8 +153,8 @@ table code {
   color: #9FC5DE;
 }
 
-pre[class*="language-"] { 
-  
+pre[class*="language-"] {
+  margin-bottom: 2em !important;
 }
 
 .text-logo {

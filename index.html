@@ -216,12 +216,12 @@ xtag.create('x-clock', class extends XTagElement {
       <a href="https://rawgit.com/x-tag/core/master/dist/x-tag-core.min.js" download="x-tag-core.min.js">
         <svg><use xlink:href="#open_box"></use></svg>
         <h2 text-shadow>X-Tag<br/>+<br/>Polyfills<br/></h2>
-        <div>X-Tag and the Custom Elements polyfill, about ~30k gzipped</div>
+        <div>X-Tag and the Custom Elements polyfill, ~30k gzipped</div>
       </a>
       <a href="https://rawgit.com/x-tag/core/master/dist/x-tag-no-polyfills.min.js" download="x-tag-raw.min.js">
         <svg><use xlink:href="#open_box"></use></svg>
         <h2 text-shadow>Just X-Tag<br/>•<br/>No Polyfills</h2>
-        <div>Bring your own polyfills. Weighs in at just <i style="color: #eee;">2k</i> min'd and gzipped</div>
+        <div>Get it raw, roll your own. Just <i style="color: #eee;">2k</i> min'd and gzipped</div>
       </a>
     </menu>
     </section>
@@ -254,36 +254,58 @@ const Frank = xtag.create('x-frankenstein', class extends XTagElement {
 <pre class="language-javascript"><code>
 const Frank = xtag.create(class extends XTagElement {
   constructor (){
-    alert("It's moving...it's alive!");
+    alert("Muhahaha!");
   }
 });
 
 xtag.register('x-frankenstein', Frank);
 </code></pre>
 
+<hr/>
 
-<table>
-  <tr>
-    <th>Argument</th>
-    <th>Type</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>TAG NAME (optional)</td>
-    <td>String</td>
-    <td>
-      The tag name you want to use when using your Custom Element <i>(must contain a dash)</i>. When 
-      this argument is passed, the Custom Element definition is automatically added to the document's Custom Element registry.
-    </td>
-  </tr>
-  <tr>
-    <td>DEFINITION</td>
-    <td>Object</td>
-    <td>The class definition for your Custom Element</td>
-  </tr>
-</table>
+<h3>A Word on Extensions and Pseudos</h3>
+
+<p>
+  In the next sections you're going to hear about a few features that are delivered via two different types of modular extensibility systems the 
+  library offers for imbuing your elements with advanced functionality. These two systems are called <code>extensions</code> and <code>pseudos</code>. 
+  Both are different in their intent, scope of effect, range of capabilities. You will use them frequently in your Custom Element class definition 
+  blocks, here's what they look like:
+</p>
+
+<pre class="language-javascript"><code>
+xtag.create('x-foo', class extends XTagElement {
+  'alert::foo' (){
+
+  }
+  'count:bar' (){
+
+  }
+  'send::attr:bar:zaz' (){
+    
+  }
+});
+</code></pre>
+
+<p>
+  Notice how the alert method has a <code>::foo</code> attached to it - this is an extension. Extensions are little modules you can created that are called 
+  into service by tagging a property with <code>::</code> + the name of the extension. Extensions are a sizable API of their own that let's you manipulate 
+  far more than just the property they are tagged to. You can only use one extension per property.
+</p>
+
+<p>
+  The other API for adding custom functionality to components is called pseudos, which are seen above in the example property <code>count:bar</code>. When a pseudo is tagged to a property, the pseudo's 
+  own function wraps the target function so that the pseudo is executed first, then the target, which receives its return value. You can chain pseudos, and 
+  they are compiled from left to right so that they left most pseudo function wrapper fires first, passing each function's return value down to the next, until 
+  finally the original target function is executed. You can see what this looks like in the above example property <code>send::foo:bar:zaz</code>.
+<p>
+
+</p>
+  There are separate guides for extensions and pseudos that talk about how to create and use your own, but for now just be aware that they are one of 
+  the primary means the X-Tag library delivers its own features.
+</p>
 
 <hr/>
+
 
 <h3>Content is King</h3>
 
@@ -307,31 +329,31 @@ xtag.create('x-frankenstein', class extends XTagElement {
 <h4>Manual Rendering and Rerendering of Templates</h4>
 
 <p>
-  If you elect not to have your template automatically rendered when your component instances are created, you'll need to 
+  If you elect not to have your template automatically rendered when your component instances are created, you'll need to manually trigger render.
 </p>
 
 <pre class="language-javascript"><code>
-xtag.create('x-frankenstein', class extends XTagElement {
-  'intro::template(true)' (){
+const Frank = xtag.create('x-frankenstein', class extends XTagElement {
+  '::template' (){
     return `&lt;h2&gt;I am Frankenstein&lt;/h2&gt;
             &lt;span&gt;I was created by a mad scientist&lt;/span&gt;`
   }
-  'detail::template' (){
-    return `&lt;h2&gt;My friends call me Stein&lt;/h2&gt;
-            &lt;span&gt;I enjoy craft beers and ciders&lt;/span&gt;`
-  }
 });
+
+const FrankNode = new Frank();
+FrankNode.render();
 </code></pre>
 
 <h4>Multiple Templates</h4>
 
 <p>
   The template extension can be used multiple times within the same class definition block, which allows you to specify different templates 
-  for use in the same component.
+  for use in the same component. The templates are cached and reference based on the property name you put in front of the <code>::template</code> extension 
+  token. To render your templates, simply pass the name of the template you want to use to the <code>render</code> function, as in the following example:
 </p>
 
 <pre class="language-javascript"><code>
-xtag.create('x-frankenstein', class extends XTagElement {
+const Frank = xtag.create('x-frankenstein', class extends XTagElement {
   'foo::template(true)' (){
     return `&lt;h2&gt;My name is Frankenstein&lt;/h2&gt;
             &lt;span&gt;I work for a mad scientist&lt;/span&gt;`
@@ -341,125 +363,44 @@ xtag.create('x-frankenstein', class extends XTagElement {
             &lt;span&gt;I work for a mad scientist&lt;/span&gt;`
   }
 });
+
+const FrankNode = new Frank();
+// Because the foo template indicated it was to be automatically rendered, its content is already present in your element instance.
+FrankNode.render('bar');
+// Calling the render function with the bar template name swaps out the current foo template content with the bar content.
 </code></pre>
 
 <hr/>
 
-        <h3>Meet the Lifecycle Callbacks</h3>
+  <h3>Say Hello to Custom Attribute Accessors</h3>
 
-          <p>
-            There are four lifecycle callbacks you will rely on to develop your components.
-            Here's an example of what each looks like when specified in an element definition:
-          </p>
+    <p>
+      Accessors are custom attributes linking to a corresponding pair of setters/getters, and X-Tag has a built-in extension that makes adding accessors to 
+      your custom element definition stupid simple. To use this extension, add an <code>::attr</code> modifier to one of your class definition properties. 
+      This tells X-Tag to wire up a getter/setter to an HTML attribute of the same name. When attributes are linked to a getter/setter their gets, sets, and 
+      state changes will be synced without having to write any additional code.
+    </p>
 
-<pre class="language-javascript"><code>
-xtag.register('x-foo', {
-  lifecycle:{
-    created: function(){
-      alert('I fire when an &lt;x-foo&gt; is CREATED');
-    },
-    inserted: function(){
-      alert('I fire when an &lt;x-foo&gt; is INSERTED to the DOM');
-    },
-    removed: function(){
-      alert('I fire when an &lt;x-foo&gt; is REMOVED from the DOM');
-    },
-    attributeChanged: function(attrName, oldValue, newValue){
-      alert('I fire when an ATTRIBUTE is CHANGED on an &lt;x-foo&gt;');
-    }
-  }
-});
-</code></pre>
-
-<hr/>
-
-        <h3>Adding Methods to the Mix</h3>
-
-          <p>
-            Your custom elements will likely need some of their own, unique methods to provide the functionality you desire.
-            X-Tag makes method addition a snap, just add a <code>methods</code> object to your top-level <code>xtag.register()</code> definition object
-            and include your methods within it - here's what it looks like:
-          </p>
+    <p>
+      You can also tell the accessor extension that type of accessor you are creating, and it will help by sanitizing values and modifying the gets/sets to 
+      match the behavior of the type you declare. I
 
 <pre class="language-javascript"><code>
-xtag.register('x-shouter', {
-  lifecycle:{
-    created: function(){
-      this.shout('WHY AM I YELLING?');
-    }
-  },
-  methods: {
-    shout: function(message){
-      alert(message);
-    }
-  }
-});
-</code></pre>
-
-<hr/>
-
-        <h3>Say Hello to Accessors</h3>
-
-          <p>
-            X-Tag has built-in features to deal with attributes, setters, getters, and link them all together to provide a common interface.
-            To use these features, you first add an <code>accessors</code> object to the top level of your <code>xtag.register()</code> definition object.
-            Within this object you can add keys names that will be made available as getters/setters, as seen below. By adding the key <code>attribute</code>,
-            to an accessor, it tells X-Tag to link the setter/getter with the corresponding HTML attribute of the same name. When attributes are linked to
-            a getter/setter, their gets, sets, and state will remain in sync without having to write any additional code.
-          </p>
-
-          <p>
-            The `attribute` property of an accessor has a few options you can use to change behavior and perform advanced syncing to other parts of your component.
-            Some of these advanced options include `boolean`, `property`, and `validate`, which are detailed in the examples below.
-          </p>
-
-<pre class="language-javascript"><code>
-xtag.register('x-foo', {
-  content: '&lt;input /&gt;',
-  lifecycle:{
-    created: function(){
-      this.xtag.input = this.querySelector('input');
-    }
-  },
-  accessors: {
-    disabled: {
-      // The `attribute` property links node.bar gets/sets to the bar="" attribute
-      attribute: {
-        // Including the boolean property turns this into a boolean attribute/setter
-        boolean: true,
-        // The property field allows you reflect changes down to a cached node.
-        // Notice the input element is cached to the `input` property in `created`
-        property: 'input'
-      },
-      get: function(){
-        // do something when the getter is accessed
-      },
-      set: function(value){
-        // act on the value being passed to the setter
-      }
-    }
+xtag.create('x-foo', new class extends XTagElement {
+  set 'maxVolume::attr' (value){
+    // X-Tag automatically maps camel cased getter/setter names to their
+    // dashed attribute equivalents. In this example, the `maxVolume` 
+    // getter/setter pair maps to the `max-volume` attribute.
   }
 });
 
-xtag.register('x-bar', {
-  accessors: {
-    // X-Tag utomatically maps camelcased accessor setter names to their
-    // dashed attribute equivalents. In this example, `limitedCount` maps
-    // to the `limited-count` attribute.
-    limitedCount: {
-      attribute: {
-        // Allows you to validate values passed to your accessor
-        validate: function(val){
-          return val < 10 ? val : 10;
-        }
-      },
-      get: function(val){
-        // do something when the getter is accessed
-      },
-      set: function(value){
-        // act on the value being passed to the setter
-      }
-    }
+xtag.create('x-bar', new class extends XTagElement {
+  '::template(true)' (){ return '&lt;input /&gt;' }
+  set 'disabled::attr(boolean)' (value){
+    // The ::attr extended property links node.disabled to gets/sets of 
+    // the disabled="" attribute. Because it is declared as a boolean, 
+    // all values passed into its getter/setter will be a Boolean.
+    this.firstElementChild.disabled = value;
   }
 });
 </code></pre>
@@ -468,33 +409,26 @@ xtag.register('x-bar', {
 
 <h3>The DL on Events</h3>
 <p>
-  X-Tag provides an insanely powerful event system  you'll use often in developing your components.
+  X-Tag provides a powerful event system you'll use often in developing your components.
   We'll cover the basics here, and leave the more advanced features for a special tutorial dedicated to the topic.
 </p>
 
 <p>
-  The first thing you'll need to do to attach events to your component is add an <code>events</code> object to the top level
-  of your <code>xtag.register()</code> definition object. The keys of this object are the names of the events you wish to attach to your custom element.
-  In the example below you'll see a familiar, native event name, <code>focus</code>, and a couple that X-Tag provides to make life easier:
-  <code>tap</code> and <code>move</code>. These are just two of the custom events X-Tag provides that unify, optimize, and simplify common event interactions
-  across platforms and devices. In the case of <code>tap</code> and <code>move</code>, X-Tag is unifying the mouse and touch equivalents of these events - have a look:
+  To add event listeners to your component (either native or custom events), you'll be using the <code>event</code> extension. To do so, add a property to your 
+  Custom Element definition that matches the name of the event you want to listen for, plus the <code>::event</code> extension flag. When your class definition 
+  is processed by X-Tag's create method, the <code>event</code> extension will remove the property, add a listener using the supplied property name with the 
+  function you supplied as the handler.
 </p>
 
 <pre class="language-javascript"><code>
 xtag.register('x-foo', {
-  events: {
-    focus: function(){
-      // perform an action when the user focuses something
-      // within your custom element.
-    },
-    tap: function(){
-      // perform an action when the user taps your custom
-      // element via a mouse click or touch input.
-    },
-    move: function(){
-      // perform an action when the user moves their
-      // mouse click or finger (touch) over your element
-    }
+  'click::event': function(){
+    // attaches a click listener that calls this function when
+    // the user clicks an element inside the custom element
+  },
+  'focus::event': function(){
+    // attaches a focus listener that calls this function when
+    // something inside your custom element is focused.
   }
 });
 </code></pre>
@@ -566,56 +500,23 @@ xtag.pseudos.example = {
 
 <h3>Inheritance</h3>
 
-<p>X-Tag uses the standard Custom Elements API for inheritance. 
-  Custom elements can inherit from standard DOM elements by using 
-  the <code>extends</code> property.
-  </p>
-
-<pre class="language-javascript"><code>
-xtag.register('x-checkbox', {
-  extends: 'input',
-  lifecycle: {
-    created : function(){
-      this.type = "checkbox";
-    }
-  }
-});
-</code></pre>
-
-<p>To use the extended standard DOM element the <code>is</code> syntax is need.</p>
-
-<pre class="language-javascript"><code>
-&lt;input is="x-checkbox"&gt; &lt;/input&gt; 
-</code></pre>
-
-<h4>Extending custom elements:</h4>
-
 <p>
-    To extend custom elements, you need to use the 
-    the <code>prototype</code> property. Keep in mind that when any of the properties of the custom element is 
-    overwritten, it gets added to an execution queue. When accessed, the base property will be executed first
-    and then the rest of the queue will be accessed. For this cases the <code>is</code> syntax is
-    not needed.
+  X-Tag uses the standard Custom Elements mechanism for inheritance: ES6 class extension. The return value of the <code>create</code> method is an X-Tag compiled ES6 class, which 
+  can be itself extended either via generic ES6 class declaration, or by again passing it into <code>create</code>, if you wanted to add additional features to your new extended class 
+  using X-Tag APIs. 
 </p>
 
 <pre class="language-javascript"><code>
-var xSpan = xtag.register('x-span', {
-  content: '<span></span>',
-  methods: {
-    render() {
-      // some render logic
-    },
-  },
+const Foo = xtag.create('x-foo', class extends XTagElement {
+  set 'foo::attr' (){ /* Handle foo attribute change */ }
 });
 
-xtag.register('x-money-span', {
-  prototype: xSpan.prototype,
-  methods: {
-    render: function() {
-        // xSpan render logic gets executed first
-        // x-money-span render logic is executed next
-    },
-  }
+Bar extends Foo {
+  bar (){ }
+}
+
+const Zaz = xtag.create('x-zaz', class extends Bar {
+  'click::event' (){ /* do something when clicked */ }
 });
 </code></pre>
 
@@ -623,7 +524,42 @@ xtag.register('x-money-span', {
 
 <h2>API Reference</h2>
 
-<h3 id="api_xtag_register">xtag.register(NAME, DEFINITION)</h3>
+<h3 id="api_xtag_create">xtag.create(TAG_NAME, DEFINITION)</h3>
+
+<p>
+  Create and (optionally) register a Custom Element definition for use as a new tag in HTML markup or via DOM APIS.
+</p>
+
+<table>
+  <tr>
+    <th>Argument</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>TAG_NAME</br>(optional)</td>
+    <td>String</td>
+    <td>
+      The tag name you want to use when using your Custom Element <i>(must contain a dash)</i>. When 
+      this argument is passed, the Custom Element definition is automatically added to the document's Custom Element registry.
+    </td>
+  </tr>
+  <tr>
+    <td>DEFINITION</td>
+    <td>Object</td>
+    <td>The class definition block for your Custom Element</td>
+  </tr>
+</table>
+
+<pre class="language-javascript"><code>
+const Frank = xtag.create('x-frankenstein', class extends XTagElement {
+  constructor (){
+    alert("It's moving...it's alive!");
+  }
+});
+</code></pre>
+
+<h3 id="api_xtag_register">xtag.register(TAG_NAME, CLASS)</h3>
 
 <p>
   Define and register a new custom element. The example below shows test values for each of
@@ -637,14 +573,14 @@ xtag.register('x-money-span', {
     <th>Description</th>
   </tr>
   <tr>
-    <td>NAME</td>
+    <td>TAG_NAME</br>(optional)</td>
     <td>String</td>
     <td>The custom element's tag name <i>(must contain a dash)</i></td>
   </tr>
   <tr>
-    <td>DEFINITION</td>
+    <td>CLASS</td>
     <td>Object</td>
-    <td>An object containing the various features your custom element will utilize</td>
+    <td>The fully composed X-Tag Custom Element class you want to register. The method assumes the class has been processed via <code>xtag.create</code></td>
   </tr>
 </table>
 
@@ -785,7 +721,7 @@ var fragFromFunction = xtag.createFragment(function(){/*
 
 <hr />
 
-<h3 id="api_xtag_addevent">xtag.addEvent(ELEMENT, TYPE, HANDLER)</h3>
+<h3 id="api_xtag_addevent">xtag.addEvent(ELEMENT, TYPE, HANDLER, CAPTURE)</h3>
 
 <p>
   Add a native, custom, or X-Tag library event listener to an element. The TYPE field also
@@ -817,6 +753,13 @@ var fragFromFunction = xtag.createFragment(function(){/*
     <td>Function</td>
     <td>
       The event handler you want called when the event occurs.
+    </td>
+  </tr>
+  <tr>
+    <td>CAPTURE</td>
+    <td>Function</td>
+    <td>
+      Boolean argument you can pass if you want the event to use capturing vs bubbling.
     </td>
   </tr>
 </table>
