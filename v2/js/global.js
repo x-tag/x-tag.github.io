@@ -41,16 +41,16 @@ if (hasClass) {
     }
     start (){
       this.update();
-      this._data.interval = setInterval(() => this.update(), 1000);
+      this._interval = setInterval(() => this.update(), 1000);
     }
     stop (){
-      this._data.interval = clearInterval(this._data.interval);
+      this._interval = clearInterval(this._interval);
     }
     update (){
       this.textContent = new Date().toLocaleTimeString();
     }
     'tap::event' (){
-      if (this._data.interval) this.stop();
+      if (this._interval) this.stop();
       else this.start();
     }
   });

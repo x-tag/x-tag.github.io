@@ -85,7 +85,9 @@
   <main>
     <section id="home_section">
 
-      <h2 id="home_logo" data-version="2.0 alpha"><div class="text-logo"><span>&lt;</span><b>X</b><span>&gt;</span></div></h2>
+      <h2 id="home_logo" data-version=""><div class="text-logo"><span>&lt;</span><b>X</b><span>&gt;</span></div>
+      <div id="logo_version">v2.0 alpha (be warned) - for v1, click <b><a href="http://x-tag.github.io/v1">here</a></b></div>
+      </h2>
       <h2>X-Tag is a
       <span font="blue">lightweight, power-packed </span> 
       <span font="green">Web Components library</span> 
@@ -138,16 +140,16 @@ xtag.create('x-clock', class extends XTagElement {
   }
   start (){
     this.update();
-    this._data.interval = setInterval(() => this.update(), 1000);
+    this._interval = setInterval(() => this.update(), 1000);
   }
   stop (){
-    this._data.interval = clearInterval(this._data.interval);
+    this._interval = clearInterval(this._data.interval);
   }
   update (){
     this.textContent = new Date().toLocaleTimeString();
   }
   'tap::event' (){
-    if (this._data.interval) this.stop();
+    if (this._interval) this.stop();
     else this.start();
   }
 });
@@ -213,12 +215,12 @@ xtag.create('x-clock', class extends XTagElement {
     </div>
 
     <menu id="build_features" class="feature-row">
-      <a href="https://rawgit.com/x-tag/core/master/dist/x-tag-core.min.js" download="x-tag-core.min.js">
+      <a href="https://rawgit.com/x-tag/core/master/dist/x-tag-polyfilled.min.js" download="x-tag-polyfilled.min.js">
         <svg><use xlink:href="#open_box"></use></svg>
         <h2 text-shadow>X-Tag<br/>+<br/>Polyfills<br/></h2>
         <div>X-Tag and the Custom Elements polyfill, ~30k gzipped</div>
       </a>
-      <a href="https://rawgit.com/x-tag/core/master/dist/x-tag-no-polyfills.min.js" download="x-tag-raw.min.js">
+      <a href="https://rawgit.com/x-tag/core/master/dist/x-tag-raw.min.js" download="x-tag-raw.min.js">
         <svg><use xlink:href="#open_box"></use></svg>
         <h2 text-shadow>Just X-Tag<br/>•<br/>No Polyfills</h2>
         <div>Get it raw, roll your own. Just <i style="color: #eee;">2k</i> min'd and gzipped</div>
@@ -326,7 +328,7 @@ xtag.create('x-frankenstein', class extends XTagElement {
 });
 </code></pre>
 
-<h4>Manual Rendering and Rerendering of Templates</h4>
+<h4>Manual Rendering of Templates</h4>
 
 <p>
   If you elect not to have your template automatically rendered when your component instances are created, you'll need to manually trigger render.
@@ -546,7 +548,7 @@ const Zaz = xtag.create('x-zaz', class extends Bar {
   </tr>
   <tr>
     <td>DEFINITION</td>
-    <td>Object</td>
+    <td>Class</td>
     <td>The class definition block for your Custom Element</td>
   </tr>
 </table>
@@ -557,166 +559,6 @@ const Frank = xtag.create('x-frankenstein', class extends XTagElement {
     alert("It's moving...it's alive!");
   }
 });
-</code></pre>
-
-<h3 id="api_xtag_register">xtag.register(TAG_NAME, CLASS)</h3>
-
-<p>
-  Define and register a new custom element. The example below shows test values for each of
-  the top-level definition objects.
-</p>
-
-<table>
-  <tr>
-    <th>Argument</th>
-    <th>Type</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>TAG_NAME</br>(optional)</td>
-    <td>String</td>
-    <td>The custom element's tag name <i>(must contain a dash)</i></td>
-  </tr>
-  <tr>
-    <td>CLASS</td>
-    <td>Object</td>
-    <td>The fully composed X-Tag Custom Element class you want to register. The method assumes the class has been processed via <code>xtag.create</code></td>
-  </tr>
-</table>
-
-<pre class="language-javascript"><code>
-xtag.register('x-foo', {
-  content: '&lt;input/&gt;',
-  lifecycle:{
-    created: function(){},
-    inserted: function(){},
-    removed: function(){},
-    attributeChanged: function(){}
-  },
-  methods: {
-    someMethod: function(){}
-  },
-  accessors: {
-    someAccessor: {
-      // links to the 'some-accessor' attribute
-      attribute: {},
-      set: function(){},
-      get: function(){}
-    }
-  },
-  events: {
-    tap: function(){},
-    focus: function(){}
-  }
-});
-</code></pre>
-
-<hr/>
-
-<h3 id="api_xtag_query">xtag.query(ELEMENT, SELECTOR)</h3>
-
-<p>
-  Wrapper for querySelectorAll that always returns a true JavaScript Array. This is handly
-  for ensuring selections are easily iterable with standard JS Array functions, like
-  <code>forEach</code> and <code>map</code>.
-</p>
-
-<table>
-  <tr>
-    <th>Argument</th>
-    <th>Type</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>ELEMENT</td>
-    <td>DOM element refrence</td>
-    <td>
-      A reference to the DOM element you wish to query
-    </td>
-  </tr>
-  <tr>
-    <td>SELECTOR</td>
-    <td>String</td>
-    <td>
-      The CSS selector you would like to query the element with
-    </td>
-  </tr>
-</table>
-
-<pre class="language-javascript"><code>
-var itemArray = xtag.query(document.body, 'ul li');
-</code></pre>
-
-<hr />
-
-<h3 id="api_xtag_querychildren">xtag.queryChildren(ELEMENT, SELECTOR)</h3>
-
-<p>
-  Query only the direct children of an element with a provided selector.
-</p>
-
-<table>
-  <tr>
-    <th>Argument</th>
-    <th>Type</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>ELEMENT</td>
-    <td>DOM element refrence</td>
-    <td>
-      A reference to the DOM element you wish to query.
-    </td>
-  </tr>
-  <tr>
-    <td>SELECTOR</td>
-    <td>String</td>
-    <td>
-      The CSS selector string you would like to test for matches against the element's direct children.
-    </td>
-  </tr>
-</table>
-
-<pre class="language-javascript"><code>
-var onlyChildButtons = xtag.queryChildren(myToolbar, 'button');
-</code></pre>
-
-<hr />
-
-<h3 id="api_xtag_createfragment">xtag.createFragment(CONTENT)</h3>
-
-<p>
-  Generates a document fragment from a string, list of nodes, or a multi-line comment string.
-</p>
-
-<table>
-  <tr>
-    <th>Argument</th>
-    <th>Type</th>
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td>CONTENT</td>
-    <td>
-      <ul bulleted>
-        <li>String</li>
-        <li>Multi-line function comment</li>
-      </ul>
-    </td>
-    <td>
-      Pass in a string or function with a multi-line comment string of HTML, and a Document Fragment will be created from the contents.
-    </td>
-  </tr>
-</table>
-
-<pre class="language-javascript"><code>
-var fragFromString = xtag.createFragment('&lt;div&gt;Hello World!&lt;/div&gt;');
-
-var fragFromFunction = xtag.createFragment(function(){/*
-  &lt;header&gt;Hello&lt;/header&gt;
-  &lt;section&gt;I'm a multi-line HTML fragment&lt;/section&gt;
-  &lt;footer&gt;Goodbye&lt;/footer&gt;
-*/});
 </code></pre>
 
 <hr />
@@ -866,10 +708,8 @@ xtag.fireEvent(myElement, 'show', {
 
   </main>
 
-<script src="https://cdn.rawgit.com/x-tag/core-2/master/lib/custom-elements.min.js"></script>
-<script src="https://cdn.rawgit.com/x-tag/core-2/master/lib/pep.min.js"></script>
-<script src="https://cdn.rawgit.com/x-tag/core-2/master/src/core.js"></script>
-<script src="https://cdn.rawgit.com/x-tag/core-2/master/src/pointer-events.js"></script>
+<script src="https://cdn.rawgit.com/x-tag/core/master/dist/x-tag-polyfilled.js"></script>
+<script src="https://cdn.rawgit.com/x-tag/core/master/dist/plugins/events/tap.js"></script>
 <script src="/v2/js/prism.js"></script>
 <script src="/v2/js/global.js"></script>
 

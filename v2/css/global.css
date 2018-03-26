@@ -46,7 +46,7 @@ section {
 
 hr {
   height: 1px;
-  margin: 4.5em auto 4em;
+  margin: 3.5em auto 3em;
   border-color: #000 transparent #555;
   border-radius: 100%;
   opacity: 0.2;
@@ -391,10 +391,17 @@ body[path="/builds"] #global_nav a[href="/builds"] {
   font-size: 3.5em;
 }
 
-#home_logo:after {
+/* #home_logo:after {
   content: "v" attr(data-version);
   display: block;
   font-size: 0.25em;
+  color: #888;
+  line-height: 0;
+} */
+
+#logo_version {
+  display: block;
+  font-size: 0.4em;
   color: #888;
   line-height: 0;
 }
