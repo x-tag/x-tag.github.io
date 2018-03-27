@@ -457,37 +457,30 @@ xtag.register('x-foo', {
 
 <p>
   Once you create a pseudo and add it to the main xtag.pseudos object, as show below,
-  you can then use it on any key of your custom element defintion objects that has a
+  you can then use it on any key of your custom element definition objects that has a
   function as its value.
 </p>
 
 <pre class="language-javascript"><code>
-xtag.pseudos.example = {
-  onAdd: function(){
+xtag.pseudos.foo = {
+  onParse: function(ctor, property, args, fn){
     /*
-      This function is fired once when the base function is added to
-      the target object. For instance:
-
-      If you added an event with xtag.addEvent(someNode, 'tap:example', fn),
-      the onAdd function of the 'example' pseudo would be fired once when
-      the event is first attached to the element 'someNode'.
+      Parse is called when the pseudos specified in a declaration are being 
+      compiled and wrapped around the function they are being applied to.
     */
 
+    ctor: the Custom Element Class definition
+    property: property the pseudo is being applied to (ex: ping:foo, property = ping)
+    args: arguments from the pseudo definition (ex: prop:foo(1, 2), args = [1, 2])
+    fn: the function the pseudo is wrapping in the pseud chain
   },
-  onRemove: function(){
+  onInvoke: function(node, obj){
     /*
-      This is basically the opposite of the onAdd function above.
-      With onRemove, you can clean up whatever you may have done
-      in your onAdd or action function invocations.
-    */
-  },
-  action: function(pseudo, event) {
-    /*
-      This function is fired each time the pseudo chain is fired.
-      Pseudo actions are fired in the order they are chained, meaning
-      the in the pseudo 'toggle:log:example', the action function
-      for the 'log' pseudo would fire first, then the 'example' action
-      and finally the base function 'toggle' they are chained to.
+      Invoke is called any time the pseudo-wrapped function is called. This is where 
+      you perform whatever action you desire on the node or object the pseudo targets.
+
+      node: the element
+      obj: object composed of these properties: { fn: fn, args: args, detail: detail } 
     */
   }
 };
