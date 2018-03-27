@@ -467,12 +467,13 @@ xtag.pseudos.foo = {
     /*
       Parse is called when the pseudos specified in a declaration are being 
       compiled and wrapped around the function they are being applied to.
-    */
 
-    ctor: the Custom Element Class definition
-    property: property the pseudo is being applied to (ex: ping:foo, property = ping)
-    args: arguments from the pseudo definition (ex: prop:foo(1, 2), args = [1, 2])
-    fn: the function the pseudo is wrapping in the pseud chain
+
+      ctor: the Custom Element Class definition
+      property: property the pseudo is being applied to (ex: ping:foo, property = ping)
+      args: arguments from the pseudo definition (ex: prop:foo(1, 2), args = [1, 2])
+      fn: the function the pseudo is wrapping in the pseud chain
+    */
   },
   onInvoke: function(node, obj){
     /*
