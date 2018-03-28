@@ -297,7 +297,7 @@ xtag.create('x-foo', class extends XTagElement {
 <p>
   The other API for adding custom functionality to components is called pseudos, which are seen above in the example property <code>count:bar</code>. When a pseudo is tagged to a property, the pseudo's 
   own function wraps the target function so that the pseudo is executed first, then the target, which receives its return value. You can chain pseudos, and 
-  they are compiled from left to right so that they left most pseudo function wrapper fires first, passing each function's return value down to the next, until 
+  they are compiled from left to right so that the left most pseudo function wrapper fires first, passing each function's return value down to the next, until 
   finally the original target function is executed. You can see what this looks like in the above example property <code>send::foo:bar:zaz</code>.
 <p>
 
