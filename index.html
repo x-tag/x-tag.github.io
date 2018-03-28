@@ -331,8 +331,9 @@ xtag.create('x-frankenstein', class extends XTagElement {
 
 <pre class="language-javascript"><code>
 const Frank = xtag.create('x-frankenstein', class extends XTagElement {
+  name (){ return 'Frankenstein'; }
   '::template' (){
-    return `&lt;h2&gt;I am Frankenstein&lt;/h2&gt;
+    return `&lt;h2&gt;I am ${this.name()}&lt;/h2&gt;
             &lt;span&gt;I was created by a mad scientist&lt;/span&gt;`
   }
 });
@@ -383,7 +384,7 @@ FrankNode.render('bar');
       match the behavior of the type you declare. I
 
 <pre class="language-javascript"><code>
-xtag.create('x-foo', new class extends XTagElement {
+xtag.create('x-foo', class extends XTagElement {
   set 'maxVolume::attr' (value){
     // X-Tag automatically maps camel cased getter/setter names to their
     // dashed attribute equivalents. In this example, the `maxVolume` 
@@ -391,7 +392,7 @@ xtag.create('x-foo', new class extends XTagElement {
   }
 });
 
-xtag.create('x-bar', new class extends XTagElement {
+xtag.create('x-bar', class extends XTagElement {
   '::template(true)' (){ return '&lt;input /&gt;' }
   set 'disabled::attr(boolean)' (value){
     // The ::attr extended property links node.disabled to gets/sets of 
