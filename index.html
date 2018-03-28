@@ -82,7 +82,7 @@
     </nav>
   </header>
 
-  <main>
+ <main>
     <section id="home_section">
 
       <h2 id="home_logo" data-version=""><div class="text-logo"><span>&lt;</span><b>X</b><span>&gt;</span></div>
@@ -131,7 +131,7 @@
 
       <hr>
 
-      <x-clock>‎12‎:‎26‎:‎39‎ ‎PM</x-clock>
+      <x-clock>‎12‎:‎56‎:‎18‎ ‎PM</x-clock>
 
 <pre class="  language-javascript"><code class="  language-javascript">xtag<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token string">'x-clock'</span><span class="token punctuation">,</span> <span class="token keyword">class</span> <span class="token class-name">extends</span> XTagElement <span class="token punctuation">{</span>
   connectedCallback <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -273,23 +273,23 @@ xtag<span class="token punctuation">.</span><span class="token function">registe
   <span class="token string">'count:bar'</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
 
   <span class="token punctuation">}</span>
-  <span class="token string">'send::foo:bar:zaz'</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  <span class="token string">'send::attr:bar:zaz'</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre>
 
 <p>
-  Notice how the alert method has a <code>::foo</code>attached to it - this is an extension. Extensions are little modules you can create that are called 
-  into service by tagging a property with<code>::</code> + the name of the extension. Extensions are a sizable API of their own that let's you manipulate 
+  Notice how the alert method has a <code>::foo</code> attached to it - this is an extension. Extensions are little modules you can created that are called 
+  into service by tagging a property with <code>::</code> + the name of the extension. Extensions are a sizable API of their own that let's you manipulate 
   far more than just the property they are tagged to. You can only use one extension per property.
 </p>
 
 <p>
   The other API for adding custom functionality to components is called pseudos, which are seen above in the example property <code>count:bar</code>. When a pseudo is tagged to a property, the pseudo's 
   own function wraps the target function so that the pseudo is executed first, then the target, which receives its return value. You can chain pseudos, and 
-  they are compiled from left to right so that the left most pseudo function wrapper fires first, passing each function's return value down to the next, until 
-  finally the original target function is executed. You can see what this looks like in the above example property<code>send::foo:bar:zaz</code>.
+  they are compiled from left to right so that they left most pseudo function wrapper fires first, passing each function's return value down to the next, until 
+  finally the original target function is executed. You can see what this looks like in the above example property <code>send::foo:bar:zaz</code>.
 </p><p>
 
 </p>
@@ -360,6 +360,23 @@ FrankNode<span class="token punctuation">.</span><span class="token function">re
 <span class="token comment" spellcheck="true">// Calling the render function with the bar template name swaps out the current foo template content with the bar content.</span>
 </code></pre>
 
+<h4>Render the Content</h4>
+
+<p>The template API is a large part of the X-Tag library along with being able to cache snippets of html you can also dynamically change content using the built in syntax of the template method. The render method that uses the template object reads the snippet and allows you to render the content of the template as well as render content that is dynamic too.</p>
+
+<pre class="  language-javascript"><code class="  language-javascript">var component = xtag.create(class extends XTagElement {
+
+      get 'foo::attr'(){}
+
+      'bar'(){ return 'bar' }
+
+      '::template'(){
+
+        return `<h1>${this.foo}</h1><p>${this.bar()}</p>`;
+
+      }
+
+    });</code></pre>
 <hr>
 
   <h3>Say Hello to Custom Attribute Accessors</h3>
