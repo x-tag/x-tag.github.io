@@ -433,31 +433,16 @@ xtag.register('x-foo', {
 
 <hr/>
 
-<h3>Gettin' Jedi with Pseudos</h3>
+<h3>Gettin' Jedi with Pseudos and Extensions</h3>
 
 <p>
-  One advanced feature of X-Tag you should be aware of right off the bat is the <code>delegate</code> pseudo.
-  X-Tag features a function modifier system called <code>pseudos</code> which allows you to seamlessly wrap
-  functions anywhere in your custom element defintion object (lifecycle callbacks, methods, accessors, and events)
-  to extend their functionality. The <code>delegate</code> pseudo enables you to quickly add event delegation
-  (filtering of event targets based on CSS expressions) to any event function you add to your component. Here's an example:</p>
-
-<pre class="language-javascript"><code>
-xtag.register('x-foo', {
-  content: '&lt;input/&gt;',
-  events: {
-    'tap:delegate(input)': function(){
-      // Perform an action only when the user taps on an
-      // &lt;input/&gt; element within your component.
-    }
-  }
-});
-</code></pre>
+  Two advanced features of X-Tag you need to be aware of in detail are the <code>pseudos</code> and <code>extensions</code> API.
+  Here are an examples:</p>
 
 <h4>Create your own Pseudo:</h4>
 
 <p>
-  Once you create a pseudo and add it to the main xtag.pseudos object, as show below,
+  Once you create a pseudo and add it to the main xtag.pseudos object, as shown below,
   you can then use it on any key of your custom element definition objects that has a
   function as its value.
 </p>
@@ -473,7 +458,7 @@ xtag.pseudos.foo = {
       ctor: the Custom Element Class definition
       property: property the pseudo is being applied to (ex: ping:foo, property = ping)
       args: arguments from the pseudo definition (ex: prop:foo(1, 2), args = [1, 2])
-      fn: the function the pseudo is wrapping in the pseud chain
+      fn: the function the pseudo is wrapping in the pseudo chain
     */
   },
   onInvoke: function(node, obj){
@@ -486,6 +471,9 @@ xtag.pseudos.foo = {
     */
   }
 };
+xtag.create("x-foo", class extends XTagElement{
+  "godzilla:foo"(){/* TODO APPLICATION LOGIC */}
+});
 </code></pre>
 
 <hr/>
