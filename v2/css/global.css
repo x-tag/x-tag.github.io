@@ -403,7 +403,7 @@ body[path="/builds"] #global_nav a[href="/builds"] {
   display: block;
   font-size: 0.4em;
   color: #888;
-  line-height: 0;
+  line-height: 1em;
 }
 
 #home_descriptors {
