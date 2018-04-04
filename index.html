@@ -230,7 +230,7 @@ xtag.create('x-clock', class extends XTagElement {
 
   <p>
     The most important method in the X-Tag library is <code>xtag.create()</code>. The <code>create</code> function on the X-Tag object is what you'll use
-    to create new custom element definitions, which can include things like lifecycle callbacks, attribute-linked getters/setters (accessors),
+    to create new custom element definitions that can be enhanced by using the built in lifecycle callbacks, attribute-linked getters/setters (accessors), rendering features, cached templating, 
     and event listeners. Here's what defining a simple custom element looks like with X-Tag:
   </p>
 
@@ -258,9 +258,79 @@ const Frank = xtag.create(class extends XTagElement {
 xtag.register('x-frankenstein', Frank);
 </code></pre>
 
+<p>
+For more info on the XTagElement Object you can take a look at the section on the XTagElement, <em><strong><a href="xtagelement_exposed">XTagElement Exposed.</a>"</strong></em>
+</p>
 <hr/>
 
-<h3>A Word on Extensions and Pseudos</h3>
+
+
+<h3>Gettin' Jedi with Pseudos and Extensions</h3>
+
+<p>
+  Two advanced features of X-Tag you need to be aware of in detail are the <code>pseudos</code> and <code>extensions</code> API.
+  Here are examples:</p>
+
+<h4>Create your own Pseudo:</h4>
+
+<p>
+  Once you create a pseudo and add it to the main xtag.pseudos object, as shown below,
+  you can then use it on any key of your custom element definition objects that has a
+  function as its value.
+</p>
+
+<pre class="language-javascript"><code>
+xtag.pseudos.foo = {
+  onParse: function(ctor, property, args, fn){
+    /*
+      Parse is called when the pseudos specified in a declaration are being 
+      compiled and wrapped around the function they are being applied to.
+
+
+      ctor: the Custom Element Class definition
+      property: property the pseudo is being applied to (ex: ping:foo, property = ping)
+      args: arguments from the pseudo definition (ex: prop:foo(1, 2), args = [1, 2])
+      fn: the function the pseudo is wrapping in the pseudo chain
+    */
+  },
+  onInvoke: function(node, obj){
+    /*
+      Invoke is called any time the pseudo-wrapped function is called. This is where 
+      you perform whatever action you desire on the node or object the pseudo targets.
+
+      node: the element
+      obj: object composed of these properties: { fn: fn, args: args, detail: detail } 
+    */
+  }
+};
+xtag.create("x-foo", class extends XTagElement{
+  "godzilla:foo"(){/* TODO APPLICATION LOGIC */}
+});
+</code></pre>
+
+<hr/>
+
+<h4>To an Extended Voyage</h4>
+
+<p>
+  X-Tag uses the standard Custom Elements mechanism for inheritance: ES6 class extension. The return value of the <code>create</code> method is an X-Tag compiled ES6 class, which 
+  can be itself extended either via generic ES6 class declaration, or by again passing it into <code>create</code>, if you wanted to add additional features to your new extended class 
+  using X-Tag APIs. 
+</p>
+
+<pre class="language-javascript"><code>
+const Foo = xtag.create('x-foo', class extends XTagElement {
+  set 'foo::attr' (){ /* Handle foo attribute change */ }
+});
+
+Bar extends Foo {
+  bar (){ }
+}
+
+const Zaz = xtag.create('x-zaz', class extends Bar {
+  'click::event' (){ /* do something when clicked */ }
+});
+</code></pre>
 
 <p>
   In the next sections you're going to hear about a few features that are delivered via two different types of modular extensibility systems the 
@@ -300,6 +370,38 @@ xtag.create('x-foo', class extends XTagElement {
   There are separate guides for extensions and pseudos that talk about how to create and use your own, but for now just be aware that they are one of 
   the primary means the X-Tag library delivers its own features.
 </p>
+
+<h4>Say Hello to Custom Attribute Accessors</h4>
+    <p>
+      Accessors are custom attributes linking to a corresponding pair of setters/getters, and X-Tag has a built-in extension that makes adding accessors to 
+      your custom element definition stupid simple. To use this extension, add an <code>::attr</code> modifier to one of your class definition properties. 
+      This tells X-Tag to wire up a getter/setter to an HTML attribute of the same name. When attributes are linked to a getter/setter their gets, sets, and 
+      state changes will be synced without having to write any additional code.
+    </p>
+
+    <p>
+      You can also tell the accessor extension that type of accessor you are creating, and it will help by sanitizing values and modifying the gets/sets to 
+      match the behavior of the type you declare. I
+
+<pre class="language-javascript"><code>
+xtag.create('x-foo', class extends XTagElement {
+  set 'maxVolume::attr' (value){
+    // X-Tag automatically maps camel cased getter/setter names to their
+    // dashed attribute equivalents. In this example, the `maxVolume` 
+    // getter/setter pair maps to the `max-volume` attribute.
+  }
+});
+
+xtag.create('x-bar', class extends XTagElement {
+  '::template(true)' (){ return '&lt;input /&gt;' }
+  set 'disabled::attr(boolean)' (value){
+    // The ::attr extended property links node.disabled to gets/sets of 
+    // the disabled="" attribute. Because it is declared as a boolean, 
+    // all values passed into its getter/setter will be a Boolean.
+    this.firstElementChild.disabled = value;
+  }
+});
+</code></pre>
 
 <hr/>
 
@@ -374,45 +476,6 @@ FrankNode.render('bar');
 
 <hr/>
 
-  <h3>Say Hello to Custom Attribute Accessors</h3>
-    <p>
-      Accessors are custom attributes linking to a corresponding pair of setters/getters, and X-Tag has a built-in extension that makes adding accessors to 
-      your custom element definition stupid simple. To use this extension, add an <code>::attr</code> modifier to one of your class definition properties. 
-      This tells X-Tag to wire up a getter/setter to an HTML attribute of the same name. When attributes are linked to a getter/setter their gets, sets, and 
-      state changes will be synced without having to write any additional code.
-    </p>
-
-    <p>
-      You can also tell the accessor extension that type of accessor you are creating, and it will help by sanitizing values and modifying the gets/sets to 
-      match the behavior of the type you declare. I
-
-<pre class="language-javascript"><code>
-xtag.create('x-foo', class extends XTagElement {
-  set 'maxVolume::attr' (value){
-    // X-Tag automatically maps camel cased getter/setter names to their
-    // dashed attribute equivalents. In this example, the `maxVolume` 
-    // getter/setter pair maps to the `max-volume` attribute.
-  }
-});
-
-xtag.create('x-bar', class extends XTagElement {
-  '::template(true)' (){ return '&lt;input /&gt;' }
-  set 'disabled::attr(boolean)' (value){
-    // The ::attr extended property links node.disabled to gets/sets of 
-    // the disabled="" attribute. Because it is declared as a boolean, 
-    // all values passed into its getter/setter will be a Boolean.
-    this.firstElementChild.disabled = value;
-  }
-});
-</code></pre>
-
-<!-- XTagElements render() method -->
-<h3>The Elements are in the Details</h3>
-<p>
-  The XTagElement's `render()` method is the work horse of the `template` `extension`.
-</p>
-<hr/>
-
 <h3>The DL on Events</h3>
 <p>
   X-Tag provides a powerful event system you'll use often in developing your components.
@@ -441,72 +504,16 @@ xtag.register('x-foo', {
 
 <hr/>
 
-<h3>Gettin' Jedi with Pseudos and Extensions</h3>
-
+<!-- == XTagElement Exposed == -->
+<h3 id="xtagelement_exposed">XTagElement Exposed</h3>
 <p>
-  Two advanced features of X-Tag you need to be aware of in detail are the <code>pseudos</code> and <code>extensions</code> API.
-  Here are examples:</p>
-
-<h4>Create your own Pseudo:</h4>
-
-<p>
-  Once you create a pseudo and add it to the main xtag.pseudos object, as shown below,
-  you can then use it on any key of your custom element definition objects that has a
-  function as its value.
 </p>
 
-<pre class="language-javascript"><code>
-xtag.pseudos.foo = {
-  onParse: function(ctor, property, args, fn){
-    /*
-      Parse is called when the pseudos specified in a declaration are being 
-      compiled and wrapped around the function they are being applied to.
-
-
-      ctor: the Custom Element Class definition
-      property: property the pseudo is being applied to (ex: ping:foo, property = ping)
-      args: arguments from the pseudo definition (ex: prop:foo(1, 2), args = [1, 2])
-      fn: the function the pseudo is wrapping in the pseudo chain
-    */
-  },
-  onInvoke: function(node, obj){
-    /*
-      Invoke is called any time the pseudo-wrapped function is called. This is where 
-      you perform whatever action you desire on the node or object the pseudo targets.
-
-      node: the element
-      obj: object composed of these properties: { fn: fn, args: args, detail: detail } 
-    */
-  }
-};
-xtag.create("x-foo", class extends XTagElement{
-  "godzilla:foo"(){/* TODO APPLICATION LOGIC */}
-});
-</code></pre>
-
-<hr/>
-
-<h3>Inheritance</h3>
-
+<!-- XTagElements render() method -->
+<h4>The Elements are in the Details</h3>
 <p>
-  X-Tag uses the standard Custom Elements mechanism for inheritance: ES6 class extension. The return value of the <code>create</code> method is an X-Tag compiled ES6 class, which 
-  can be itself extended either via generic ES6 class declaration, or by again passing it into <code>create</code>, if you wanted to add additional features to your new extended class 
-  using X-Tag APIs. 
+  The XTagElement's `render()` method is the work horse of the `template` `extension`.
 </p>
-
-<pre class="language-javascript"><code>
-const Foo = xtag.create('x-foo', class extends XTagElement {
-  set 'foo::attr' (){ /* Handle foo attribute change */ }
-});
-
-Bar extends Foo {
-  bar (){ }
-}
-
-const Zaz = xtag.create('x-zaz', class extends Bar {
-  'click::event' (){ /* do something when clicked */ }
-});
-</code></pre>
 
 <hr/>
 
