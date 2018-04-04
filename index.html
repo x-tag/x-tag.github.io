@@ -309,9 +309,13 @@ xtag.create('x-foo', class extends XTagElement {
   <p>
     Many of the components you create will require child elements for structure and presentation. X-Tag includes a content templating
     <code>extension</code> that makes this quick and easy. Simply add a <code>::template</code> function to your component definition 
-    and return a string or ES6 Template String. In the example below, notice the <code>true</code> parameter being passed to the extension. 
+	  and return a <code>string</code> or <code>ES6 Template String</code>. In the example below, notice the <code>true</code> parameter being passed to the extension. 
     This tells the template extension to render the content immediately when an instance is created. If you don't want a template to render 
     automatically like this, don't pass anything to it.
+  </p>
+  <p>
+    The XTagElement's `render()` method is the work horse of the `template` `extension`and makes it possible to create feature rich application
+    parts. For more information regarding this check out the <a href="#"></a> section.
   </p>
 
 <pre class="language-javascript"><code>
@@ -371,7 +375,6 @@ FrankNode.render('bar');
 <hr/>
 
   <h3>Say Hello to Custom Attribute Accessors</h3>
-
     <p>
       Accessors are custom attributes linking to a corresponding pair of setters/getters, and X-Tag has a built-in extension that makes adding accessors to 
       your custom element definition stupid simple. To use this extension, add an <code>::attr</code> modifier to one of your class definition properties. 
@@ -403,6 +406,11 @@ xtag.create('x-bar', class extends XTagElement {
 });
 </code></pre>
 
+<!-- XTagElements render() method -->
+<h3>The Elements are in the Details</h3>
+<p>
+  The XTagElement's `render()` method is the work horse of the `template` `extension`.
+</p>
 <hr/>
 
 <h3>The DL on Events</h3>
