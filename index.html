@@ -437,8 +437,7 @@ const Frank = xtag.create('x-frankenstein', class extends XTagElement {
   '::template' (){
     return `&lt;h2&gt;I am ${this.name()}&lt;/h2&gt;
             &lt;span&gt;I was created by a mad scientist&lt;/span&gt;`
-  }
-});
+  }});
 
 const FrankNode = new Frank();
 FrankNode.render();
@@ -472,7 +471,7 @@ FrankNode.render('bar');
 
 <h4>The Elements Render</h4>
 <p>
-The XTagElement's `render()` method is the work horse of the template extension. It get's attached to every X-Tag element that you create and can be reused for your own extensions and pseudos. You can also wrap the `render()` method in side the 
+	The XTagElement's <code>render()</code> method is the work horse of the template extension. It get's attached to every X-Tag element that you create and can be reused for your own extensions and pseudos. Below is an example of using an event to initiate a mode accessor.
 </p>
 
 <pre class="language-javascript"><code>
@@ -483,7 +482,7 @@ var _rendered = xtag.create( "x-mode", class extends XTagElement {
   }
   get 'mode::attr'(){ 
     return this.getAttribute("mode"); 
-  },
+  }
   'myModeSnippet::template'() {
     return "<div><strong>My creation has come to be,</strong><h1>Rendered.</h1></div>";
   }
