@@ -257,10 +257,6 @@ const Frank = xtag.create(class extends XTagElement {
 
 xtag.register('x-frankenstein', Frank);
 </code></pre>
-
-<p>
-For more info on the XTagElement Object you can take a look at the section on the XTagElement, <em><strong><a href="xtagelement_exposed">XTagElement Exposed.</a>"</strong></em>
-</p>
 <hr/>
 
 
@@ -474,6 +470,28 @@ FrankNode.render('bar');
 // Calling the render function with the bar template name swaps out the current foo template content with the bar content.
 </code></pre>
 
+<h4>The Elements Render</h4>
+<p>
+The XTagElement's `render()` method is the work horse of the template extension. It get's attached to every X-Tag element that you create and can be reused for your own extensions and pseudos. You can also wrap the `render()` method in side the 
+</p>
+
+<pre class="language-javascript"><code>
+var _rendered = xtag.create( "x-mode", class extends XTagElement {
+  set 'mode::attr'(_mode) {
+    this.render(_mode);
+    return _mode;
+  }
+  get 'mode::attr'(){ 
+    return this.getAttribute("mode"); 
+  },
+  'myModeSnippet::template'() {
+    return "<div><strong>My creation has come to be,</strong><h1>Rendered.</h1></div>";
+  }
+  'click::event'(e){
+    e.target.mode = e.target.mode;
+  }
+} );</code></pre>
+
 <hr/>
 
 <h3>The DL on Events</h3>
@@ -500,29 +518,7 @@ xtag.register('x-foo', {
     // something inside your custom element is focused.
   }
 });
-</code></pre><hr/>
-
-<h4>The Elements Render</h3>
-<p>
-The XTagElement's `render()` method is the work horse of the template extension. It get's attached to every X-Tag element that you create and can be reused for your own extensions and pseudos. You can also wrap the `render()` method in side the 
-</p>
-
-<pre class="language-javascript"><code>
-var _rendered = xtag.create( "x-mode", class extends XTagElement {
-  set 'mode::attr'(_mode) {
-    this.render(_mode);
-    return _mode;
-  }
-  get 'mode::attr'(){ 
-    return this.getAttribute("mode"); 
-  },
-  'myModeSnippet::template'() {
-    return "<div><strong>My creation has come to be,</strong><h1>Rendered.</h1></div>";
-  }
-  'click::event'(e){
-    e.target.mode = e.target.mode;
-  }
-} );</code></pre><hr/>
+</code></pre><hr/><hr/>
 
 <h2>API Reference</h2>
 
