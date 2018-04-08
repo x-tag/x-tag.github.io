@@ -186,23 +186,16 @@
 
       that gets you there fast, and stays in its own lane.</h2>
 
-
-
       <hr />
 
-
-
       <ul class="feature-row">
-
         <li>
-
           <svg viewBox="25 15 465 465">
-
             <rect fill="#fff" x="27.5%" y="21%" width="55%" height="65%"></rect>
 
             <path d="M71.197,46l33.604,377.479L255.474,466l151.725-42.521L440.803,46H71.197z M367.82,169.11H190.905l3.929,47.519h169.058  l-13.137,142.792l-94.236,25.99v0.268h-1.045l-95.029-26.258l-5.775-72.975h45.939l3.41,36.754l51.455,13.914l51.707-13.914  l5.782-59.846H152.312l-12.335-140.176h232.047L367.82,169.11z"></path>
 
-          </svg>
+		  </svg>
 
           <h2 text-shadow>Standard</h2>
 
@@ -308,11 +301,7 @@ xtag.create('x-clock', class extends XTagElement {
 
 });
 
-</code></pre>
-
-
-
-<hr/>
+</code></pre><hr/>
 
       
 
@@ -392,23 +381,13 @@ xtag.create('x-clock', class extends XTagElement {
 
     <section id="builds_section">
 
-
-
       <div class="section-intro">
 
+        <h2>Install from NPM:</h2>
 
+        <p><code>npm install x-tag</code></p>
 
-      <h2>Install from NPM:</h2>
-
-      <p><code>npm install x-tag</code></p>
-
-
-
-    </div>
-
-
-
-    <hr />
+	  </div><hr />
 
 
 
@@ -449,15 +428,7 @@ xtag.create('x-clock', class extends XTagElement {
 
 
     <section id="docs_section">
-
-
-
-      
-
 <h2 id="getting_started">Getting Started</h2>
-
-
-
   <p>
 
     The most important method in the X-Tag library is <code>xtag.create()</code>. The <code>create</code> function on the X-Tag object is what you'll use
@@ -468,11 +439,7 @@ xtag.create('x-clock', class extends XTagElement {
 
   </p>
 
-
-
-<pre class="language-javascript"><code>
-
-const Frank = xtag.create('x-frankenstein', class extends XTagElement {
+<pre class="language-javascript"><code>const Frank = xtag.create('x-frankenstein', class extends XTagElement {
 
   constructor (){
 
@@ -480,9 +447,7 @@ const Frank = xtag.create('x-frankenstein', class extends XTagElement {
 
   }
 
-});
-
-</code></pre>
+});</code></pre>
 
 
 
@@ -498,9 +463,7 @@ const Frank = xtag.create('x-frankenstein', class extends XTagElement {
 
 
 
-<pre class="language-javascript"><code>
-
-const Frank = xtag.create(class extends XTagElement {
+<pre class="language-javascript"><code>const Frank = xtag.create(class extends XTagElement {
 
   constructor (){
 
@@ -552,9 +515,7 @@ xtag.register('x-frankenstein', Frank);
 
 
 
-<pre class="language-javascript"><code>
-
-xtag.pseudos.foo = {
+<pre class="language-javascript"><code>xtag.pseudos.foo = {
 
   onParse: function(ctor, property, args, fn){
     /*
@@ -604,18 +565,57 @@ xtag.create("x-foo", class extends XTagElement{
 
 });
 
-</code></pre><hr/>
-
+</code></pre>
 
 
 <h4>Create your own Extension</h4>
 
 <p>
-  Creating an extension and using them can be simple, but you can use them and create complex relationships and bindings using this simple method
+
+  Creating an extension and using them can be simple, but you can create complex relationships and bindings using this simple method
+  
   to organize data and display it.
+
 </p>
 
-<h4>To an Extended Voyage</h4>
+<pre class="language-javascript"><code>// Lets create our X-Tag extension.
+
+xtag.extensions.lifecycle = {
+  mixin: (base) => class extends base {
+    connectedCallback(){ 
+
+      /* TODO APPLICATION LOGIC */ 
+
+      xtag.lifecycle ? true : xtag.lifecycle = function createLifecyle(this) { /* DEFINITION */ };
+
+    }
+
+    onCreated(){ /* TODO APPLICATION LOGIC */ }
+
+    onInserted(){ /* TODO APPLICATION LOGIC */ }
+
+    onRemoved(){ /* TODO APPLICATION LOGIC */ }
+  }
+};
+
+// Next we create our XTagElement using the extension method.
+
+xtag.create("x-foo", class extends XTagElement.extensions("lifecycle"){
+
+  "onCreated::lifecycle"(){	/* TODO APPLICATION LOGIC */ }
+
+  "onInserted::lifecycle"(){ /* TODO APPLICATION LOGIC */ }
+
+  "onRemoved::lifecycle"(){ /* TODO APPLICATION LOGIC */ }
+
+});</code></pre>
+
+<p>
+  
+</p><hr/>
+
+
+<h3>To an Extended Voyage</h3>
 
 <p>
   X-Tag uses the standard Custom Elements mechanism for inheritance: ES6 class extension. The return value of the <code>create</code> method is an X-Tag compiled ES6 class, which 
@@ -628,9 +628,7 @@ xtag.create("x-foo", class extends XTagElement{
 
 
 
-<pre class="language-javascript"><code>
-
-const Foo = xtag.create('x-foo', class extends XTagElement {
+<pre class="language-javascript"><code>const Foo = xtag.create('x-foo', class extends XTagElement {
 
   set 'foo::attr' (){ /* Handle foo attribute change */ }
 
@@ -723,18 +721,18 @@ xtag.create('x-foo', class extends XTagElement {
 <p>
 
 
-
+<!-- @DEVNOTE: Where are the guides located. --> 
 </p>
 
   There are separate guides for extensions and pseudos that talk about how to create and use your own, but for now just be aware that they are one of 
 
   the primary means the X-Tag library delivers its own features.
 
-</p>
+</p><hr/>
 
 
 
-<h4>Say Hello to Custom Attribute Accessors</h4>
+<h3>Say Hello to Custom Attribute Accessors</h3>
 
     <p>
       Accessors are custom attributes linking to a corresponding pair of setters/getters, and X-Tag has a built-in extension that makes adding accessors to 
