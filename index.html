@@ -230,7 +230,7 @@ xtag.create('x-clock', class extends XTagElement {
 
   <p>
     The most important method in the X-Tag library is <code>xtag.create()</code>. The <code>create</code> function on the X-Tag object is what you'll use
-    to create new custom element definitions, which can include things like lifecycle callbacks, attribute-linked getters/setters (accessors),
+    to create new custom element definitions that can be enhanced by using the built in lifecycle callbacks, attribute-linked getters/setters (accessors), rendering features, cached templating, 
     and event listeners. Here's what defining a simple custom element looks like with X-Tag:
   </p>
 
@@ -257,10 +257,76 @@ const Frank = xtag.create(class extends XTagElement {
 
 xtag.register('x-frankenstein', Frank);
 </code></pre>
+<hr/>
+
+
+
+<h3>Gettin' Jedi with Pseudos and Extensions</h3>
+
+<p>
+  Two advanced features of X-Tag you need to be aware of in detail are the <code>pseudos</code> and <code>extensions</code> API.
+  Here are examples:</p>
+
+<h4>Create your own Pseudo:</h4>
+
+<p>
+  Once you create a pseudo and add it to the main xtag.pseudos object, as shown below,
+  you can then use it on any key of your custom element definition objects that has a
+  function as its value.
+</p>
+
+<pre class="language-javascript"><code>
+xtag.pseudos.foo = {
+  onParse: function(ctor, property, args, fn){
+    /*
+      Parse is called when the pseudos specified in a declaration are being 
+      compiled and wrapped around the function they are being applied to.
+
+
+      ctor: the Custom Element Class definition
+      property: property the pseudo is being applied to (ex: ping:foo, property = ping)
+      args: arguments from the pseudo definition (ex: prop:foo(1, 2), args = [1, 2])
+      fn: the function the pseudo is wrapping in the pseudo chain
+    */
+  },
+  onInvoke: function(node, obj){
+    /*
+      Invoke is called any time the pseudo-wrapped function is called. This is where 
+      you perform whatever action you desire on the node or object the pseudo targets.
+
+      node: the element
+      obj: object composed of these properties: { fn: fn, args: args, detail: detail } 
+    */
+  }
+};
+xtag.create("x-foo", class extends XTagElement{
+  "godzilla:foo"(){/* TODO APPLICATION LOGIC */}
+});
+</code></pre>
 
 <hr/>
 
-<h3>A Word on Extensions and Pseudos</h3>
+<h4>To an Extended Voyage</h4>
+
+<p>
+  X-Tag uses the standard Custom Elements mechanism for inheritance: ES6 class extension. The return value of the <code>create</code> method is an X-Tag compiled ES6 class, which 
+  can be itself extended either via generic ES6 class declaration, or by again passing it into <code>create</code>, if you wanted to add additional features to your new extended class 
+  using X-Tag APIs. 
+</p>
+
+<pre class="language-javascript"><code>
+const Foo = xtag.create('x-foo', class extends XTagElement {
+  set 'foo::attr' (){ /* Handle foo attribute change */ }
+});
+
+Bar extends Foo {
+  bar (){ }
+}
+
+const Zaz = xtag.create('x-zaz', class extends Bar {
+  'click::event' (){ /* do something when clicked */ }
+});
+</code></pre>
 
 <p>
   In the next sections you're going to hear about a few features that are delivered via two different types of modular extensibility systems the 
@@ -277,7 +343,7 @@ xtag.create('x-foo', class extends XTagElement {
   'count:bar' (){
 
   }
-  'send::attr:bar:zaz' (){
+  'send::foo:bar:zaz' (){
     
   }
 });
@@ -292,7 +358,7 @@ xtag.create('x-foo', class extends XTagElement {
 <p>
   The other API for adding custom functionality to components is called pseudos, which are seen above in the example property <code>count:bar</code>. When a pseudo is tagged to a property, the pseudo's 
   own function wraps the target function so that the pseudo is executed first, then the target, which receives its return value. You can chain pseudos, and 
-  they are compiled from left to right so that they left most pseudo function wrapper fires first, passing each function's return value down to the next, until 
+  they are compiled from left to right so that the left most pseudo function wrapper fires first, passing each function's return value down to the next, until 
   finally the original target function is executed. You can see what this looks like in the above example property <code>send::foo:bar:zaz</code>.
 <p>
 
@@ -301,77 +367,7 @@ xtag.create('x-foo', class extends XTagElement {
   the primary means the X-Tag library delivers its own features.
 </p>
 
-<hr/>
-
-
-<h3>Content is King</h3>
-
-  <p>
-    Many of the components you create will require child elements for structure and presentation. X-Tag includes a content templating
-    <code>extension</code> that makes this quick and easy. Simply add a <code>::template</code> function to your component definition 
-    and return a string or ES6 Template String. In the example below, notice the <code>true</code> parameter being passed to the extension. 
-    This tells the template extension to render the content immediately when an instance is created. If you don't want a template to render 
-    automatically like this, don't pass anything to it.
-  </p>
-
-<pre class="language-javascript"><code>
-xtag.create('x-frankenstein', class extends XTagElement {
-  '::template(true)' (){
-    return `&lt;h2&gt;I am Frankenstein&lt;/h2&gt;
-            &lt;span&gt;I was created by a mad scientist&lt;/span&gt;`
-  }
-});
-</code></pre>
-
-<h4>Manual Rendering of Templates</h4>
-
-<p>
-  If you elect not to have your template automatically rendered when your component instances are created, you'll need to manually trigger render.
-</p>
-
-<pre class="language-javascript"><code>
-const Frank = xtag.create('x-frankenstein', class extends XTagElement {
-  name (){ return 'Frankenstein'; }
-  '::template' (){
-    return `&lt;h2&gt;I am ${this.name()}&lt;/h2&gt;
-            &lt;span&gt;I was created by a mad scientist&lt;/span&gt;`
-  }
-});
-
-const FrankNode = new Frank();
-FrankNode.render();
-</code></pre>
-
-<h4>Multiple Templates</h4>
-
-<p>
-  The template extension can be used multiple times within the same class definition block, which allows you to specify different templates 
-  for use in the same component. The templates are cached and reference based on the property name you put in front of the <code>::template</code> extension 
-  token. To render your templates, simply pass the name of the template you want to use to the <code>render</code> function, as in the following example:
-</p>
-
-<pre class="language-javascript"><code>
-const Frank = xtag.create('x-frankenstein', class extends XTagElement {
-  'foo::template(true)' (){
-    return `&lt;h2&gt;My name is Frankenstein&lt;/h2&gt;
-            &lt;span&gt;I work for a mad scientist&lt;/span&gt;`
-  }
-  'bar::template' (){
-    return `&lt;h2&gt;My friends call me Frank&lt;/h2&gt;
-            &lt;span&gt;I work for a mad scientist&lt;/span&gt;`
-  }
-});
-
-const FrankNode = new Frank();
-// Because the foo template indicated it was to be automatically rendered, its content is already present in your element instance.
-FrankNode.render('bar');
-// Calling the render function with the bar template name swaps out the current foo template content with the bar content.
-</code></pre>
-
-<hr/>
-
-  <h3>Say Hello to Custom Attribute Accessors</h3>
-
+<h4>Say Hello to Custom Attribute Accessors</h4>
     <p>
       Accessors are custom attributes linking to a corresponding pair of setters/getters, and X-Tag has a built-in extension that makes adding accessors to 
       your custom element definition stupid simple. To use this extension, add an <code>::attr</code> modifier to one of your class definition properties. 
@@ -405,6 +401,98 @@ xtag.create('x-bar', class extends XTagElement {
 
 <hr/>
 
+
+<h3>Content is King</h3>
+
+  <p>
+    Many of the components you create will require child elements for structure and presentation. X-Tag includes a content templating
+    <code>extension</code> that makes this quick and easy. Simply add a <code>::template</code> function to your component definition 
+	  and return a <code>string</code> or <code>ES6 Template String</code>. In the example below, notice the <code>true</code> parameter being passed to the extension. 
+    This tells the template extension to render the content immediately when an instance is created. If you don't want a template to render 
+    automatically like this, don't pass anything to it.
+  </p>
+  <p>
+    The XTagElement's `render()` method is the work horse of the `template` `extension`and makes it possible to create feature rich application
+    parts. For more information regarding this check out the <a href="#"></a> section.
+  </p>
+
+<pre class="language-javascript"><code>
+xtag.create('x-frankenstein', class extends XTagElement {
+  '::template(true)' (){
+    return `&lt;h2&gt;I am Frankenstein&lt;/h2&gt;
+            &lt;span&gt;I was created by a mad scientist&lt;/span&gt;`
+  }
+});
+</code></pre>
+
+<h4>Manual Rendering of Templates</h4>
+
+<p>
+  If you elect not to have your template automatically rendered when your component instances are created, you'll need to manually trigger render.
+</p>
+
+<pre class="language-javascript"><code>
+const Frank = xtag.create('x-frankenstein', class extends XTagElement {
+  name (){ return 'Frankenstein'; }
+  '::template' (){
+    return `&lt;h2&gt;I am ${this.name()}&lt;/h2&gt;
+            &lt;span&gt;I was created by a mad scientist&lt;/span&gt;`
+  }});
+
+const FrankNode = new Frank();
+FrankNode.render();
+</code></pre>
+
+<h4>Multiple Templates</h4>
+
+<p>
+  The template extension can be used multiple times within the same class definition block, which allows you to specify different templates 
+  for use in the same component. The templates are cached and reference based on the property name you put in front of the <code>::template</code> extension 
+  token. To render your templates, simply pass the name of the template you want to use to the <code>render</code> function, as in the following example:
+</p>
+
+<pre class="language-javascript"><code>
+const Frank = xtag.create('x-frankenstein', class extends XTagElement {
+  'foo::template(true)' (){
+    return `&lt;h2&gt;My name is Frankenstein&lt;/h2&gt;
+            &lt;span&gt;I work for a mad scientist&lt;/span&gt;`
+  }
+  'bar::template' (){
+    return `&lt;h2&gt;My friends call me Frank&lt;/h2&gt;
+            &lt;span&gt;I work for a mad scientist&lt;/span&gt;`
+  }
+});
+
+const FrankNode = new Frank();
+// Because the foo template indicated it was to be automatically rendered, its content is already present in your element instance.
+FrankNode.render('bar');
+// Calling the render function with the bar template name swaps out the current foo template content with the bar content.
+</code></pre>
+
+<h4>The Elements Render</h4>
+<p>
+	The XTagElement's <code>render()</code> method is the work horse of the template extension. It get's attached to every X-Tag element that you create and can be reused for your own extensions and pseudos. Below is an example of using an event to initiate a mode accessor.
+</p>
+
+<pre class="language-javascript"><code>
+var _rendered = xtag.create( "x-mode", class extends XTagElement {
+  set 'mode::attr'(_mode) {
+    this.render(_mode);
+    return _mode;
+  }
+  get 'mode::attr'(){ 
+    return this.getAttribute("mode"); 
+  }
+  'myModeSnippet::template'() {
+    return "<div><strong>My creation has come to be,</strong><h1>Rendered.</h1></div>";
+  }
+  'click::event'(e){
+    e.target.mode = e.target.mode;
+  }
+} );</code></pre>
+
+<hr/>
+
 <h3>The DL on Events</h3>
 <p>
   X-Tag provides a powerful event system you'll use often in developing your components.
@@ -429,90 +517,7 @@ xtag.register('x-foo', {
     // something inside your custom element is focused.
   }
 });
-</code></pre>
-
-<hr/>
-
-<h3>Gettin' Jedi with Pseudos</h3>
-
-<p>
-  One advanced feature of X-Tag you should be aware of right off the bat is the <code>delegate</code> pseudo.
-  X-Tag features a function modifier system called <code>pseudos</code> which allows you to seamlessly wrap
-  functions anywhere in your custom element defintion object (lifecycle callbacks, methods, accessors, and events)
-  to extend their functionality. The <code>delegate</code> pseudo enables you to quickly add event delegation
-  (filtering of event targets based on CSS expressions) to any event function you add to your component. Here's an example:</p>
-
-<pre class="language-javascript"><code>
-xtag.register('x-foo', {
-  content: '&lt;input/&gt;',
-  events: {
-    'tap:delegate(input)': function(){
-      // Perform an action only when the user taps on an
-      // &lt;input/&gt; element within your component.
-    }
-  }
-});
-</code></pre>
-
-<h4>Create your own Pseudo:</h4>
-
-<p>
-  Once you create a pseudo and add it to the main xtag.pseudos object, as show below,
-  you can then use it on any key of your custom element definition objects that has a
-  function as its value.
-</p>
-
-<pre class="language-javascript"><code>
-xtag.pseudos.foo = {
-  onParse: function(ctor, property, args, fn){
-    /*
-      Parse is called when the pseudos specified in a declaration are being 
-      compiled and wrapped around the function they are being applied to.
-
-
-      ctor: the Custom Element Class definition
-      property: property the pseudo is being applied to (ex: ping:foo, property = ping)
-      args: arguments from the pseudo definition (ex: prop:foo(1, 2), args = [1, 2])
-      fn: the function the pseudo is wrapping in the pseud chain
-    */
-  },
-  onInvoke: function(node, obj){
-    /*
-      Invoke is called any time the pseudo-wrapped function is called. This is where 
-      you perform whatever action you desire on the node or object the pseudo targets.
-
-      node: the element
-      obj: object composed of these properties: { fn: fn, args: args, detail: detail } 
-    */
-  }
-};
-</code></pre>
-
-<hr/>
-
-<h3>Inheritance</h3>
-
-<p>
-  X-Tag uses the standard Custom Elements mechanism for inheritance: ES6 class extension. The return value of the <code>create</code> method is an X-Tag compiled ES6 class, which 
-  can be itself extended either via generic ES6 class declaration, or by again passing it into <code>create</code>, if you wanted to add additional features to your new extended class 
-  using X-Tag APIs. 
-</p>
-
-<pre class="language-javascript"><code>
-const Foo = xtag.create('x-foo', class extends XTagElement {
-  set 'foo::attr' (){ /* Handle foo attribute change */ }
-});
-
-Bar extends Foo {
-  bar (){ }
-}
-
-const Zaz = xtag.create('x-zaz', class extends Bar {
-  'click::event' (){ /* do something when clicked */ }
-});
-</code></pre>
-
-<hr/>
+</code></pre><hr/><hr/>
 
 <h2>API Reference</h2>
 
