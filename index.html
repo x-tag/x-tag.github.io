@@ -580,33 +580,31 @@ xtag.create("x-foo", class extends XTagElement{
 
 <pre class="language-javascript"><code>// Lets create our X-Tag extension.
 
-xtag.extensions.lifecycle = {
+xtag.extensions.gobble = {
   mixin: (base) => class extends base {
     connectedCallback(){ 
 
-      /* TODO APPLICATION LOGIC */ 
-
-      xtag.lifecycle ? true : xtag.lifecycle = function createLifecyle(this) { /* DEFINITION */ };
+      /* TODO APPLICATION LOGIC */
 
     }
 
-    onCreated(){ /* TODO APPLICATION LOGIC */ }
+    toGobble() { /* TODO APPLICATION LOGIC */ }
 
-    onInserted(){ /* TODO APPLICATION LOGIC */ }
+    onGobbling() { /* TODO APPLICATION LOGIC */ }
 
-    onRemoved(){ /* TODO APPLICATION LOGIC */ }
+    onGobbled() { /* TODO APPLICATION LOGIC */ }
   }
 };
 
 // Next we create our XTagElement using the extension method.
 
-xtag.create("x-foo", class extends XTagElement.extensions("lifecycle"){
+xtag.create("x-gobble", class extends XTagElement.extensions("gobble"){
 
-  "onCreated::lifecycle"(){	/* TODO APPLICATION LOGIC */ }
+  "toGobble::lifecycle"(){ /* TODO APPLICATION LOGIC */ }
 
-  "onInserted::lifecycle"(){ /* TODO APPLICATION LOGIC */ }
+  "onGobbling::lifecycle"(){ /* TODO APPLICATION LOGIC */ }
 
-  "onRemoved::lifecycle"(){ /* TODO APPLICATION LOGIC */ }
+  "onGobbled::lifecycle"(){ /* TODO APPLICATION LOGIC */ }
 
 });</code></pre>
 
