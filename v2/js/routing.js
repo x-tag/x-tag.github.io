@@ -3,8 +3,9 @@
 (function(){
 
   var titles = {
+    '/': 'Web Components Library',
     '/docs': 'Docs',
-    '/builds': 'Builds',
+    '/builds': 'Builds'
   };
 
   try {
