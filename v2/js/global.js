@@ -14,7 +14,7 @@ document.addEventListener('click', function(e){
     e.preventDefault();
     navCheckbox.checked = false;
     if (anchor.href != location.href) {
-      routeUpdate(anchor.href, true);
+      routeUpdate(anchor.pathname, true);
     }
   }
 }, true);
