@@ -86,7 +86,7 @@
     <section id="home_section">
 
       <h2 id="home_logo" data-version=""><div class="text-logo"><span>&lt;</span><b>X</b><span>&gt;</span></div>
-      <div id="logo_version">v2.0 alpha (be warned) - for v1, click <b><a href="javascript:window.location.href='http://x-tag.github.io/v1'">here</a></b></div>
+      <div id="logo_version">v2.0.1 beta - for v1, click <b><a href="javascript:window.location.href='http://x-tag.github.io/v1'">here</a></b></div>
       </h2>
       <h2>X-Tag is a
       <span font="blue">lightweight, power-packed </span> 
@@ -210,12 +210,12 @@ xtag.create('x-clock', class extends XTagElement {
     </div>
 
     <menu id="build_features" class="feature-row">
-      <a href="https://rawgit.com/x-tag/core/master/dist/x-tag-polyfilled.min.js" download="x-tag-polyfilled.min.js">
+      <a file="https://rawgit.com/x-tag/core/master/dist/x-tag-polyfilled.min.js" download="x-tag-polyfilled.min.js">
         <svg><use xlink:href="#open_box"></use></svg>
         <h2 text-shadow>X-Tag<br/>+<br/>Polyfills<br/></h2>
         <div>X-Tag + Custom Elements polyfill</br><i style="color: #eee;">6k min/gzip</i></div>
       </a>
-      <a href="https://rawgit.com/x-tag/core/master/dist/x-tag-raw.min.js" download="x-tag-raw.min.js">
+      <a file="https://rawgit.com/x-tag/core/master/dist/x-tag-raw.min.js" download="x-tag-raw.min.js">
         <svg><use xlink:href="#open_box"></use></svg>
         <h2 text-shadow>Just X-Tag<br/>•<br/>No Polyfills</h2>
         <div>Run it raw on native APIs</br><i style="color: #eee;">3k min/gzip</i></div>
@@ -316,8 +316,9 @@ xtag.create('x-foo', class extends XTagElement {
 
 <pre class="language-javascript"><code>
 xtag.create('x-frankenstein', class extends XTagElement {
+  name (){ return 'Frankenstein'; }
   '::template(true)' (){
-    return `&lt;h2&gt;I am Frankenstein&lt;/h2&gt;
+    return `&lt;h2&gt;I am ${this.name()}&lt;/h2&gt;
             &lt;span&gt;I was created by a mad scientist&lt;/span&gt;`
   }
 });

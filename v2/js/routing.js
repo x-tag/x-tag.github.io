@@ -7,31 +7,49 @@
     '/builds': 'Builds',
   };
 
-  var removeTrailingSlash = /\/$/;
-  function getPathname(anchor){
-    var pathname = (anchor || location).pathname;
-    return pathname ? pathname.replace(removeTrailingSlash, '') || '/' : '/';
+  try {
+    localStorage.titles = JSON.stringify(titles);
+  } catch (e) {}
+
+  var state = {pathname: location.pathname};
+
+  var routeUpdate = window.routeUpdate = function routeUpdate(pathname, push) {
+    if (!pathname) {
+      throw new Error('Must pass a pathname as the first parameter to `routeUpdate`');
+    }
+    pathname = pathname.replace(/.html$/, '');
+    var title = 'X-Tag - ' + (titles[pathname] || titles['/']);
+    document.title = title;
+    if (push === true) historyPush(title, pathname);
+    else if (push === false) historyReplace(title, pathname);
+    document.body.setAttribute('path', location.pathname);
+  };
+
+  function historyPush(title, pathname) {
+    scrollTo(0, 0);  // Ignore `history.scrollRestoration`.
+    state = {pathname: pathname};
+    history.pushState(state, null, pathname);
   }
 
-  document.body.setAttribute('path', getPathname());
-
-  window.updateRoute = function updateRoute(anchor, push) {
-    var pathname = getPathname(anchor);
-    var title = 'X-Tag - ' + titles[pathname];
-    document.body.setAttribute('path', pathname);   
-    if (push !== false) history.pushState(null, title, anchor.href);
+  function historyReplace(title, pathname) {
+    state = {pathname: pathname};
+    history.replaceState(state, null, pathname);
   }
-  
-  var redirect = sessionStorage.redirect;
-  delete sessionStorage.redirect;
-  if (redirect && redirect != location.href) {
-    history.replaceState(null, null, redirect);
-    updateRoute(redirect, false);
-  }
-  else document.body.setAttribute('path', getPathname());
 
-  window.addEventListener('popstate', function(e){
-    document.body.setAttribute('path', getPathname());
-  }, true);
+  var redirect = null;
+  try {
+    redirect = sessionStorage.redirect;
+    delete sessionStorage.redirect;
+  } catch (e) {}
+
+  if (redirect && redirect !== location.pathname) routeUpdate(redirect, false);
+
+  window.onpopstate = function(e) {
+    if (e.state && e.state.pathname) {
+      routeUpdate(e.state.pathname);
+    }
+  };
+
+  routeUpdate(location.pathname, false);
 
 })();

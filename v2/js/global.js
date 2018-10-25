@@ -14,7 +14,7 @@ document.addEventListener('click', function(e){
     e.preventDefault();
     navCheckbox.checked = false;
     if (anchor.href != location.href) {
-      updateRoute(anchor);
+      routeUpdate(anchor.href, true);
     }
   }
 }, true);
@@ -56,5 +56,22 @@ if (hasClass) {
   });
 
 }
+
+xtag.addEvent(document, 'click:delegate(a[file][download]:not([href]))', function(e){
+  console.log(e);
+  var anchor = e.target;
+  fetch(anchor.getAttribute('file'), {
+      headers: new Headers({
+        'Origin': location.origin
+      }),
+      mode: 'cors'
+    })
+    .then(response => response.blob())
+    .then(blob => {
+      anchor.href = URL.createObjectURL(blob);
+      anchor.click();
+    })
+    .catch(e => console.error(e));
+});
 
 })();
